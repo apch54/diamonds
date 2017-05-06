@@ -54,8 +54,7 @@ class Phacker.Game.Socle
         @pm.whl.y4 = @pm.whl.y3
 
 
-        @draw_bg()
-
+        @draw_bg() # draw the whole background
     #.----------.----------
     # build socle
     #.----------.----------
