@@ -18,7 +18,7 @@ class Phacker.Game.Socle
             y0: 0
             w : if @gm.gameOptions.fullscreen  then 375 else 768
             h : if @gm.gameOptions.fullscreen  then 559 else 500
-        @pm.bg.w2 = @pm.bg.w / 2 # middle of background
+        @pm.bg.w2 = @pm.bg.w/2 # middle of background
         @pm.bg.x0 = @pm.bg.w2
 
         @pm.btm = # bottom platform
@@ -32,7 +32,7 @@ class Phacker.Game.Socle
             w : 329
             h : 375
             r : 20 # rope radius at the four angles
-        @pm.rop.y0 = (@pm.btm.y0 - @pm.rop.h ) / 2
+        @pm.rop.y0 = (@pm.btm.y0 - @pm.rop.h )/2
 
         @pm.mec = # mechanic
             x0: @pm.bg.w2
@@ -44,9 +44,9 @@ class Phacker.Game.Socle
             y0: @pm.rop.y0 + 50
             w : 34
             h : 34
-        @pm.whl.x1 = @pm.rop.x0 - @pm.rop.w / 2  + @pm.rop.r
+        @pm.whl.x1 = @pm.rop.x0 - @pm.rop.w/2  + @pm.rop.r
         @pm.whl.y1 = @pm.rop.y0 + @pm.rop.r
-        @pm.whl.x2 = @pm.rop.x0 + @pm.rop.w / 2  - @pm.rop.r
+        @pm.whl.x2 = @pm.rop.x0 + @pm.rop.w/2  - @pm.rop.r
         @pm.whl.y2 = @pm.whl.y1
         @pm.whl.x3 = @pm.whl.x2
         @pm.whl.y3 = @pm.rop.y0 + @pm.rop.h - @pm.rop.r
@@ -55,6 +55,7 @@ class Phacker.Game.Socle
 
 
         @draw_bg() # draw the whole background
+
     #.----------.----------
     # build socle
     #.----------.----------
@@ -80,11 +81,26 @@ class Phacker.Game.Socle
         # wheels
         @whl1 = @gm.add.sprite @pm.whl.x1, @pm.whl.y1, 'wheel' # 283x150
         @whl1.anchor.setTo(0.5, 0.5) # anchor in the middle of top
+        @mk_tween @whl1, {  angle: 360  }, 1700
+
         @whl2 = @gm.add.sprite @pm.whl.x2, @pm.whl.y2, 'wheel' # 283x150
         @whl2.anchor.setTo(0.5, 0.5) # anchor in the middle of top
+        @mk_tween @whl2, {  angle: 360  }, 1800
+
         @whl3 = @gm.add.sprite @pm.whl.x3, @pm.whl.y3, 'wheel' # 283x150
         @whl3.anchor.setTo(0.5, 0.5) # anchor in the middle of top
+        @mk_tween @whl3, {  angle: 360  }, 1900
+
         @whl4 = @gm.add.sprite @pm.whl.x4, @pm.whl.y4, 'wheel' # 283x150
         @whl4.anchor.setTo(0.5, 0.5) # anchor in the middle of top
+        @mk_tween @whl4, {  angle: 360  }, 2000
+
+    #__________.__________
+    # make twen for object with lst paramaters an during t
+    # __________.__________
+    mk_tween:(spt, lst , t) ->
+        tw = @gm.add.tween spt
+        tw.to( lst, t, Phaser.Easing.Linear.None, true, 0, -1 )
+
 
 

@@ -66,12 +66,30 @@
       this.mec.anchor.setTo(0.5, 0);
       this.whl1 = this.gm.add.sprite(this.pm.whl.x1, this.pm.whl.y1, 'wheel');
       this.whl1.anchor.setTo(0.5, 0.5);
+      this.mk_tween(this.whl1, {
+        angle: 360
+      }, 1700);
       this.whl2 = this.gm.add.sprite(this.pm.whl.x2, this.pm.whl.y2, 'wheel');
       this.whl2.anchor.setTo(0.5, 0.5);
+      this.mk_tween(this.whl2, {
+        angle: 360
+      }, 1800);
       this.whl3 = this.gm.add.sprite(this.pm.whl.x3, this.pm.whl.y3, 'wheel');
       this.whl3.anchor.setTo(0.5, 0.5);
+      this.mk_tween(this.whl3, {
+        angle: 360
+      }, 1900);
       this.whl4 = this.gm.add.sprite(this.pm.whl.x4, this.pm.whl.y4, 'wheel');
-      return this.whl4.anchor.setTo(0.5, 0.5);
+      this.whl4.anchor.setTo(0.5, 0.5);
+      return this.mk_tween(this.whl4, {
+        angle: 360
+      }, 2000);
+    };
+
+    Socle.prototype.mk_tween = function(spt, lst, t) {
+      var tw;
+      tw = this.gm.add.tween(spt);
+      return tw.to(lst, t, Phaser.Easing.Linear.None, true, 0, -1);
     };
 
     return Socle;
