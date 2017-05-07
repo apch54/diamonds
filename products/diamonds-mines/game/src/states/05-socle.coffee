@@ -96,7 +96,7 @@ class Phacker.Game.Socle
         @mk_tween @whl4, {  angle: 360  }, 2000
 
     #__________.__________
-    # make twen for object with lst paramaters an during t
+    # make twen for object with lst variation paramaters an during t
     # __________.__________
     mk_tween:(spt, lst , t) ->
         tw = @gm.add.tween spt
