@@ -103,32 +103,28 @@
 
 (function() {
   Phacker.Game.OneBasket = (function() {
-    function OneBasket(gm) {
+    function OneBasket(gm, lstP1) {
       this.gm = gm;
+      this.lstP = lstP1;
       this._fle_ = 'One bsk';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.bsk = {
         w: 42,
         h: 54,
-        x1: this.Pm.rop.x0 - this.Pm.rop.w / 2 + 2,
-        y1: this.gm.parameters.rop.y0 + 2,
-        x2: this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2,
-        y2: this.gm.parameters.rop.y0 + 2,
-        x3: this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2,
-        y3: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
-        x4: this.Pm.rop.x0 - this.Pm.rop.w / 2 + 2,
-        y4: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
-        vx: 100
+        vx: 100,
+        names: ['blue_basket', 'green_basket', 'normal_basket', 'pink_basket', 'red_basket']
       };
-      this.mk_bsk(this.pm.x1, this.pm.y1, 'N');
-      this.move();
+      this.mk_bsk(this.lstP);
     }
 
-    OneBasket.prototype.mk_bsk = function(x, y, branch) {
-      this.bsk = this.gm.add.sprite(x, y, 'blue_basket');
+    OneBasket.prototype.mk_bsk = function(lstP) {
+      var col;
+      col = this.gm.rnd.integerInRange(0, 4);
+      this.bsk = this.gm.add.sprite(lstP.x, lstP.y, this.pm.names[col]);
       this.gm.physics.arcade.enable(this.bsk, Phaser.Physics.ARCADE);
       this.bsk.anchor.setTo(0.5, 0.5);
-      this.bsk.branch = branch;
+      this.bsk.branch = lstP.branch;
+      this.bsk.color = col;
       if (this.bsk.branch === 'N') {
         this.bsk.body.velocity.x = this.pm.vx;
         return this.bsk.body.velocity.y = 0;
@@ -145,19 +141,19 @@
     };
 
     OneBasket.prototype.move = function() {
-      if (this.bsk.branch === 'N' && this.bsk.x > this.pm.x2) {
+      if (this.bsk.branch === 'N' && this.bsk.x > this.Pm.bsks.x2) {
         this.bsk.body.velocity.x = 0;
         this.bsk.body.velocity.y = this.pm.vx;
         return this.bsk.branch = 'E';
-      } else if (this.bsk.branch === 'E' && this.bsk.y > this.pm.y3) {
+      } else if (this.bsk.branch === 'E' && this.bsk.y > this.Pm.bsks.y3) {
         this.bsk.body.velocity.x = -this.pm.vx;
         this.bsk.body.velocity.y = 0;
         return this.bsk.branch = 'S';
-      } else if (this.bsk.branch === 'S' && this.bsk.x < this.pm.x4) {
+      } else if (this.bsk.branch === 'S' && this.bsk.x < this.Pm.bsks.x4) {
         this.bsk.body.velocity.x = 0;
         this.bsk.body.velocity.y = -this.pm.vx;
         return this.bsk.branch = 'O';
-      } else if (this.bsk.branch === 'O' && this.bsk.y < this.pm.y1) {
+      } else if (this.bsk.branch === 'O' && this.bsk.y < this.Pm.bsks.y1) {
         this.bsk.body.velocity.x = this.pm.vx;
         this.bsk.body.velocity.y = 0;
         return this.bsk.branch = 'N';
@@ -180,7 +176,14 @@
       this._fle_ = 'Baskets';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.bsks = {
-        names: ['enemy2', 'enemy1']
+        x1: this.Pm.rop.x0 - this.Pm.rop.w / 2 + 2,
+        y1: this.gm.parameters.rop.y0 + 2,
+        x2: this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2,
+        y2: this.gm.parameters.rop.y0 + 2,
+        x3: this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2,
+        y3: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
+        x4: this.Pm.rop.x0 - this.Pm.rop.w / 2 + 2,
+        y4: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2
       };
       this.bska = [];
       this.init();
@@ -188,7 +191,22 @@
 
     Baskets.prototype.init = function() {
       var bkO;
-      return this.bska.push(bkO = new Phacker.Game.OneBasket(this.gm));
+      return this.bska.push(bkO = new Phacker.Game.OneBasket(this.gm, {
+        x: this.pm.x1,
+        y: this.pm.y1,
+        branch: 'N'
+      }));
+    };
+
+    Baskets.prototype.move = function() {
+      var b, i, len, ref, results;
+      ref = this.bska;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        b = ref[i];
+        results.push(b.move());
+      }
+      return results;
     };
 
     return Baskets;
@@ -213,7 +231,7 @@
 
     YourGame.prototype.update = function() {
       YourGame.__super__.update.call(this);
-      return this.basketsO.bska[0].move();
+      return this.basketsO.move();
     };
 
     YourGame.prototype.resetPlayer = function() {

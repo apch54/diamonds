@@ -4,7 +4,7 @@ class @YourGame extends Phacker.GameState
 
     update: ->
         super() #Required
-        @basketsO.bska[0].move()
+        @basketsO.move()
 
     resetPlayer: ->
         console.log "Reset the player"
