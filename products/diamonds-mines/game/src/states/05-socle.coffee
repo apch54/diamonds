@@ -1,7 +1,7 @@
 ###  written by apch on 2017-05-06
        ... --- ...
       |          ,---------------------------------.
-      |.===.     | an other one : diamonds_mines   |
+      |.===.     | an other one : Diamonds mines   |
       {}o o{}    _)--------------------------------'
    ooO--(_)--Ooo-
 

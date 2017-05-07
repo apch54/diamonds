@@ -2,7 +2,7 @@
 /*  written by apch on 2017-05-06
        ... --- ...
       |          ,---------------------------------.
-      |.===.     | an other one : diamonds_mines   |
+      |.===.     | an other one : Diamonds mines   |
       {}o o{}    _)--------------------------------'
    ooO--(_)--Ooo-
  */
@@ -98,6 +98,9 @@
 
 }).call(this);
 
+
+/*  written by apch on 2017-05-07enemy */
+
 (function() {
   Phacker.Game.OneBasket = (function() {
     function OneBasket(gm) {
@@ -167,6 +170,36 @@
 
 }).call(this);
 
+
+/*  written by apch on 2017-05-07enemy */
+
+(function() {
+  Phacker.Game.Baskets = (function() {
+    function Baskets(gm) {
+      this.gm = gm;
+      this._fle_ = 'Baskets';
+      this.Pm = this.gm.parameters;
+      this.pm = this.Pm.bsks = {
+        names: ['enemy2', 'enemy1']
+      };
+      this.bska = [];
+      this.init();
+    }
+
+    Baskets.prototype.init = function() {
+      var bkO;
+      return this.bska.push(bkO = new Phacker.Game.OneBasket(this.gm));
+    };
+
+    return Baskets;
+
+  })();
+
+}).call(this);
+
+
+/*  written by apch on 2017-05-07 : Jeu */
+
 (function() {
   var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -180,7 +213,7 @@
 
     YourGame.prototype.update = function() {
       YourGame.__super__.update.call(this);
-      return this.one_bskO.move();
+      return this.basketsO.bska[0].move();
     };
 
     YourGame.prototype.resetPlayer = function() {
@@ -190,62 +223,62 @@
     YourGame.prototype.create = function() {
       YourGame.__super__.create.call(this);
       this.soleO = new Phacker.Game.Socle(this.game);
-      return this.one_bskO = new Phacker.Game.OneBasket(this.game);
+      return this.basketsO = new Phacker.Game.Baskets(this.game);
     };
+
+
+    /* LOGIC OF YOUR GAME
+     * Examples buttons actions
+     *
+    lostBtn = @game.add.text(0, 0, "Bad Action");
+    lostBtn.inputEnabled = true;
+    lostBtn.y = @game.height*0.5 - lostBtn.height*0.5
+    lostBtn.events.onInputDown.add ( ->
+        @lost()
+    ).bind @
+    
+    winBtn = @game.add.text(0, 0, "Good Action");
+    winBtn.inputEnabled = true;
+    winBtn.y = @game.height*0.5 - winBtn.height*0.5
+    winBtn.x = @game.width - winBtn.width
+    winBtn.events.onInputDown.add ( ->
+        @win()
+    ).bind @
+    
+    lostLifeBtn = @game.add.text(0, 0, "Lost Life");
+    lostLifeBtn.inputEnabled = true;
+    lostLifeBtn.y = @game.height*0.5 - lostLifeBtn.height*0.5
+    lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
+    lostLifeBtn.events.onInputDown.add ( ->
+        @lostLife()
+    ).bind @
+    
+    bonusBtn = @game.add.text(0, 0, "Bonus");
+    bonusBtn.inputEnabled = true;
+    bonusBtn.y = @game.height*0.5 - bonusBtn.height*0.5 + 50
+    bonusBtn.x = @game.width - bonusBtn.width
+    bonusBtn.events.onInputDown.add ( ->
+        @winBonus()
+    ).bind @
+    
+    #Placement specific for mobile
+    
+    if @game.gameOptions.fullscreen
+        lostBtn.x = @game.width*0.5 - lostBtn.width*0.5
+        lostBtn.y = @game.height*0.25
+    
+        winBtn.x = @game.width*0.5 - winBtn.width*0.5
+        winBtn.y = @game.height*0.5
+    
+        lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
+        lostLifeBtn.y = @game.height*0.75
+    
+        bonusBtn.x = @game.width*0.5 - winBtn.width*0.5
+        bonusBtn.y = @game.height*0.5 + 50
+     */
 
     return YourGame;
 
   })(Phacker.GameState);
-
-
-  /* LOGIC OF YOUR GAME
-   * Examples buttons actions
-   *
-  lostBtn = @game.add.text(0, 0, "Bad Action");
-  lostBtn.inputEnabled = true;
-  lostBtn.y = @game.height*0.5 - lostBtn.height*0.5
-  lostBtn.events.onInputDown.add ( ->
-      @lost()
-  ).bind @
-  
-  winBtn = @game.add.text(0, 0, "Good Action");
-  winBtn.inputEnabled = true;
-  winBtn.y = @game.height*0.5 - winBtn.height*0.5
-  winBtn.x = @game.width - winBtn.width
-  winBtn.events.onInputDown.add ( ->
-      @win()
-  ).bind @
-  
-  lostLifeBtn = @game.add.text(0, 0, "Lost Life");
-  lostLifeBtn.inputEnabled = true;
-  lostLifeBtn.y = @game.height*0.5 - lostLifeBtn.height*0.5
-  lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
-  lostLifeBtn.events.onInputDown.add ( ->
-      @lostLife()
-  ).bind @
-  
-  bonusBtn = @game.add.text(0, 0, "Bonus");
-  bonusBtn.inputEnabled = true;
-  bonusBtn.y = @game.height*0.5 - bonusBtn.height*0.5 + 50
-  bonusBtn.x = @game.width - bonusBtn.width
-  bonusBtn.events.onInputDown.add ( ->
-      @winBonus()
-  ).bind @
-  
-  #Placement specific for mobile
-  
-  if @game.gameOptions.fullscreen
-      lostBtn.x = @game.width*0.5 - lostBtn.width*0.5
-      lostBtn.y = @game.height*0.25
-  
-      winBtn.x = @game.width*0.5 - winBtn.width*0.5
-      winBtn.y = @game.height*0.5
-  
-      lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
-      lostLifeBtn.y = @game.height*0.75
-  
-      bonusBtn.x = @game.width*0.5 - winBtn.width*0.5
-      bonusBtn.y = @game.height*0.5 + 50
-   */
 
 }).call(this);

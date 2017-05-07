@@ -1,10 +1,12 @@
+###  written by apch on 2017-05-07enemy  ###
+
 class Phacker.Game.OneBasket
 
     constructor: (@gm) ->
         @_fle_ = 'One bsk'
         @Pm = @gm.parameters    # globals parameters
-        @pm = @Pm.bsk = {       # one basket parameters
-            w: 42,                                    h:54
+        @pm = @Pm.bsk =        # one basket parameters
+            w: 42,                                    h: 54
 
             x1: @Pm.rop.x0 - @Pm.rop.w/2 + 2,         y1: @gm.parameters.rop.y0 + 2
             x2: @Pm.rop.x0 + @Pm.rop.w/2 - 2,         y2: @gm.parameters.rop.y0 + 2
@@ -12,8 +14,6 @@ class Phacker.Game.OneBasket
             x4: @Pm.rop.x0 - @Pm.rop.w/2 + 2,         y4: @gm.parameters.rop.y0 + @Pm.rop.h - 2
 
             vx : 100
-
-        }
 
         @mk_bsk(@pm.x1,@pm.y1, 'N' ) # N stands for north
         @move()
@@ -34,10 +34,10 @@ class Phacker.Game.OneBasket
         else if @bsk.branch is 'S' then @bsk.body.velocity.x = -@pm.vx ;  @bsk.body.velocity.y = 0
         else if @bsk.branch is 'O' then @bsk.body.velocity.x = 0       ;  @bsk.body.velocity.y = @pm.vx
 
-
     #.----------.----------
     # move the basket around the rope
     #.----------.----------
+
     move: () ->
         if @bsk.branch is 'N' and @bsk.x > @pm.x2
             @bsk.body.velocity.x = 0
