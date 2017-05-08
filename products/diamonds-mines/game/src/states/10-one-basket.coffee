@@ -75,8 +75,6 @@ class Phacker.Game.OneBasket
     # tween the basket for a rotation down(angle, 160 ou up ( angle :0)
     #.----------.----------
     twn_up_down: (a) ->
-#        if way is 'up' then t = 200 ; a = 0
-#        else t = 500 ; a = 160
         t = 500
         tw = @gm.add.tween @bsk
         tw.to( {angle:a }, t, Phaser.Easing.Linear.None, true, 0, 0 )

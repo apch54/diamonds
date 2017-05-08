@@ -212,9 +212,13 @@
     }
 
     Baskets.prototype.init = function() {
-      var bkO, xy;
-      xy = this.set_xy(5);
-      return this.bska.push(bkO = new Phacker.Game.OneBasket(this.gm, xy));
+      var bkO, i, ii, ref, results, xy;
+      results = [];
+      for (ii = i = 0, ref = this.pm.n; 0 <= ref ? i <= ref : i >= ref; ii = 0 <= ref ? ++i : --i) {
+        xy = this.set_xy(ii);
+        results.push(this.bska.push(bkO = new Phacker.Game.OneBasket(this.gm, xy)));
+      }
+      return results;
     };
 
     Baskets.prototype.set_xy = function(num) {

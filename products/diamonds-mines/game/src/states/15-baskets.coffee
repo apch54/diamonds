@@ -12,7 +12,8 @@ class Phacker.Game.Baskets
             x3: @Pm.rop.x0 + @Pm.rop.w/2 - 2,         y3: @gm.parameters.rop.y0 + @Pm.rop.h - 2
             x4: @Pm.rop.x0 - @Pm.rop.w/2 + 2,         y4: @gm.parameters.rop.y0 + @Pm.rop.h - 2
             n: 6 # number of baskets
-        @bska =[]
+
+        @bska =[] #Array of baskets object
 
         @init() # init gpoup : emy
 
@@ -20,8 +21,9 @@ class Phacker.Game.Baskets
     # all baskets initialiszation
     #.----------.----------
     init: () ->
-        xy = @set_xy 5
-        @bska.push bkO = new Phacker.Game.OneBasket @gm, xy
+        for ii in [0..@pm.n]
+            xy = @set_xy ii
+            @bska.push bkO = new Phacker.Game.OneBasket @gm, xy
 
     #.----------.----------
     # set x,y, branch basket at initialization
