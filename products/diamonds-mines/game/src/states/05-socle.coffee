@@ -94,12 +94,6 @@ class Phacker.Game.Socle
         @whl4.anchor.setTo(0.5, 0.5) # anchor in the middle of top
         @mk_tween @whl4, {  angle: 360  }, 2000
 
-    #.----------.----------
-    # set x,y basket at initialization
-    # n is the number
-    #.----------.----------
-    set_xy: (n) ->
-
     #__________.__________
     # make twen for object with lst variation paramaters an during t
     # __________.__________

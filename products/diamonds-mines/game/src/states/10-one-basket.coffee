@@ -34,7 +34,7 @@ class Phacker.Game.OneBasket
         if      @bsk.branch is 'N' then @bsk.body.velocity.x = @pm.vx  ;  @bsk.body.velocity.y = 0
         else if @bsk.branch is 'E' then @bsk.body.velocity.x = 0       ;  @bsk.body.velocity.y = @pm.vx
         else if @bsk.branch is 'S' then @bsk.body.velocity.x = -@pm.vx ;  @bsk.body.velocity.y = 0
-        else if @bsk.branch is 'W' then @bsk.body.velocity.x = 0       ;  @bsk.body.velocity.y = @pm.vx
+        else if @bsk.branch is 'W' then @bsk.body.velocity.x = 0       ;  @bsk.body.velocity.y = -@pm.vx
 
     #.----------.----------
     # move the basket around the rope
@@ -44,12 +44,12 @@ class Phacker.Game.OneBasket
     move: () ->
         if @bsk.branch is 'N'
             if not @bsk.down and @gm.math.fuzzyEqual(@bsk.x ,@pm.xrot1 , 4)  # rotation down
-                console.log @_fle_,': ', @bsk.x - @pm.xrot1
                 @bsk.down = true
-                @twn_up_down 160
+                @twn_up_down 160 # tween down
+
             else if @bsk.down and @gm.math.fuzzyEqual(@bsk.x ,@pm.xrot2 , 4)   # rotation down
                 @bsk.down = false
-                @twn_up_down 0
+                @twn_up_down 0  # tween up
 
             if @bsk.x > @Pm.bsks.x2
                 @bsk.body.velocity.x = 0

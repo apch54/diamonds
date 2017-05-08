@@ -86,8 +86,6 @@
       }, 2000);
     };
 
-    Socle.prototype.set_xy = function(n) {};
-
     Socle.prototype.mk_tween = function(spt, lst, t) {
       var tw;
       tw = this.gm.add.tween(spt);
@@ -141,14 +139,13 @@
         return this.bsk.body.velocity.y = 0;
       } else if (this.bsk.branch === 'W') {
         this.bsk.body.velocity.x = 0;
-        return this.bsk.body.velocity.y = this.pm.vx;
+        return this.bsk.body.velocity.y = -this.pm.vx;
       }
     };
 
     OneBasket.prototype.move = function() {
       if (this.bsk.branch === 'N') {
         if (!this.bsk.down && this.gm.math.fuzzyEqual(this.bsk.x, this.pm.xrot1, 4)) {
-          console.log(this._fle_, ': ', this.bsk.x - this.pm.xrot1);
           this.bsk.down = true;
           this.twn_up_down(160);
         } else if (this.bsk.down && this.gm.math.fuzzyEqual(this.bsk.x, this.pm.xrot2, 4)) {
@@ -207,19 +204,45 @@
         x3: this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2,
         y3: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
         x4: this.Pm.rop.x0 - this.Pm.rop.w / 2 + 2,
-        y4: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2
+        y4: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
+        n: 6
       };
       this.bska = [];
       this.init();
     }
 
     Baskets.prototype.init = function() {
-      var bkO;
-      return this.bska.push(bkO = new Phacker.Game.OneBasket(this.gm, {
-        x: this.pm.x1,
-        y: this.pm.y1,
-        branch: 'N'
-      }));
+      var bkO, xy;
+      xy = this.set_xy(5);
+      return this.bska.push(bkO = new Phacker.Game.OneBasket(this.gm, xy));
+    };
+
+    Baskets.prototype.set_xy = function(num) {
+      var b, li, xx, yy;
+      li = 2 * (this.Pm.rop.w + this.Pm.rop.h) * num / this.pm.n;
+      if (li < this.Pm.rop.w) {
+        xx = this.pm.x1 + li;
+        yy = this.pm.y1;
+        b = 'N';
+      } else if (li < this.Pm.rop.w + this.Pm.rop.h) {
+        xx = this.pm.x2;
+        yy = this.pm.y1 + li - this.Pm.rop.w;
+        b = 'E';
+      } else if (li < 2 * this.Pm.rop.w + this.Pm.rop.h) {
+        xx = this.pm.x2 - (li - this.Pm.rop.w - this.Pm.rop.h);
+        yy = this.pm.y3;
+        b = 'S';
+      } else if (li < 2 * (this.Pm.rop.w + this.Pm.rop.h)) {
+        xx = this.pm.x4;
+        yy = this.pm.y3 - (li - 2 * this.Pm.rop.w - this.Pm.rop.h);
+        b = 'W';
+      }
+      console.log(this._fle_, ': ', li, xx, yy, b);
+      return {
+        x: xx,
+        y: yy,
+        branch: b
+      };
     };
 
     Baskets.prototype.move = function() {
