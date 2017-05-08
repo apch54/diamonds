@@ -109,7 +109,7 @@
       this._fle_ = 'One bsk';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.bsk = {
-        xrot1: this.Pm.rop.x0 - this.Pm.rop.w / 4,
+        xrot1: this.Pm.rop.x0 - this.Pm.rop.w / 3,
         xrot2: this.Pm.rop.x0 + this.Pm.rop.w / 6,
         w: 42,
         h: 54,
@@ -212,13 +212,12 @@
     }
 
     Baskets.prototype.init = function() {
-      var bkO, i, ii, ref, results, xy;
-      results = [];
-      for (ii = i = 0, ref = this.pm.n; 0 <= ref ? i <= ref : i >= ref; ii = 0 <= ref ? ++i : --i) {
-        xy = this.set_xy(ii);
-        results.push(this.bska.push(bkO = new Phacker.Game.OneBasket(this.gm, xy)));
-      }
-      return results;
+      var bkO;
+      return this.bska.push(bkO = new Phacker.Game.OneBasket(this.gm, {
+        x: this.pm.x2,
+        y: this.pm.y2,
+        branch: 'E'
+      }));
     };
 
     Baskets.prototype.set_xy = function(num) {
@@ -250,7 +249,18 @@
     };
 
     Baskets.prototype.move = function() {
-      var b, i, len, ref, results;
+      var b, i, l, len, li, ref, results;
+      if ((l = this.bska.length) < this.pm.n) {
+        b = this.bska[l - 1].bsk;
+        li = 2 * (this.Pm.rop.w + this.Pm.rop.h) / this.pm.n;
+        if (this.gm.math.fuzzyEqual(b.y - this.pm.y2, li, 4)) {
+          this.bska.push(new Phacker.Game.OneBasket(this.gm, {
+            x: this.pm.x2,
+            y: this.pm.y2,
+            branch: 'E'
+          }));
+        }
+      }
       ref = this.bska;
       results = [];
       for (i = 0, len = ref.length; i < len; i++) {
@@ -263,6 +273,22 @@
     return Baskets;
 
   })();
+
+}).call(this);
+
+
+/* written by apch on 2017-05-07 */
+
+(function() {
+
+
+}).call(this);
+
+
+/* written by apch on 2017-05-08 */
+
+(function() {
+
 
 }).call(this);
 

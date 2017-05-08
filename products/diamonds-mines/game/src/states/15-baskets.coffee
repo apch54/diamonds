@@ -21,9 +21,7 @@ class Phacker.Game.Baskets
     # all baskets initialiszation
     #.----------.----------
     init: () ->
-        for ii in [0..@pm.n]
-            xy = @set_xy ii
-            @bska.push bkO = new Phacker.Game.OneBasket @gm, xy
+            @bska.push bkO = new Phacker.Game.OneBasket @gm, {x: @pm.x2, y:@pm.y2, branch:'E' }
 
     #.----------.----------
     # set x,y, branch basket at initialization
@@ -56,7 +54,17 @@ class Phacker.Game.Baskets
 
 
     #.----------.----------
-    # move all  baskets
+    #introduve all the baskets ant then move all  baskets
     #.----------.----------
-    move: () -> for b in @bska then b.move()
+    move: () ->
+        # first complete basket
+        if (l = @bska.length) < @pm.n
+            b = @bska[l-1].bsk
+            li = 2*(@Pm.rop.w + @Pm.rop.h)/@pm.n # space tween 2 baskets
+
+            if @gm.math.fuzzyEqual(b.y - @pm.y2 ,li, 4)  # an other basket
+                @bska.push  new Phacker.Game.OneBasket @gm, {x: @pm.x2, y:@pm.y2, branch:'E' }
+
+        # then move the whole baskets
+        for b in @bska then b.move()
 

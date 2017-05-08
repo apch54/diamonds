@@ -7,7 +7,7 @@ class Phacker.Game.OneBasket
         @Pm = @gm.parameters    # globals parameters
         @pm = @Pm.bsk =         # one basket parameters
             # @bsk.x when basket must rotate up or down
-            xrot1: @Pm.rop.x0 - @Pm.rop.w/4
+            xrot1: @Pm.rop.x0 - @Pm.rop.w/3  # on north rope branch rotation x
             xrot2: @Pm.rop.x0 + @Pm.rop.w/6
 
             w: 42
