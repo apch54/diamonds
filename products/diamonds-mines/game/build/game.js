@@ -86,6 +86,8 @@
       }, 2000);
     };
 
+    Socle.prototype.set_xy = function(n) {};
+
     Socle.prototype.mk_tween = function(spt, lst, t) {
       var tw;
       tw = this.gm.add.tween(spt);
@@ -109,6 +111,8 @@
       this._fle_ = 'One bsk';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.bsk = {
+        xrot1: this.Pm.rop.x0 - this.Pm.rop.w / 4,
+        xrot2: this.Pm.rop.x0 + this.Pm.rop.w / 6,
         w: 42,
         h: 54,
         vx: 100,
@@ -125,6 +129,7 @@
       this.bsk.anchor.setTo(0.5, 0.5);
       this.bsk.branch = lstP.branch;
       this.bsk.color = col;
+      this.bsk.down = false;
       if (this.bsk.branch === 'N') {
         this.bsk.body.velocity.x = this.pm.vx;
         return this.bsk.body.velocity.y = 0;
@@ -134,17 +139,27 @@
       } else if (this.bsk.branch === 'S') {
         this.bsk.body.velocity.x = -this.pm.vx;
         return this.bsk.body.velocity.y = 0;
-      } else if (this.bsk.branch === 'O') {
+      } else if (this.bsk.branch === 'W') {
         this.bsk.body.velocity.x = 0;
         return this.bsk.body.velocity.y = this.pm.vx;
       }
     };
 
     OneBasket.prototype.move = function() {
-      if (this.bsk.branch === 'N' && this.bsk.x > this.Pm.bsks.x2) {
-        this.bsk.body.velocity.x = 0;
-        this.bsk.body.velocity.y = this.pm.vx;
-        return this.bsk.branch = 'E';
+      if (this.bsk.branch === 'N') {
+        if (!this.bsk.down && this.gm.math.fuzzyEqual(this.bsk.x, this.pm.xrot1, 4)) {
+          console.log(this._fle_, ': ', this.bsk.x - this.pm.xrot1);
+          this.bsk.down = true;
+          this.twn_up_down(160);
+        } else if (this.bsk.down && this.gm.math.fuzzyEqual(this.bsk.x, this.pm.xrot2, 4)) {
+          this.bsk.down = false;
+          this.twn_up_down(0);
+        }
+        if (this.bsk.x > this.Pm.bsks.x2) {
+          this.bsk.body.velocity.x = 0;
+          this.bsk.body.velocity.y = this.pm.vx;
+          return this.bsk.branch = 'E';
+        }
       } else if (this.bsk.branch === 'E' && this.bsk.y > this.Pm.bsks.y3) {
         this.bsk.body.velocity.x = -this.pm.vx;
         this.bsk.body.velocity.y = 0;
@@ -152,12 +167,21 @@
       } else if (this.bsk.branch === 'S' && this.bsk.x < this.Pm.bsks.x4) {
         this.bsk.body.velocity.x = 0;
         this.bsk.body.velocity.y = -this.pm.vx;
-        return this.bsk.branch = 'O';
-      } else if (this.bsk.branch === 'O' && this.bsk.y < this.Pm.bsks.y1) {
+        return this.bsk.branch = 'W';
+      } else if (this.bsk.branch === 'W' && this.bsk.y < this.Pm.bsks.y1) {
         this.bsk.body.velocity.x = this.pm.vx;
         this.bsk.body.velocity.y = 0;
         return this.bsk.branch = 'N';
       }
+    };
+
+    OneBasket.prototype.twn_up_down = function(a) {
+      var t, tw;
+      t = 500;
+      tw = this.gm.add.tween(this.bsk);
+      return tw.to({
+        angle: a
+      }, t, Phaser.Easing.Linear.None, true, 0, 0);
     };
 
     return OneBasket;

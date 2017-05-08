@@ -53,7 +53,6 @@ class Phacker.Game.Socle
         @pm.whl.x4 = @pm.whl.x1
         @pm.whl.y4 = @pm.whl.y3
 
-
         @draw_bg() # draw the whole background
 
     #.----------.----------
@@ -95,9 +94,16 @@ class Phacker.Game.Socle
         @whl4.anchor.setTo(0.5, 0.5) # anchor in the middle of top
         @mk_tween @whl4, {  angle: 360  }, 2000
 
+    #.----------.----------
+    # set x,y basket at initialization
+    # n is the number
+    #.----------.----------
+    set_xy: (n) ->
+
     #__________.__________
     # make twen for object with lst variation paramaters an during t
     # __________.__________
+
     mk_tween:(spt, lst , t) ->
         tw = @gm.add.tween spt
         tw.to( lst, t, Phaser.Easing.Linear.None, true, 0, -1 )
