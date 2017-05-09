@@ -15,7 +15,7 @@ class Phacker.Game.Baskets
 
         @bska =[] #Array of baskets object
 
-        @init() # init gpoup : emy
+        #@init() # init gpoup : emy
 
     #.----------.----------
     # all baskets initialiszation

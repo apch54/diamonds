@@ -208,7 +208,6 @@
         n: 6
       };
       this.bska = [];
-      this.init();
     }
 
     Baskets.prototype.init = function() {
@@ -285,10 +284,39 @@
 }).call(this);
 
 
-/* written by apch on 2017-05-08 */
+/*  written by apch  on 2017-05-09 */
 
 (function() {
+  Phacker.Game.Button = (function() {
+    function Button(gm, bskO) {
+      this.gm = gm;
+      this.bskO = bskO;
+      this._fle_ = 'Button';
+      console.log(this._fle_, ': ', this.gm.parameters);
+      this.pm = this.gm.parameters.btn = {
+        x: this.gm.parameters.mec.x0 - 35,
+        y: this.gm.parameters.mec.y0 + 180,
+        w: 72,
+        h: 72,
+        start: false
+      };
+      this.draw_button();
+    }
 
+    Button.prototype.draw_button = function() {
+      return this.btn = this.gm.add.button(this.pm.x, this.pm.y, 'start_btn', this.on_tap, this, 1, 1, 0);
+    };
+
+    Button.prototype.on_tap = function() {
+      this.pm.start = true;
+      this.bskO.init();
+      this.btn.y = 800;
+      return this.btn.alpha = 0;
+    };
+
+    return Button;
+
+  })();
 
 }).call(this);
 
@@ -308,7 +336,9 @@
 
     YourGame.prototype.update = function() {
       YourGame.__super__.update.call(this);
-      return this.basketsO.move();
+      if (this.buttonO.pm.start) {
+        return this.basketsO.move();
+      }
     };
 
     YourGame.prototype.resetPlayer = function() {
@@ -318,7 +348,8 @@
     YourGame.prototype.create = function() {
       YourGame.__super__.create.call(this);
       this.soleO = new Phacker.Game.Socle(this.game);
-      return this.basketsO = new Phacker.Game.Baskets(this.game);
+      this.basketsO = new Phacker.Game.Baskets(this.game);
+      return this.buttonO = new Phacker.Game.Button(this.game, this.basketsO);
     };
 
 

@@ -4,7 +4,7 @@ class @YourGame extends Phacker.GameState
 
     update: ->
         super() #Required
-        @basketsO.move()
+        @basketsO.move() if @buttonO.pm.start
 
     resetPlayer: ->
         console.log "Reset the player"
@@ -14,6 +14,7 @@ class @YourGame extends Phacker.GameState
         @soleO = new Phacker.Game.Socle @game
         #@one_bskO = new Phacker.Game.OneBasket @game
         @basketsO = new Phacker.Game.Baskets @game
+        @buttonO = new Phacker.Game.Button @game, @basketsO
 
     ### LOGIC OF YOUR GAME
     # Examples buttons actions
