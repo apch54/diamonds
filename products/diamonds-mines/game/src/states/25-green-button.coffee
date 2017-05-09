@@ -25,6 +25,6 @@ class Phacker.Game.Button
     #.----------.----------
     on_tap: () ->
         @pm.start = true
-        @bskO.crt_bsk()
+        @bskO.mk_bsk()
         @btn.y = 800
         @btn.alpha = 0

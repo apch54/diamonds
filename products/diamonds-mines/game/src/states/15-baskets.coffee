@@ -16,14 +16,17 @@ class Phacker.Game.Baskets
         @bska =[]                                   # Array of baskets object
 
         @bbO = new Phacker.Game.One_basket_body @gm # one basket body object
-        @bbg = @gm.add.physicsGroup()               # basket body group
-        @bbg.enableBody = true
+        @bsk_bdy_grp = @gm.add.physicsGroup()       # basket body group
+        @bsk_bdy_grp.enableBody = true
 
     #.----------.----------
     # create a basket
     #.----------.----------
-    crt_bsk: () ->
+    mk_bsk: () ->
             @bska.push bkO = new Phacker.Game.OneBasket @gm, {x: @pm.x2, y:@pm.y2, branch:'E' }
+            #create real_body
+            bkO.real_body = @bbO.mk_body(@bsk_bdy_grp, bkO)
+            #console.log @_fle_,': ',@bsk_bdy_grp
 
     #.----------.----------
     #introduve all the baskets ant then move all  baskets
@@ -35,8 +38,18 @@ class Phacker.Game.Baskets
             li = 2*(@Pm.rop.w + @Pm.rop.h)/@pm.n # space tween 2 baskets
 
             if @gm.math.fuzzyEqual(b.y - @pm.y2 ,li, 4)  # an other basket
-                @crt_bsk() # create a basket
+                @mk_bsk() # create a basket
+                #console.log @_fle_,': ',@bska
 
         # then move the whole baskets
-        for b in @bska then b.move()
+        for b in @bska
+            b.move()
 
+            b.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 6
+            b.real_body.lft.y = b.bsk.y
+
+            b.real_body.rgt.x = b.bsk.x + b.bsk.body.width/2 - 6
+            b.real_body.rgt.y = b.bsk.y
+
+            b.real_body.btm.x = b.bsk.x + 1
+            b.real_body.btm.y = b.bsk.y + b.bsk.body.height/2 - 3

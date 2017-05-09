@@ -71,6 +71,7 @@ class Phacker.Game.OneBasket
             @bsk.body.velocity.y = 0
             @bsk.branch = 'N'
 
+
     #.----------.----------
     # tween the basket for a rotation down(angle, 160 ou up ( angle :0)
     #.----------.----------

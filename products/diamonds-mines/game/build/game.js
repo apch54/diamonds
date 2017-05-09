@@ -209,17 +209,18 @@
       };
       this.bska = [];
       this.bbO = new Phacker.Game.One_basket_body(this.gm);
-      this.bbg = this.gm.add.physicsGroup();
-      this.bbg.enableBody = true;
+      this.bsk_bdy_grp = this.gm.add.physicsGroup();
+      this.bsk_bdy_grp.enableBody = true;
     }
 
-    Baskets.prototype.crt_bsk = function() {
+    Baskets.prototype.mk_bsk = function() {
       var bkO;
-      return this.bska.push(bkO = new Phacker.Game.OneBasket(this.gm, {
+      this.bska.push(bkO = new Phacker.Game.OneBasket(this.gm, {
         x: this.pm.x2,
         y: this.pm.y2,
         branch: 'E'
       }));
+      return bkO.real_body = this.bbO.mk_body(this.bsk_bdy_grp, bkO);
     };
 
     Baskets.prototype.move = function() {
@@ -228,14 +229,20 @@
         b = this.bska[l - 1].bsk;
         li = 2 * (this.Pm.rop.w + this.Pm.rop.h) / this.pm.n;
         if (this.gm.math.fuzzyEqual(b.y - this.pm.y2, li, 4)) {
-          this.crt_bsk();
+          this.mk_bsk();
         }
       }
       ref = this.bska;
       results = [];
       for (i = 0, len = ref.length; i < len; i++) {
         b = ref[i];
-        results.push(b.move());
+        b.move();
+        b.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 6;
+        b.real_body.lft.y = b.bsk.y;
+        b.real_body.rgt.x = b.bsk.x + b.bsk.body.width / 2 - 6;
+        b.real_body.rgt.y = b.bsk.y;
+        b.real_body.btm.x = b.bsk.x + 1;
+        results.push(b.real_body.btm.y = b.bsk.y + b.bsk.body.height / 2 - 3);
       }
       return results;
     };
@@ -256,13 +263,40 @@
       this._fle_ = '1 bsk body';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.obb = {
-        x: 100
+        btm: 0
       };
-      this.mk_bdy();
     }
 
-    One_basket_body.prototype.mk_bdy = function() {
-      return console.log(this._fle_, ': ', this.pm);
+    One_basket_body.prototype.mk_body = function(bdy_grp, bkO) {
+      var h, w, x, y;
+      w = bkO.pm.w;
+      h = bkO.pm.h;
+      x = bkO.bsk.x;
+      y = bkO.bsk.y;
+      this.btm = this.mk_rect(bdy_grp, x + 1, y + bkO.pm.h / 2 - 3, w - 12, 2);
+      this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 6, y, 2, h);
+      this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 6, y, 2, h);
+      return {
+        lft: this.lft,
+        rgt: this.rgt,
+        btm: this.btm
+      };
+    };
+
+    One_basket_body.prototype.mk_rect = function(bdy_grp, x, y, w, h) {
+      var b, s;
+      b = this.gm.add.bitmapData(w, h);
+      b.ctx.beginPath();
+      b.ctx.rect(0, 0, w, h);
+      b.ctx.fillStyle = '#ff0000';
+      b.ctx.fill();
+      s = bdy_grp.create(x, y, b);
+      s.body.immovable = true;
+      s.anchor.setTo(0.5, 0.5);
+      return s;
+      return {
+        follow: function(spt) {}
+      };
     };
 
     return One_basket_body;
@@ -296,7 +330,7 @@
 
     Button.prototype.on_tap = function() {
       this.pm.start = true;
-      this.bskO.crt_bsk();
+      this.bskO.mk_bsk();
       this.btn.y = 800;
       return this.btn.alpha = 0;
     };
