@@ -10,9 +10,9 @@ class Phacker.Game.OneBasket
             xrot1: @Pm.rop.x0 - @Pm.rop.w/3  # on north rope branch rotation x
             xrot2: @Pm.rop.x0 + @Pm.rop.w/6
 
-            w: 42
-            h: 54
-            vx : 100
+            w:  42
+            h:  54
+            vx: 100
             names: ['blue_basket','green_basket','normal_basket','pink_basket','red_basket']
 
         @mk_bsk(@lstP ) # N stands for north

@@ -4,7 +4,7 @@ class Phacker.Game.Button
 
     constructor: (@gm, @bskO) ->
         @_fle_ = 'Button'
-        console.log @_fle_,': ', @gm.parameters
+
         @pm = @gm.parameters.btn =
             x:  @gm.parameters.mec.x0 - 35
             y:  @gm.parameters.mec.y0 + 180
@@ -25,6 +25,6 @@ class Phacker.Game.Button
     #.----------.----------
     on_tap: () ->
         @pm.start = true
-        @bskO.init()
+        @bskO.crt_bsk()
         @btn.y = 800
         @btn.alpha = 0

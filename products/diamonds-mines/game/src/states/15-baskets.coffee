@@ -13,45 +13,17 @@ class Phacker.Game.Baskets
             x4: @Pm.rop.x0 - @Pm.rop.w/2 + 2,         y4: @gm.parameters.rop.y0 + @Pm.rop.h - 2
             n: 6 # number of baskets
 
-        @bska =[] #Array of baskets object
+        @bska =[]                                   # Array of baskets object
 
-        #@init() # init gpoup : emy
+        @bbO = new Phacker.Game.One_basket_body @gm # one basket body object
+        @bbg = @gm.add.physicsGroup()               # basket body group
+        @bbg.enableBody = true
 
     #.----------.----------
-    # all baskets initialiszation
+    # create a basket
     #.----------.----------
-    init: () ->
+    crt_bsk: () ->
             @bska.push bkO = new Phacker.Game.OneBasket @gm, {x: @pm.x2, y:@pm.y2, branch:'E' }
-
-    #.----------.----------
-    # set x,y, branch basket at initialization
-    # n is the number of baskets
-    #.----------.----------
-    set_xy: (num) ->
-        li = 2*(@Pm.rop.w + @Pm.rop.h)*num/@pm.n
-
-        if li < @Pm.rop.w
-            xx = @pm.x1 + li
-            yy = @pm.y1
-            b = 'N'
-
-        else if li < @Pm.rop.w + @Pm.rop.h
-            xx = @pm.x2
-            yy = @pm.y1 + li - @Pm.rop.w
-            b = 'E'
-
-        else if li < 2*@Pm.rop.w + @Pm.rop.h
-            xx = @pm.x2 - ( li - @Pm.rop.w - @Pm.rop.h)
-            yy = @pm.y3
-            b = 'S'
-
-        else if li < 2*(@Pm.rop.w + @Pm.rop.h)
-            xx = @pm.x4
-            yy = @pm.y3 - ( li - 2*@Pm.rop.w - @Pm.rop.h)
-            b = 'W'
-        console.log @_fle_,': ',li,xx, yy, b
-        return {x: xx, y: yy, branch: b}
-
 
     #.----------.----------
     #introduve all the baskets ant then move all  baskets
@@ -63,7 +35,7 @@ class Phacker.Game.Baskets
             li = 2*(@Pm.rop.w + @Pm.rop.h)/@pm.n # space tween 2 baskets
 
             if @gm.math.fuzzyEqual(b.y - @pm.y2 ,li, 4)  # an other basket
-                @bska.push  new Phacker.Game.OneBasket @gm, {x: @pm.x2, y:@pm.y2, branch:'E' }
+                @crt_bsk() # create a basket
 
         # then move the whole baskets
         for b in @bska then b.move()

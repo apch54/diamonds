@@ -208,9 +208,12 @@
         n: 6
       };
       this.bska = [];
+      this.bbO = new Phacker.Game.One_basket_body(this.gm);
+      this.bbg = this.gm.add.physicsGroup();
+      this.bbg.enableBody = true;
     }
 
-    Baskets.prototype.init = function() {
+    Baskets.prototype.crt_bsk = function() {
       var bkO;
       return this.bska.push(bkO = new Phacker.Game.OneBasket(this.gm, {
         x: this.pm.x2,
@@ -219,45 +222,13 @@
       }));
     };
 
-    Baskets.prototype.set_xy = function(num) {
-      var b, li, xx, yy;
-      li = 2 * (this.Pm.rop.w + this.Pm.rop.h) * num / this.pm.n;
-      if (li < this.Pm.rop.w) {
-        xx = this.pm.x1 + li;
-        yy = this.pm.y1;
-        b = 'N';
-      } else if (li < this.Pm.rop.w + this.Pm.rop.h) {
-        xx = this.pm.x2;
-        yy = this.pm.y1 + li - this.Pm.rop.w;
-        b = 'E';
-      } else if (li < 2 * this.Pm.rop.w + this.Pm.rop.h) {
-        xx = this.pm.x2 - (li - this.Pm.rop.w - this.Pm.rop.h);
-        yy = this.pm.y3;
-        b = 'S';
-      } else if (li < 2 * (this.Pm.rop.w + this.Pm.rop.h)) {
-        xx = this.pm.x4;
-        yy = this.pm.y3 - (li - 2 * this.Pm.rop.w - this.Pm.rop.h);
-        b = 'W';
-      }
-      console.log(this._fle_, ': ', li, xx, yy, b);
-      return {
-        x: xx,
-        y: yy,
-        branch: b
-      };
-    };
-
     Baskets.prototype.move = function() {
       var b, i, l, len, li, ref, results;
       if ((l = this.bska.length) < this.pm.n) {
         b = this.bska[l - 1].bsk;
         li = 2 * (this.Pm.rop.w + this.Pm.rop.h) / this.pm.n;
         if (this.gm.math.fuzzyEqual(b.y - this.pm.y2, li, 4)) {
-          this.bska.push(new Phacker.Game.OneBasket(this.gm, {
-            x: this.pm.x2,
-            y: this.pm.y2,
-            branch: 'E'
-          }));
+          this.crt_bsk();
         }
       }
       ref = this.bska;
@@ -276,10 +247,27 @@
 }).call(this);
 
 
-/* written by apch on 2017-05-07 */
+/*  written by apch  on 2017-05-010 */
 
 (function() {
+  Phacker.Game.One_basket_body = (function() {
+    function One_basket_body(gm) {
+      this.gm = gm;
+      this._fle_ = '1 bsk body';
+      this.Pm = this.gm.parameters;
+      this.pm = this.Pm.obb = {
+        x: 100
+      };
+      this.mk_bdy();
+    }
 
+    One_basket_body.prototype.mk_bdy = function() {
+      return console.log(this._fle_, ': ', this.pm);
+    };
+
+    return One_basket_body;
+
+  })();
 
 }).call(this);
 
@@ -292,7 +280,6 @@
       this.gm = gm;
       this.bskO = bskO;
       this._fle_ = 'Button';
-      console.log(this._fle_, ': ', this.gm.parameters);
       this.pm = this.gm.parameters.btn = {
         x: this.gm.parameters.mec.x0 - 35,
         y: this.gm.parameters.mec.y0 + 180,
@@ -309,7 +296,7 @@
 
     Button.prototype.on_tap = function() {
       this.pm.start = true;
-      this.bskO.init();
+      this.bskO.crt_bsk();
       this.btn.y = 800;
       return this.btn.alpha = 0;
     };
