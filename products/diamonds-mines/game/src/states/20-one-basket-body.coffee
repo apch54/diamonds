@@ -19,8 +19,11 @@ class Phacker.Game.One_basket_body
         x= bkO.bsk.x
         y= bkO.bsk.y
         @btm = @mk_rect bdy_grp,  x + 1, y + bkO.pm.h/2 - 3, w - 12 ,4
+        @btm.typ = 'btm'
         @lft = @mk_rect bdy_grp,  x - bkO.pm.w/2 + 10, y, 4 , h
+        @lft.typ = 'lft'
         @rgt = @mk_rect bdy_grp,  x + bkO.pm.w/2 - 6, y, 4, h
+        @rgt.typ = 'rgt'
 
         return {lft: @lft,rgt: @rgt, btm: @btm}
 

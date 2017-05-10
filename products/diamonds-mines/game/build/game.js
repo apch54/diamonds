@@ -274,8 +274,11 @@
       x = bkO.bsk.x;
       y = bkO.bsk.y;
       this.btm = this.mk_rect(bdy_grp, x + 1, y + bkO.pm.h / 2 - 3, w - 12, 4);
+      this.btm.typ = 'btm';
       this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 10, y, 4, h);
+      this.lft.typ = 'lft';
       this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 6, y, 4, h);
+      this.rgt.typ = 'rgt';
       return {
         lft: this.lft,
         rgt: this.rgt,
@@ -324,7 +327,7 @@
     Diamonds.prototype.one_dmds_grp = function(x, y, bll) {
       var dmd;
       dmd = this.dmds_grp.create(x, y, bll);
-      dmd.body.bounce.y = 0;
+      dmd.body.bounce.y = 0.05;
       return dmd.body.bounce.x = .4;
     };
 
@@ -340,6 +343,12 @@
     };
 
     Diamonds.prototype.when_collide_bsk = function(dmd, bsk) {
+      console.log(this._fle_, ': ', bsk.typ);
+      if (bsk.typ === 'lft') {
+        dmd.body.velocity.x = 30;
+      } else if (bsk.typ === 'rgt') {
+        dmd.body.velocity.x = -30;
+      }
       return true;
     };
 
@@ -347,16 +356,16 @@
       if (this.gm.physics.arcade.collide(this.dmds_grp, this.dmds_grp, function() {
         return true;
       }, function(d1, d2) {
-        return this.when_collide_bsk(d1, d2);
+        return this.when_collide_himself(d1, d2);
       }, this)) {
         return this.pm.mes_bsk;
       }
       return 'no';
     };
 
-    Diamonds.prototype.when_collide_bsk = function(d1, d2) {
-      d1.body.velocity.x = 20;
-      d2.body.velocity.x = -20;
+    Diamonds.prototype.when_collide_himself = function(d1, d2) {
+      d1.body.velocity.x = 30;
+      d2.body.velocity.x = -30;
       return true;
     };
 
@@ -396,11 +405,8 @@
       this.btn.y = 800;
       this.btn.alpha = 0;
       this.dmd.getAt(0).body.gravity.y = 250;
-      this.dmd.getAt(0).body.velocity.x = 100;
       this.dmd.getAt(1).body.gravity.y = 250;
-      this.dmd.getAt(1).body.velocity.x = 200;
-      this.dmd.getAt(2).body.gravity.y = 240;
-      return this.dmd.getAt(2).body.velocity.x = 150;
+      return this.dmd.getAt(2).body.gravity.y = 240;
     };
 
     return Button;

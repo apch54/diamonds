@@ -15,19 +15,14 @@ class Phacker.Game.Diamonds
         @one_dmds_grp(549,60, 'pink_ball')
         @one_dmds_grp(549,70, 'green_ball')
 
-
     #.----------.----------
     # create a basket
     #.----------.----------
     one_dmds_grp: (x, y, bll) ->
        dmd = @dmds_grp.create x, y, bll
        #@gm.physics.arcade.enable dmd,Phaser.Physics.ARCADE
-       dmd.body.bounce.y = 0
+       dmd.body.bounce.y = 0.05
        dmd.body.bounce.x = .4
-       #dmd.body.immovable = true
-       #dmd.body.moves = false
-       #dmd.body.gravity.y  = 0
-       #dmd.body.velocity.x = 0
 
 
 
@@ -46,7 +41,10 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_bsk:(dmd, bsk) ->
-        #console.log @_fle_,': ','has collided'
+        console.log @_fle_,': ',bsk.typ
+        if bsk.typ is 'lft' then dmd.body.velocity.x = 30
+        else if bsk.typ is 'rgt' then dmd.body.velocity.x = -30;
+
         return true  # return it has collided
 
 
@@ -57,16 +55,16 @@ class Phacker.Game.Diamonds
         if @gm.physics.arcade.collide(
             @dmds_grp, @dmds_grp # twice diamonds group
             -> return true
-            (d1, d2)-> @when_collide_bsk(d1, d2)
+            (d1, d2)-> @when_collide_himself(d1, d2)
             @
         ) then return @pm.mes_bsk # set message
 
         return 'no'
 
     #.----------.----------
-    when_collide_bsk:(d1, d2) ->
-        d1.body.velocity.x = 20
-        d2.body.velocity.x = -20
+    when_collide_himself:(d1, d2) ->
+        d1.body.velocity.x = 30
+        d2.body.velocity.x = -30
         return true  # return it has collided
 
 
