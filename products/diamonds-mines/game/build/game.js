@@ -274,7 +274,7 @@
       x = bkO.bsk.x;
       y = bkO.bsk.y;
       this.btm = this.mk_rect(bdy_grp, x + 1, y + bkO.pm.h / 2 - 3, w - 12, 4);
-      this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 6, y, 4, h);
+      this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 10, y, 4, h);
       this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 6, y, 4, h);
       return {
         lft: this.lft,
@@ -316,17 +316,16 @@
       };
       this.dmds_grp = this.gm.add.physicsGroup();
       this.dmds_grp.enableBody = true;
-      this.mk_dmds_grp();
+      this.one_dmds_grp(549, 50, 'blue_ball');
+      this.one_dmds_grp(549, 60, 'pink_ball');
+      this.one_dmds_grp(549, 70, 'green_ball');
     }
 
-    Diamonds.prototype.mk_dmds_grp = function() {
+    Diamonds.prototype.one_dmds_grp = function(x, y, bll) {
       var dmd;
-      console.log(this._fle_, ': ', 'in Diamonds');
-      dmd = this.dmds_grp.create(549, 50, 'blue_ball');
-      dmd.body.bounce.y = .1;
-      dmd.body.bounce.x = .5;
-      dmd.body.gravity.y = 0;
-      return dmd.body.velocity.x = 0;
+      dmd = this.dmds_grp.create(x, y, bll);
+      dmd.body.bounce.y = 0;
+      return dmd.body.bounce.x = .4;
     };
 
     Diamonds.prototype.collide_baskets = function(bsk) {
@@ -341,7 +340,23 @@
     };
 
     Diamonds.prototype.when_collide_bsk = function(dmd, bsk) {
-      console.log(this._fle_, ': ', 'has collided');
+      return true;
+    };
+
+    Diamonds.prototype.collide_himself = function() {
+      if (this.gm.physics.arcade.collide(this.dmds_grp, this.dmds_grp, function() {
+        return true;
+      }, function(d1, d2) {
+        return this.when_collide_bsk(d1, d2);
+      }, this)) {
+        return this.pm.mes_bsk;
+      }
+      return 'no';
+    };
+
+    Diamonds.prototype.when_collide_bsk = function(d1, d2) {
+      d1.body.velocity.x = 20;
+      d2.body.velocity.x = -20;
       return true;
     };
 
@@ -380,8 +395,12 @@
       this.bskO.mk_bsk();
       this.btn.y = 800;
       this.btn.alpha = 0;
-      this.dmd.getAt(0).body.gravity.y = 500;
-      return this.dmd.getAt(0).body.velocity.x = 100;
+      this.dmd.getAt(0).body.gravity.y = 250;
+      this.dmd.getAt(0).body.velocity.x = 100;
+      this.dmd.getAt(1).body.gravity.y = 250;
+      this.dmd.getAt(1).body.velocity.x = 200;
+      this.dmd.getAt(2).body.gravity.y = 240;
+      return this.dmd.getAt(2).body.velocity.x = 150;
     };
 
     return Button;
@@ -440,7 +459,8 @@
       if (this.buttonO.pm.start) {
         this.basketsO.move();
       }
-      return this.diamondsO.collide_baskets(this.basketsO.bsk_bdy_grp);
+      this.diamondsO.collide_baskets(this.bskts);
+      return this.diamondsO.collide_himself();
     };
 
     YourGame.prototype.resetPlayer = function() {
@@ -451,7 +471,9 @@
       YourGame.__super__.create.call(this);
       this.soleO = new Phacker.Game.Socle(this.game);
       this.basketsO = new Phacker.Game.Baskets(this.game);
+      this.bskts = this.basketsO.bsk_bdy_grp;
       this.diamondsO = new Phacker.Game.Diamonds(this.game);
+      this.dmds = this.diamondsO.dmds_grp;
       this.buttonO = new Phacker.Game.Button(this.game, this.basketsO, this.diamondsO.dmds_grp);
       return this.inputO = new Phacker.Game.Input(this.game);
     };

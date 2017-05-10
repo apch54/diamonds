@@ -24,7 +24,8 @@ class Phacker.Game.Baskets
     #.----------.----------
     mk_bsk: () ->
             @bska.push bkO = new Phacker.Game.OneBasket @gm, {x: @pm.x2, y:@pm.y2, branch:'E' }
-            #create real_body
+
+            #create real_body in the basket
             bkO.real_body = @bbO.mk_body(@bsk_bdy_grp, bkO)
             #console.log @_fle_,': ',@bsk_bdy_grp
 

@@ -11,19 +11,23 @@ class Phacker.Game.Diamonds
         @dmds_grp = @gm.add.physicsGroup()       # basket body group; real bodies
         @dmds_grp.enableBody = true
 
-        @mk_dmds_grp()
+        @one_dmds_grp(549,50, 'blue_ball')
+        @one_dmds_grp(549,60, 'pink_ball')
+        @one_dmds_grp(549,70, 'green_ball')
+
 
     #.----------.----------
     # create a basket
     #.----------.----------
-    mk_dmds_grp: () ->
-       console.log @_fle_,': ','in Diamonds'
-       dmd = @dmds_grp.create 549, 50, 'blue_ball'
+    one_dmds_grp: (x, y, bll) ->
+       dmd = @dmds_grp.create x, y, bll
        #@gm.physics.arcade.enable dmd,Phaser.Physics.ARCADE
-       dmd.body.bounce.y = .1
-       dmd.body.bounce.x = .5
-       dmd.body.gravity.y  = 0
-       dmd.body.velocity.x = 0
+       dmd.body.bounce.y = 0
+       dmd.body.bounce.x = .4
+       #dmd.body.immovable = true
+       #dmd.body.moves = false
+       #dmd.body.gravity.y  = 0
+       #dmd.body.velocity.x = 0
 
 
 
@@ -42,7 +46,28 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_bsk:(dmd, bsk) ->
-        console.log @_fle_,': ','has collided'
+        #console.log @_fle_,': ','has collided'
         return true  # return it has collided
+
+
+    #.----------.----------
+    # collide with Himself : diamonds against diamonds
+    #.----------.----------
+    collide_himself: () ->
+        if @gm.physics.arcade.collide(
+            @dmds_grp, @dmds_grp # twice diamonds group
+            -> return true
+            (d1, d2)-> @when_collide_bsk(d1, d2)
+            @
+        ) then return @pm.mes_bsk # set message
+
+        return 'no'
+
+    #.----------.----------
+    when_collide_bsk:(d1, d2) ->
+        d1.body.velocity.x = 20
+        d2.body.velocity.x = -20
+        return true  # return it has collided
+
 
 
