@@ -16,7 +16,7 @@ class Phacker.Game.Baskets
         @bska =[]                                   # Array of baskets object
 
         @bbO = new Phacker.Game.One_basket_body @gm # one basket body object
-        @bsk_bdy_grp = @gm.add.physicsGroup()       # basket body group
+        @bsk_bdy_grp = @gm.add.physicsGroup()       # basket body group; real bodies
         @bsk_bdy_grp.enableBody = true
 
     #.----------.----------

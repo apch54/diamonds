@@ -6,7 +6,6 @@ class Phacker.Game.One_basket_body
         @_fle_ = '1 bsk body'
 
         @Pm = @gm.parameters
-
         @pm = @Pm.obb = # stands for one basket object
             btm: 0
 
@@ -19,9 +18,9 @@ class Phacker.Game.One_basket_body
         h = bkO.pm.h
         x= bkO.bsk.x
         y= bkO.bsk.y
-        @btm = @mk_rect bdy_grp,  x + 1, y + bkO.pm.h/2 - 3, w - 12 , 2
-        @lft = @mk_rect bdy_grp,  x - bkO.pm.w/2 + 6, y, 2 , h
-        @rgt = @mk_rect bdy_grp,  x + bkO.pm.w/2 - 6, y, 2 , h
+        @btm = @mk_rect bdy_grp,  x + 1, y + bkO.pm.h/2 - 3, w - 12 ,4
+        @lft = @mk_rect bdy_grp,  x - bkO.pm.w/2 + 6, y, 4 , h
+        @rgt = @mk_rect bdy_grp,  x + bkO.pm.w/2 - 6, y, 4, h
 
         return {lft: @lft,rgt: @rgt, btm: @btm}
 
@@ -43,12 +42,11 @@ class Phacker.Game.One_basket_body
         #add sprite in game
         s = bdy_grp.create x, y, b
         s.body.immovable = true
+        s.body.moves = false # require
+        s.alpha = 1
         #s = @gm.add.sprite x, y, b
         s.anchor.setTo(0.5, 0.5)
         return s
 
-        #.----------.----------
-        # make body basket follwing its sprite
-        #.----------.----------
-        follow: (spt) ->
+
 

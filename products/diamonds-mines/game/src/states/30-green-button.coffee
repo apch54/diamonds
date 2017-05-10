@@ -2,7 +2,7 @@
 
 class Phacker.Game.Button
 
-    constructor: (@gm, @bskO) ->
+    constructor: (@gm, @bskO, @dmd) ->
         @_fle_ = 'Button'
 
         @pm = @gm.parameters.btn =
@@ -28,3 +28,7 @@ class Phacker.Game.Button
         @bskO.mk_bsk()
         @btn.y = 800
         @btn.alpha = 0
+
+        @dmd.getAt(0).body.gravity.y = 500
+        @dmd.getAt(0).body.velocity.x = 100
+

@@ -273,9 +273,9 @@
       h = bkO.pm.h;
       x = bkO.bsk.x;
       y = bkO.bsk.y;
-      this.btm = this.mk_rect(bdy_grp, x + 1, y + bkO.pm.h / 2 - 3, w - 12, 2);
-      this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 6, y, 2, h);
-      this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 6, y, 2, h);
+      this.btm = this.mk_rect(bdy_grp, x + 1, y + bkO.pm.h / 2 - 3, w - 12, 4);
+      this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 6, y, 4, h);
+      this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 6, y, 4, h);
       return {
         lft: this.lft,
         rgt: this.rgt,
@@ -292,14 +292,60 @@
       b.ctx.fill();
       s = bdy_grp.create(x, y, b);
       s.body.immovable = true;
+      s.body.moves = false;
+      s.alpha = 1;
       s.anchor.setTo(0.5, 0.5);
       return s;
-      return {
-        follow: function(spt) {}
-      };
     };
 
     return One_basket_body;
+
+  })();
+
+}).call(this);
+
+(function() {
+  Phacker.Game.Diamonds = (function() {
+    function Diamonds(gm) {
+      this.gm = gm;
+      this._fle_ = 'Diamonds';
+      this.Pm = this.gm.parameters;
+      this.pm = this.Pm.dmds = {
+        n: 100,
+        msg_bsk: 'not yet'
+      };
+      this.dmds_grp = this.gm.add.physicsGroup();
+      this.dmds_grp.enableBody = true;
+      this.mk_dmds_grp();
+    }
+
+    Diamonds.prototype.mk_dmds_grp = function() {
+      var dmd;
+      console.log(this._fle_, ': ', 'in Diamonds');
+      dmd = this.dmds_grp.create(549, 50, 'blue_ball');
+      dmd.body.bounce.y = .1;
+      dmd.body.bounce.x = .5;
+      dmd.body.gravity.y = 0;
+      return dmd.body.velocity.x = 0;
+    };
+
+    Diamonds.prototype.collide_baskets = function(bsk) {
+      if (this.gm.physics.arcade.collide(this.dmds_grp, bsk, function() {
+        return true;
+      }, function(dmd, bsk) {
+        return this.when_collide_bsk(dmd, bsk);
+      }, this)) {
+        return this.pm.mes_bsk;
+      }
+      return 'no';
+    };
+
+    Diamonds.prototype.when_collide_bsk = function(dmd, bsk) {
+      console.log(this._fle_, ': ', 'has collided');
+      return true;
+    };
+
+    return Diamonds;
 
   })();
 
@@ -310,9 +356,10 @@
 
 (function() {
   Phacker.Game.Button = (function() {
-    function Button(gm, bskO) {
+    function Button(gm, bskO, dmd) {
       this.gm = gm;
       this.bskO = bskO;
+      this.dmd = dmd;
       this._fle_ = 'Button';
       this.pm = this.gm.parameters.btn = {
         x: this.gm.parameters.mec.x0 - 35,
@@ -332,10 +379,43 @@
       this.pm.start = true;
       this.bskO.mk_bsk();
       this.btn.y = 800;
-      return this.btn.alpha = 0;
+      this.btn.alpha = 0;
+      this.dmd.getAt(0).body.gravity.y = 500;
+      return this.dmd.getAt(0).body.velocity.x = 100;
     };
 
     return Button;
+
+  })();
+
+}).call(this);
+
+(function() {
+  Phacker.Game.Input = (function() {
+    function Input(gm) {
+      this.gm = gm;
+      this._fle_ = 'Input';
+      this.Pm = this.gm.parameters;
+      this.Pm.mouse_down = false;
+      this.gm.input.onDown.add(this.on_mouse_down, this);
+      this.gm.input.onUp.add(this.on_mouse_up, this);
+    }
+
+    Input.prototype.on_mouse_down = function() {
+      if (!this.Pm.btn.start) {
+        return;
+      }
+      return this.Pm.mouse_down = true;
+    };
+
+    Input.prototype.on_mouse_up = function() {
+      if (!this.Pm.btn.start) {
+        return;
+      }
+      return this.Pm.mouse_down = false;
+    };
+
+    return Input;
 
   })();
 
@@ -358,8 +438,9 @@
     YourGame.prototype.update = function() {
       YourGame.__super__.update.call(this);
       if (this.buttonO.pm.start) {
-        return this.basketsO.move();
+        this.basketsO.move();
       }
+      return this.diamondsO.collide_baskets(this.basketsO.bsk_bdy_grp);
     };
 
     YourGame.prototype.resetPlayer = function() {
@@ -370,7 +451,9 @@
       YourGame.__super__.create.call(this);
       this.soleO = new Phacker.Game.Socle(this.game);
       this.basketsO = new Phacker.Game.Baskets(this.game);
-      return this.buttonO = new Phacker.Game.Button(this.game, this.basketsO);
+      this.diamondsO = new Phacker.Game.Diamonds(this.game);
+      this.buttonO = new Phacker.Game.Button(this.game, this.basketsO, this.diamondsO.dmds_grp);
+      return this.inputO = new Phacker.Game.Input(this.game);
     };
 
 
