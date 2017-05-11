@@ -149,9 +149,13 @@
         if (!this.bsk.down && this.gm.math.fuzzyEqual(this.bsk.x, this.pm.xrot1, 4)) {
           this.bsk.down = true;
           this.twn_up_down(160);
+          this.gm.time.events.add(Phaser.Timer.SECOND * 0.35, function() {
+            return this.bsk.real_body.btm.body.enable = false;
+          }, this);
         } else if (this.bsk.down && this.gm.math.fuzzyEqual(this.bsk.x, this.pm.xrot2, 4)) {
           this.bsk.down = false;
           this.twn_up_down(0);
+          this.bsk.real_body.btm.body.enable = true;
         }
         if (this.bsk.x > this.Pm.bsks.x2) {
           this.bsk.body.velocity.x = 0;
@@ -221,7 +225,7 @@
         y: this.pm.y2,
         branch: 'E'
       }));
-      return bkO.real_body = this.bbO.mk_body(this.bsk_bdy_grp, bkO);
+      return bkO.bsk.real_body = this.bbO.mk_body(this.bsk_bdy_grp, bkO);
     };
 
     Baskets.prototype.move = function() {
@@ -238,12 +242,12 @@
       for (i = 0, len = ref.length; i < len; i++) {
         b = ref[i];
         b.move();
-        b.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 2;
-        b.real_body.lft.y = b.bsk.y;
-        b.real_body.rgt.x = b.bsk.x + b.bsk.body.width / 2 - 5;
-        b.real_body.rgt.y = b.bsk.y;
-        b.real_body.btm.x = b.bsk.x - 2;
-        results.push(b.real_body.btm.y = b.bsk.y + b.bsk.body.height / 2 + 3);
+        b.bsk.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 2;
+        b.bsk.real_body.lft.y = b.bsk.y;
+        b.bsk.real_body.rgt.x = b.bsk.x + b.bsk.body.width / 2 - 5;
+        b.bsk.real_body.rgt.y = b.bsk.y;
+        b.bsk.real_body.btm.x = b.bsk.x - 2;
+        results.push(b.bsk.real_body.btm.y = b.bsk.y + b.bsk.body.height / 2 + 3);
       }
       return results;
     };
@@ -340,8 +344,8 @@
       this.grp1.enableBody = true;
       this.init();
       d0 = this.dmd_transfert(0);
-      d0.x = 549;
-      d0.y = 50;
+      d0.x = 547;
+      d0.y = 5;
       d1 = this.dmd_transfert(4);
       d1.x = 549;
       d1.y = 60;

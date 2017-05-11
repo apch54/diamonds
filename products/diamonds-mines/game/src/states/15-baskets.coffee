@@ -25,8 +25,8 @@ class Phacker.Game.Baskets
     mk_bsk: () ->
             @bska.push bkO = new Phacker.Game.OneBasket @gm, {x: @pm.x2, y:@pm.y2, branch:'E' }
 
-            #create real_body in the basket
-            bkO.real_body = @bbO.mk_body(@bsk_bdy_grp, bkO)
+            #create bsk.real_body in the basket
+            bkO.bsk.real_body = @bbO.mk_body(@bsk_bdy_grp, bkO)
             #console.log @_fle_,': ',@bsk_bdy_grp
 
     #.----------.----------
@@ -44,13 +44,14 @@ class Phacker.Game.Baskets
 
         # then move the whole baskets
         for b in @bska
+            #console.log @_fle_,': ',b
             b.move()
 
-            b.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 2
-            b.real_body.lft.y = b.bsk.y
+            b.bsk.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 2
+            b.bsk.real_body.lft.y = b.bsk.y
 
-            b.real_body.rgt.x = b.bsk.x + b.bsk.body.width/2 - 5
-            b.real_body.rgt.y = b.bsk.y
+            b.bsk.real_body.rgt.x = b.bsk.x + b.bsk.body.width/2 - 5
+            b.bsk.real_body.rgt.y = b.bsk.y
 
-            b.real_body.btm.x = b.bsk.x - 2
-            b.real_body.btm.y = b.bsk.y + b.bsk.body.height/2 + 3
+            b.bsk.real_body.btm.x = b.bsk.x - 2
+            b.bsk.real_body.btm.y = b.bsk.y + b.bsk.body.height/2 + 3

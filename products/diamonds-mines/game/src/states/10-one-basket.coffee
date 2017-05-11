@@ -47,10 +47,16 @@ class Phacker.Game.OneBasket
             if not @bsk.down and @gm.math.fuzzyEqual(@bsk.x ,@pm.xrot1 , 4)  # rotation down
                 @bsk.down = true
                 @twn_up_down 160 # tween down
+                @gm.time.events.add( # open basket & diamond falling
+                    Phaser.Timer.SECOND * 0.35
+                    ()-> @bsk.real_body.btm.body.enable = false
+                    @
+                )
 
             else if @bsk.down and @gm.math.fuzzyEqual(@bsk.x ,@pm.xrot2 , 4)   # rotation down
                 @bsk.down = false
                 @twn_up_down 0  # tween up
+                @bsk.real_body.btm.body.enable = true # close basket
 
             if @bsk.x > @Pm.bsks.x2
                 @bsk.body.velocity.x = 0

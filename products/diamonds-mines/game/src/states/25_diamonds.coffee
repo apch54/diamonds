@@ -25,7 +25,7 @@ class Phacker.Game.Diamonds
 
 
         @init()
-        d0 = @dmd_transfert(0);     d0.x=549;   d0.y=50
+        d0 = @dmd_transfert(0);     d0.x=547;   d0.y=5
         d1 = @dmd_transfert(4);     d1.x=549;   d1.y=60
         d2 = @dmd_transfert(7);     d2.x=549;   d2.y=70
 #        @one_dmds_grp(549,50, 'blue_ball')
