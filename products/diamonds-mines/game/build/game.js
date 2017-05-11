@@ -314,25 +314,64 @@
       this._fle_ = 'Diamonds';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.dmds = {
-        n: 100,
-        msg_bsk: 'not yet'
+        n: 97,
+        vx1: 30,
+        vx2: 40,
+        msg_bsk: 'not yet',
+        names: ['blue_ball', 'green_ball', 'pink_ball', 'red_ball', 'yellow_ball'],
+        x1: this.Pm.mec.x0 - this.Pm.mec.w / 2 + 5,
+        x2: this.Pm.mec.x0 - 20,
+        x3: this.Pm.mec.x0 + this.Pm.mec.w / 2 - 56,
+        y1: this.Pm.mec.y0 + 65
       };
-      this.dmds_grp = this.gm.add.physicsGroup();
-      this.dmds_grp.enableBody = true;
+      this.grp0 = this.gm.add.physicsGroup();
+      this.grp0.enableBody = true;
+      this.grp1 = this.gm.add.physicsGroup();
+      this.grp1.enableBody = true;
       this.one_dmds_grp(549, 50, 'blue_ball');
       this.one_dmds_grp(549, 60, 'pink_ball');
       this.one_dmds_grp(549, 70, 'green_ball');
+      this.init();
     }
+
+    Diamonds.prototype.init = function() {
+      var col, col1, col2, col3, dmd, i, j, md, ref, results, x, y;
+      x = this.pm.x1;
+      y = this.pm.y1 + 10;
+      col1 = this.gm.rnd.integerInRange(0, 4);
+      col2 = (col1 + 1) % 5;
+      col3 = (col1 + 2) % 5;
+      results = [];
+      for (i = j = 0, ref = this.pm.n; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
+        if ((md = i % 14) === 0) {
+          y -= 10;
+          x = this.pm.x1;
+          col = col1;
+        } else if (md === 5) {
+          x = this.pm.x2;
+          col = col2;
+        } else if (md === 9) {
+          x = this.pm.x3;
+          col = col3;
+        } else {
+          x += 10;
+        }
+        dmd = this.grp1.create(x, y, this.pm.names[col]);
+        dmd.body.bounce.y = 0.05;
+        results.push(dmd.body.bounce.x = .4);
+      }
+      return results;
+    };
 
     Diamonds.prototype.one_dmds_grp = function(x, y, bll) {
       var dmd;
-      dmd = this.dmds_grp.create(x, y, bll);
+      dmd = this.grp0.create(x, y, bll);
       dmd.body.bounce.y = 0.05;
       return dmd.body.bounce.x = .4;
     };
 
     Diamonds.prototype.collide_baskets = function(bsk) {
-      if (this.gm.physics.arcade.collide(this.dmds_grp, bsk, function() {
+      if (this.gm.physics.arcade.collide(this.grp0, bsk, function() {
         return true;
       }, function(dmd, bsk) {
         return this.when_collide_bsk(dmd, bsk);
@@ -343,29 +382,28 @@
     };
 
     Diamonds.prototype.when_collide_bsk = function(dmd, bsk) {
-      console.log(this._fle_, ': ', bsk.typ);
       if (bsk.typ === 'lft') {
-        dmd.body.velocity.x = 30;
+        dmd.body.velocity.x = this.pm.vx2;
       } else if (bsk.typ === 'rgt') {
-        dmd.body.velocity.x = -30;
+        dmd.body.velocity.x = -this.pm.vx2;
       }
       return true;
     };
 
-    Diamonds.prototype.collide_himself = function() {
-      if (this.gm.physics.arcade.collide(this.dmds_grp, this.dmds_grp, function() {
+    Diamonds.prototype.collide_itself = function() {
+      if (this.gm.physics.arcade.collide(this.grp0, this.grp0, function() {
         return true;
       }, function(d1, d2) {
-        return this.when_collide_himself(d1, d2);
+        return this.when_collide_itself(d1, d2);
       }, this)) {
         return this.pm.mes_bsk;
       }
       return 'no';
     };
 
-    Diamonds.prototype.when_collide_himself = function(d1, d2) {
-      d1.body.velocity.x = 30;
-      d2.body.velocity.x = -30;
+    Diamonds.prototype.when_collide_itself = function(d1, d2) {
+      d1.body.velocity.x = this.pm.vx1;
+      d2.body.velocity.x = -this.pm.vx1;
       return true;
     };
 
@@ -466,7 +504,7 @@
         this.basketsO.move();
       }
       this.diamondsO.collide_baskets(this.bskts);
-      return this.diamondsO.collide_himself();
+      return this.diamondsO.collide_itself();
     };
 
     YourGame.prototype.resetPlayer = function() {
@@ -479,8 +517,8 @@
       this.basketsO = new Phacker.Game.Baskets(this.game);
       this.bskts = this.basketsO.bsk_bdy_grp;
       this.diamondsO = new Phacker.Game.Diamonds(this.game);
-      this.dmds = this.diamondsO.dmds_grp;
-      this.buttonO = new Phacker.Game.Button(this.game, this.basketsO, this.diamondsO.dmds_grp);
+      this.dmds = this.diamondsO.grp0;
+      this.buttonO = new Phacker.Game.Button(this.game, this.basketsO, this.diamondsO.grp0);
       return this.inputO = new Phacker.Game.Input(this.game);
     };
 
