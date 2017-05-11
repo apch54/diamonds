@@ -18,16 +18,14 @@ class Phacker.Game.One_basket_body
         h = bkO.pm.h
         x= bkO.bsk.x
         y= bkO.bsk.y
-        @btm = @mk_rect bdy_grp,  x + 1, y + bkO.pm.h/2 - 3, w - 12 ,4
+        @btm = @mk_rect bdy_grp,  x + 1, y + bkO.pm.h/2 - 3, w - 1, 10
         @btm.typ = 'btm'
-        @lft = @mk_rect bdy_grp,  x - bkO.pm.w/2 + 10, y, 4 , h
+        @lft = @mk_rect bdy_grp,  x - bkO.pm.w/2 + 2, y, 10 , h
         @lft.typ = 'lft'
-        @rgt = @mk_rect bdy_grp,  x + bkO.pm.w/2 - 6, y, 4, h
+        @rgt = @mk_rect bdy_grp,  x + bkO.pm.w/2 - 3, y, 10, h
         @rgt.typ = 'rgt'
 
         return {lft: @lft,rgt: @rgt, btm: @btm}
-
-        #bkO.bsk.body.velocity.y =0
 
     #.----------.----------
     #make a rectangle for bsk_body
@@ -39,14 +37,14 @@ class Phacker.Game.One_basket_body
         # draw it
         b.ctx.beginPath()
         b.ctx.rect 0,0,  w, h
-        b.ctx.fillStyle = '#ff0000'
+        if w > 20 then b.ctx.fillStyle = '#ff0000' else b.ctx.fillStyle = '#00ff00'
         b.ctx.fill()
 
         #add sprite in game
         s = bdy_grp.create x, y, b
         s.body.immovable = true
         s.body.moves = false # require
-        s.alpha = 1
+        s.alpha = .5
         #s = @gm.add.sprite x, y, b
         s.anchor.setTo(0.5, 0.5)
         return s

@@ -2,7 +2,7 @@
 
 class Phacker.Game.OneBasket
 
-    constructor: (@gm,@lstP) ->
+    constructor: (@gm,@lstP) -> # lstP for list oparameters of the basket
         @_fle_ = 'One bsk'
         @Pm = @gm.parameters    # globals parameters
         @pm = @Pm.bsk =         # one basket parameters
@@ -15,7 +15,7 @@ class Phacker.Game.OneBasket
             vx: 100
             names: ['blue_basket','green_basket','normal_basket','pink_basket','red_basket']
 
-        @mk_bsk(@lstP ) # N stands for north
+        @mk_bsk(@lstP ) # lstP for list oparameters of the basket
 
     #.----------.----------
     # make the basket and create @bsk sprite
@@ -30,6 +30,7 @@ class Phacker.Game.OneBasket
         @bsk.branch = lstP.branch
         @bsk.color = col
         @bsk.down = false
+        @bsk.alpha = 1
 
         if      @bsk.branch is 'N' then @bsk.body.velocity.x = @pm.vx  ;  @bsk.body.velocity.y = 0
         else if @bsk.branch is 'E' then @bsk.body.velocity.x = 0       ;  @bsk.body.velocity.y = @pm.vx

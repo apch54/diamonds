@@ -128,6 +128,7 @@
       this.bsk.branch = lstP.branch;
       this.bsk.color = col;
       this.bsk.down = false;
+      this.bsk.alpha = 1;
       if (this.bsk.branch === 'N') {
         this.bsk.body.velocity.x = this.pm.vx;
         return this.bsk.body.velocity.y = 0;
@@ -237,12 +238,12 @@
       for (i = 0, len = ref.length; i < len; i++) {
         b = ref[i];
         b.move();
-        b.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 6;
+        b.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 2;
         b.real_body.lft.y = b.bsk.y;
-        b.real_body.rgt.x = b.bsk.x + b.bsk.body.width / 2 - 6;
+        b.real_body.rgt.x = b.bsk.x + b.bsk.body.width / 2 - 3;
         b.real_body.rgt.y = b.bsk.y;
         b.real_body.btm.x = b.bsk.x + 1;
-        results.push(b.real_body.btm.y = b.bsk.y + b.bsk.body.height / 2 - 3);
+        results.push(b.real_body.btm.y = b.bsk.y + b.bsk.body.height / 2 - 6);
       }
       return results;
     };
@@ -273,11 +274,11 @@
       h = bkO.pm.h;
       x = bkO.bsk.x;
       y = bkO.bsk.y;
-      this.btm = this.mk_rect(bdy_grp, x + 1, y + bkO.pm.h / 2 - 3, w - 12, 4);
+      this.btm = this.mk_rect(bdy_grp, x + 1, y + bkO.pm.h / 2 - 3, w - 1, 10);
       this.btm.typ = 'btm';
-      this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 10, y, 4, h);
+      this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 2, y, 10, h);
       this.lft.typ = 'lft';
-      this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 6, y, 4, h);
+      this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 3, y, 10, h);
       this.rgt.typ = 'rgt';
       return {
         lft: this.lft,
@@ -291,12 +292,16 @@
       b = this.gm.add.bitmapData(w, h);
       b.ctx.beginPath();
       b.ctx.rect(0, 0, w, h);
-      b.ctx.fillStyle = '#ff0000';
+      if (w > 20) {
+        b.ctx.fillStyle = '#ff0000';
+      } else {
+        b.ctx.fillStyle = '#00ff00';
+      }
       b.ctx.fill();
       s = bdy_grp.create(x, y, b);
       s.body.immovable = true;
       s.body.moves = false;
-      s.alpha = 1;
+      s.alpha = .5;
       s.anchor.setTo(0.5, 0.5);
       return s;
     };
@@ -310,6 +315,7 @@
 (function() {
   Phacker.Game.Diamonds = (function() {
     function Diamonds(gm) {
+      var d0, d1, d2;
       this.gm = gm;
       this._fle_ = 'Diamonds';
       this.Pm = this.gm.parameters;
@@ -328,10 +334,16 @@
       this.grp0.enableBody = true;
       this.grp1 = this.gm.add.physicsGroup();
       this.grp1.enableBody = true;
-      this.one_dmds_grp(549, 50, 'blue_ball');
-      this.one_dmds_grp(549, 60, 'pink_ball');
-      this.one_dmds_grp(549, 70, 'green_ball');
       this.init();
+      d0 = this.dmd_transfert(0);
+      d0.x = 549;
+      d0.y = 50;
+      d1 = this.dmd_transfert(4);
+      d1.x = 549;
+      d1.y = 60;
+      d2 = this.dmd_transfert(7);
+      d2.x = 549;
+      d2.y = 70;
     }
 
     Diamonds.prototype.init = function() {
@@ -357,8 +369,7 @@
           x += 10;
         }
         dmd = this.grp1.create(x, y, this.pm.names[col]);
-        dmd.body.bounce.y = 0.05;
-        results.push(dmd.body.bounce.x = .4);
+        results.push(dmd.frame2 = this.pm.names[col]);
       }
       return results;
     };
@@ -405,6 +416,19 @@
       d1.body.velocity.x = this.pm.vx1;
       d2.body.velocity.x = -this.pm.vx1;
       return true;
+    };
+
+    Diamonds.prototype.dmd_transfert = function(n) {
+      var d0, d1, l;
+      if ((l = this.grp1.length) < n) {
+        n = l - 1;
+      }
+      d1 = this.grp1.getAt(n);
+      d0 = this.grp0.create(d1.x, d1.y + 200, d1.frame2);
+      d1.body.bounce.y = 0.05;
+      d1.body.bounce.x = .4;
+      d1.destroy();
+      return d0;
     };
 
     return Diamonds;
