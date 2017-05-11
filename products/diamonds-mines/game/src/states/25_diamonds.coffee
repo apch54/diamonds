@@ -14,6 +14,7 @@ class Phacker.Game.Diamonds
             x2: @Pm.mec.x0 - 20
             x3: @Pm.mec.x0 + @Pm.mec.w/2 - 56
             y1: @Pm.mec.y0 + 65
+            bounce: {x: .2, y: .05}
 
         @grp0 = @gm.add.physicsGroup()       # basket body group; real bodies
         @grp0.enableBody = true
@@ -111,8 +112,8 @@ class Phacker.Game.Diamonds
        if (l = @grp1.length) < n then n = l-1
        d1 = @grp1.getAt(n)
        d0 = @grp0.create d1.x, d1.y+200, d1.frame2
-       d1.body.bounce.y = 0.05
-       d1.body.bounce.x = .4
+       d1.body.bounce.y = @pm.bounce.y
+       d1.body.bounce.x = @pm.bounce.x
        d1.destroy()
        return d0
        #@console.log @_fle_,': ',d0

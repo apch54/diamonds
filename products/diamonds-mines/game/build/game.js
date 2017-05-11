@@ -240,10 +240,10 @@
         b.move();
         b.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 2;
         b.real_body.lft.y = b.bsk.y;
-        b.real_body.rgt.x = b.bsk.x + b.bsk.body.width / 2 - 3;
+        b.real_body.rgt.x = b.bsk.x + b.bsk.body.width / 2 - 5;
         b.real_body.rgt.y = b.bsk.y;
-        b.real_body.btm.x = b.bsk.x + 1;
-        results.push(b.real_body.btm.y = b.bsk.y + b.bsk.body.height / 2 - 6);
+        b.real_body.btm.x = b.bsk.x - 2;
+        results.push(b.real_body.btm.y = b.bsk.y + b.bsk.body.height / 2 + 3);
       }
       return results;
     };
@@ -271,10 +271,10 @@
     One_basket_body.prototype.mk_body = function(bdy_grp, bkO) {
       var h, w, x, y;
       w = bkO.pm.w;
-      h = bkO.pm.h;
+      h = bkO.pm.h + 7;
       x = bkO.bsk.x;
       y = bkO.bsk.y;
-      this.btm = this.mk_rect(bdy_grp, x + 1, y + bkO.pm.h / 2 - 3, w - 1, 10);
+      this.btm = this.mk_rect(bdy_grp, x + 1, y + bkO.pm.h / 2 - 3, w + 3, 10);
       this.btm.typ = 'btm';
       this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 2, y, 10, h);
       this.lft.typ = 'lft';
@@ -301,7 +301,7 @@
       s = bdy_grp.create(x, y, b);
       s.body.immovable = true;
       s.body.moves = false;
-      s.alpha = .5;
+      s.alpha = 1;
       s.anchor.setTo(0.5, 0.5);
       return s;
     };
@@ -328,7 +328,11 @@
         x1: this.Pm.mec.x0 - this.Pm.mec.w / 2 + 5,
         x2: this.Pm.mec.x0 - 20,
         x3: this.Pm.mec.x0 + this.Pm.mec.w / 2 - 56,
-        y1: this.Pm.mec.y0 + 65
+        y1: this.Pm.mec.y0 + 65,
+        bounce: {
+          x: .2,
+          y: .05
+        }
       };
       this.grp0 = this.gm.add.physicsGroup();
       this.grp0.enableBody = true;
@@ -425,8 +429,8 @@
       }
       d1 = this.grp1.getAt(n);
       d0 = this.grp0.create(d1.x, d1.y + 200, d1.frame2);
-      d1.body.bounce.y = 0.05;
-      d1.body.bounce.x = .4;
+      d1.body.bounce.y = this.pm.bounce.y;
+      d1.body.bounce.x = this.pm.bounce.x;
       d1.destroy();
       return d0;
     };

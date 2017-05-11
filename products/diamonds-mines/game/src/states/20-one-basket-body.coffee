@@ -15,10 +15,10 @@ class Phacker.Game.One_basket_body
     #.----------.----------
     mk_body:(bdy_grp, bkO)-> # bodygroup, one basket Object
         w = bkO.pm.w
-        h = bkO.pm.h
+        h = bkO.pm.h+7
         x= bkO.bsk.x
         y= bkO.bsk.y
-        @btm = @mk_rect bdy_grp,  x + 1, y + bkO.pm.h/2 - 3, w - 1, 10
+        @btm = @mk_rect bdy_grp,  x + 1, y + bkO.pm.h/2 - 3, w + 3, 10
         @btm.typ = 'btm'
         @lft = @mk_rect bdy_grp,  x - bkO.pm.w/2 + 2, y, 10 , h
         @lft.typ = 'lft'
@@ -30,7 +30,7 @@ class Phacker.Game.One_basket_body
     #.----------.----------
     #make a rectangle for bsk_body
     #.----------.----------
-    mk_rect: (bdy_grp, x,y,w,h) ->
+    mk_rect: (bdy_grp, x,y, w, h) ->
         # create the bit map data obj : b
         b = @gm.add.bitmapData   w,  h
 
@@ -44,7 +44,7 @@ class Phacker.Game.One_basket_body
         s = bdy_grp.create x, y, b
         s.body.immovable = true
         s.body.moves = false # require
-        s.alpha = .5
+        s.alpha = 1
         #s = @gm.add.sprite x, y, b
         s.anchor.setTo(0.5, 0.5)
         return s
