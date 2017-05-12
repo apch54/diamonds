@@ -25,40 +25,9 @@ class Phacker.Game.Diamonds
 
 
         @init()
-        d0 = @dmd_transfert(0);     d0.x=547;   d0.y=-50
-        d1 = @dmd_transfert(4);     d1.x=549;   d1.y=60
-        d2 = @dmd_transfert(7);     d2.x=549;   d2.y=70
-#        @one_dmds_grp(549,50, 'blue_ball')
-#        @one_dmds_grp(549,60, 'pink_ball')
-#        @one_dmds_grp(549,70, 'green_ball')
-
-    #.----------.----------
-    # Initialisation of all diamonds (ball)
-    #.----------.----------
-    init : () ->
-        x=@pm.x1;           y=@pm.y1+10
-        col1=@gm.rnd.integerInRange(0,4)
-        col2=(col1+1)%5
-        col3=(col1+2)%5
-
-        for i in [0..@pm.n]
-            if          (md = i%14) is 0    then    y-=10;      x=@pm.x1;   col = col1
-            else if     md is 5             then    x=@pm.x2;               col = col2
-            else if     md is 9             then    x=@pm.x3;               col = col3
-            else x += 10
-            dmd = @grp1.create x, y, @pm.names[col]
-            dmd.frame2 =  @pm.names[col]
-
-        #@dmd_transfert(0)
-
-    #.----------.----------
-    # create a basket
-    #.----------.----------
-    one_dmds_grp: (x, y, bll) ->
-       dmd = @grp0.create x, y, bll
-       #@gm.physics.arcade.enable dmd,Phaser.Physics.ARCADE
-       dmd.body.bounce.y = 0.2
-       dmd.body.bounce.x = .4
+        d0 = @dmd_transfert(0);     d0.x = @Pm.rop.x0 + @Pm.rop.w/2 - 2;   d0.y=1
+        d1 = @dmd_transfert(4);     d1.x = @Pm.rop.x0 + @Pm.rop.w/2 - 2;   d1.y=60
+        d2 = @dmd_transfert(7);     d2.x = @Pm.rop.x0 + @Pm.rop.w/2 - 2;   d2.y=70
 
     #.----------.----------
     # COLLIDE  with baskets group
@@ -75,10 +44,20 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_bsk:(dmd, bsk) ->
-        #console.log @_fle_,': ',bsk.typ
-        if      bsk.typ is 'lft' and bsk.x < dmd.x then dmd.body.velocity.x += @pm.vx2
-        else if bsk.typ is 'rgt' and bsk.x > dmd.x then dmd.body.velocity.x -= @pm.vx2;
-        if bsk.typ is 'btm' then dmd.y = bsk.y-15 # dont sink
+
+        if bsk.typ is 'lft'
+            if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
+                @twn_go_center dmd, dmd.x+20, dmd.y+30
+            else if  bsk.x < dmd.x then dmd.body.velocity.x += @pm.vx2
+
+        else if bsk.typ is 'rgt'
+            if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
+                @twn_go_center dmd, dmd.x-20, dmd.y+30
+            else if bsk.x > dmd.x then dmd.body.velocity.x -= @pm.vx2;
+
+        else if bsk.typ is 'btm'
+            dmd.body.velocity.y =  0
+            dmd.y = bsk.y-15 # dont sink
 
         return true  # return it has collided
 
@@ -102,8 +81,46 @@ class Phacker.Game.Diamonds
         d2.body.velocity.x = -@pm.vx1
         return true  # return it has collided
 
+    #.----------.----------
+    # make tween  : go center basket
+    # @dmd tween
+    #.----------.----------
+    twn_go_center: (dmd, x0, y0) ->
+        @go_center = @gm.add.tween dmd
+        @go_center.to(
+            { x: x0, y: y0 }
+            200, Phaser.Easing.Cubic.Out, true
+        )
 
     #.----------.----------
+    # Initialisation of all diamonds (ball)
+    # Creation of ball
+    #.----------.----------
+    init : () ->
+        x=@pm.x1;           y=@pm.y1+10
+        col1=@gm.rnd.integerInRange(0,4)
+        col2=(col1+1)%5
+        col3=(col1+2)%5
+
+        for i in [0..@pm.n]
+            if          (md = i%14) is 0    then    y-=10;      x=@pm.x1;   col = col1
+            else if     md is 5             then    x=@pm.x2;               col = col2
+            else if     md is 9             then    x=@pm.x3;               col = col3
+            else x += 10
+            dmd = @grp1.create x, y, @pm.names[col]
+            dmd.frame2 =  @pm.names[col]
+
+    #.----------.----------
+    # create a basket
+    #.----------.----------
+    one_dmds_grp: (x, y, bll) ->
+        dmd = @grp0.create x, y, bll
+        #@gm.physics.arcade.enable dmd,Phaser.Physics.ARCADE
+        dmd.body.bounce.y = 0.2
+        dmd.body.bounce.x = .4
+
+
+#.----------.----------
     # Tools
     #.----------.----------
 

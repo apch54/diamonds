@@ -53,5 +53,5 @@ class Phacker.Game.Baskets
             b.bsk.real_body.rgt.x = b.bsk.x + b.bsk.body.width/2 - 5
             b.bsk.real_body.rgt.y = b.bsk.y + 5
 
-            b.bsk.real_body.btm.x = b.bsk.x - 2
+            b.bsk.real_body.btm.x = b.bsk.x - 1
             b.bsk.real_body.btm.y = b.bsk.y + b.bsk.body.height/2 + 3

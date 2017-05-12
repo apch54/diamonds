@@ -38,8 +38,8 @@ class Phacker.Game.OneBasket
         else if @bsk.branch is 'W' then @bsk.body.velocity.x = 0       ;  @bsk.body.velocity.y = -@pm.vx
 
     #.----------.----------
-    # move the basket around the rope
-    # 4 parts : 'N', 'E' ...
+    # move ONE basket around the rope
+    # the 4 all branches are computed : 'N', 'E' ...
     #.----------.----------
 
     move: () ->
