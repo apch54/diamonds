@@ -21,7 +21,7 @@ class @YourGame extends Phacker.GameState
         @diamondsO = new Phacker.Game.Diamonds @game
         @dmds = @diamondsO.grp0 # all diamonds
 
-        @buttonO = new Phacker.Game.Button @game, @basketsO, @diamondsO.grp0
+        @buttonO = new Phacker.Game.Button @game, @basketsO, @diamondsO
         @inputO = new Phacker.Game.Input @game
 
     ### LOGIC OF YOUR GAME

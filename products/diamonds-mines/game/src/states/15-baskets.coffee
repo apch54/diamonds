@@ -44,14 +44,17 @@ class Phacker.Game.Baskets
 
         # then move the whole baskets
         for b in @bska
-            #console.log @_fle_,': ',b
+            #console.log @_fle_,': ',b.bsk.branch
             b.move()
             # beware : same initialization in one-basket body
-            b.bsk.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 2
+            b.bsk.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 7
             b.bsk.real_body.lft.y = b.bsk.y + 5
+            b.bsk.real_body.lft.branch = b.bsk.branch
 
-            b.bsk.real_body.rgt.x = b.bsk.x + b.bsk.body.width/2 - 5
+            b.bsk.real_body.rgt.x = b.bsk.x + b.bsk.body.width/2 - 7
             b.bsk.real_body.rgt.y = b.bsk.y + 5
+            b.bsk.real_body.rgt.branch = b.bsk.branch
 
-            b.bsk.real_body.btm.x = b.bsk.x - 1
+            b.bsk.real_body.btm.x = b.bsk.x + 2
             b.bsk.real_body.btm.y = b.bsk.y + b.bsk.body.height/2 + 3
+            b.bsk.real_body.btm.branch = b.bsk.branch

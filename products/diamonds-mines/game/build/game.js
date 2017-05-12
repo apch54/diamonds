@@ -242,12 +242,15 @@
       for (i = 0, len = ref.length; i < len; i++) {
         b = ref[i];
         b.move();
-        b.bsk.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 2;
+        b.bsk.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 7;
         b.bsk.real_body.lft.y = b.bsk.y + 5;
-        b.bsk.real_body.rgt.x = b.bsk.x + b.bsk.body.width / 2 - 5;
+        b.bsk.real_body.lft.branch = b.bsk.branch;
+        b.bsk.real_body.rgt.x = b.bsk.x + b.bsk.body.width / 2 - 7;
         b.bsk.real_body.rgt.y = b.bsk.y + 5;
-        b.bsk.real_body.btm.x = b.bsk.x - 1;
-        results.push(b.bsk.real_body.btm.y = b.bsk.y + b.bsk.body.height / 2 + 3);
+        b.bsk.real_body.rgt.branch = b.bsk.branch;
+        b.bsk.real_body.btm.x = b.bsk.x + 2;
+        b.bsk.real_body.btm.y = b.bsk.y + b.bsk.body.height / 2 + 3;
+        results.push(b.bsk.real_body.btm.branch = b.bsk.branch);
       }
       return results;
     };
@@ -278,11 +281,11 @@
       h = bkO.pm.h + 7;
       x = bkO.bsk.x;
       y = bkO.bsk.y;
-      this.btm = this.mk_rect(bdy_grp, x - 2, y + bkO.pm.h / 2 - 3, w + 2, 10);
+      this.btm = this.mk_rect(bdy_grp, x - 2, y + bkO.pm.h / 2 - 3, w - 11, 10);
       this.btm.typ = 'btm';
-      this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 2, y + 5, 10, h);
+      this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 2, y + 5, 5, h);
       this.lft.typ = 'lft';
-      this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 3, y + 5, 10, h);
+      this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 3, y + 5, 5, h);
       this.rgt.typ = 'rgt';
       return {
         lft: this.lft,
@@ -319,7 +322,6 @@
 (function() {
   Phacker.Game.Diamonds = (function() {
     function Diamonds(gm) {
-      var d0, d1, d2;
       this.gm = gm;
       this._fle_ = 'Diamonds';
       this.Pm = this.gm.parameters;
@@ -343,6 +345,10 @@
       this.grp1 = this.gm.add.physicsGroup();
       this.grp1.enableBody = true;
       this.init();
+    }
+
+    Diamonds.prototype.start_game = function() {
+      var d0, d1, d2;
       d0 = this.dmd_transfert(0);
       d0.x = this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2;
       d0.y = 1;
@@ -351,8 +357,8 @@
       d1.y = 60;
       d2 = this.dmd_transfert(7);
       d2.x = this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2;
-      d2.y = 70;
-    }
+      return d2.y = 70;
+    };
 
     Diamonds.prototype.collide_baskets = function(bsk) {
       if (this.gm.physics.arcade.collide(this.grp0, bsk, function() {
@@ -369,13 +375,13 @@
       var ref, ref1;
       if (bsk.typ === 'lft') {
         if ((-10 < (ref = bsk.y - dmd.y - bsk.body.height / 2) && ref < 10)) {
-          this.twn_go_center(dmd, dmd.x + 20, dmd.y + 30);
+          this.twn_move(dmd, dmd.x + 20, dmd.y + 30);
         } else if (bsk.x < dmd.x) {
           dmd.body.velocity.x += this.pm.vx2;
         }
       } else if (bsk.typ === 'rgt') {
         if ((-10 < (ref1 = bsk.y - dmd.y - bsk.body.height / 2) && ref1 < 10)) {
-          this.twn_go_center(dmd, dmd.x - 20, dmd.y + 30);
+          this.twn_move(dmd, dmd.x - 20, dmd.y + 30);
         } else if (bsk.x > dmd.x) {
           dmd.body.velocity.x -= this.pm.vx2;
         }
@@ -403,7 +409,7 @@
       return true;
     };
 
-    Diamonds.prototype.twn_go_center = function(dmd, x0, y0) {
+    Diamonds.prototype.twn_move = function(dmd, x0, y0) {
       this.go_center = this.gm.add.tween(dmd);
       return this.go_center.to({
         x: x0,
@@ -453,6 +459,7 @@
       }
       d1 = this.grp1.getAt(n);
       d0 = this.grp0.create(d1.x, d1.y + 200, d1.frame2);
+      d0.body.gravity.y = 300;
       d1.body.bounce.y = this.pm.bounce.y;
       d1.body.bounce.x = this.pm.bounce.x;
       d1.destroy();
@@ -470,10 +477,10 @@
 
 (function() {
   Phacker.Game.Button = (function() {
-    function Button(gm, bskO, dmd) {
+    function Button(gm, bskO, dmdO) {
       this.gm = gm;
       this.bskO = bskO;
-      this.dmd = dmd;
+      this.dmdO = dmdO;
       this._fle_ = 'Button';
       this.pm = this.gm.parameters.btn = {
         x: this.gm.parameters.mec.x0 - 35,
@@ -482,6 +489,7 @@
         h: 72,
         start: false
       };
+      this.dmd = this.dmdO.grp0;
       this.draw_button();
     }
 
@@ -494,9 +502,7 @@
       this.bskO.mk_bsk();
       this.btn.y = 800;
       this.btn.alpha = 0;
-      this.dmd.getAt(0).body.gravity.y = 300;
-      this.dmd.getAt(1).body.gravity.y = 300;
-      return this.dmd.getAt(2).body.gravity.y = 300;
+      return this.dmdO.start_game();
     };
 
     return Button;
@@ -570,7 +576,7 @@
       this.bskts = this.basketsO.bsk_bdy_grp;
       this.diamondsO = new Phacker.Game.Diamonds(this.game);
       this.dmds = this.diamondsO.grp0;
-      this.buttonO = new Phacker.Game.Button(this.game, this.basketsO, this.diamondsO.grp0);
+      this.buttonO = new Phacker.Game.Button(this.game, this.basketsO, this.diamondsO);
       return this.inputO = new Phacker.Game.Input(this.game);
     };
 

@@ -22,9 +22,13 @@ class Phacker.Game.Diamonds
         @grp1 = @gm.add.physicsGroup()       # basket body group; real bodies for initialization
         @grp1.enableBody = true
 
-
-
         @init()
+        #@start_game()
+
+    #.----------.----------
+    #Start game
+    #.----------.----------
+    start_game:()->
         d0 = @dmd_transfert(0);     d0.x = @Pm.rop.x0 + @Pm.rop.w/2 - 2;   d0.y=1
         d1 = @dmd_transfert(4);     d1.x = @Pm.rop.x0 + @Pm.rop.w/2 - 2;   d1.y=60
         d2 = @dmd_transfert(7);     d2.x = @Pm.rop.x0 + @Pm.rop.w/2 - 2;   d2.y=70
@@ -44,20 +48,40 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_bsk:(dmd, bsk) ->
-
+        #console.log @_fle_,': ',bsk.branch
+#        if bsk.typ is 'lft'
+#            if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
+#                @twn_move dmd, dmd.x+20, dmd.y+30
+#            else if  bsk.x < dmd.x then dmd.body.velocity.x += @pm.vx2
+#            else if bsk.branch is 'S'
+#                console.log @_fle_,': ',bsk.branch
+#                @twn_move dmd, dmd.x-30, dmd.y+25 #dmd.body.velocity.x -= @pm.vx2 #; dmd.body.velocity.y = @pm.vx2
+#
+#        else if bsk.typ is 'rgt'
+#            if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
+#                @twn_move dmd, dmd.x-20, dmd.y+30
+#            else if bsk.x > dmd.x then dmd.body.velocity.x -= @pm.vx2
+#            else if bsk.branch is 'S'
+#                @twn_move dmd, dmd.x+25, dmd.y+25 #dmd.body.velocity.x += @pm.vx2 #; dmd.body.velocity.y = @pm.vx2
+#
+#        else if bsk.typ is 'btm'
+#            dmd.body.velocity.y =  0
+#            dmd.body.velocity.x =  0
+#            dmd.y = bsk.y-15 # dont sink
         if bsk.typ is 'lft'
             if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
-                @twn_go_center dmd, dmd.x+20, dmd.y+30
+                @twn_move dmd, dmd.x+20, dmd.y+30
             else if  bsk.x < dmd.x then dmd.body.velocity.x += @pm.vx2
 
         else if bsk.typ is 'rgt'
             if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
-                @twn_go_center dmd, dmd.x-20, dmd.y+30
+                @twn_move dmd, dmd.x-20, dmd.y+30
             else if bsk.x > dmd.x then dmd.body.velocity.x -= @pm.vx2;
 
         else if bsk.typ is 'btm'
             dmd.body.velocity.y =  0
             dmd.y = bsk.y-15 # dont sink
+
 
         return true  # return it has collided
 
@@ -85,7 +109,7 @@ class Phacker.Game.Diamonds
     # make tween  : go center basket
     # @dmd tween
     #.----------.----------
-    twn_go_center: (dmd, x0, y0) ->
+    twn_move: (dmd, x0, y0) ->
         @go_center = @gm.add.tween dmd
         @go_center.to(
             { x: x0, y: y0 }
@@ -120,7 +144,7 @@ class Phacker.Game.Diamonds
         dmd.body.bounce.x = .4
 
 
-#.----------.----------
+    #.----------.----------
     # Tools
     #.----------.----------
 
@@ -130,6 +154,7 @@ class Phacker.Game.Diamonds
        if (l = @grp1.length) < n then n = l-1
        d1 = @grp1.getAt(n)
        d0 = @grp0.create d1.x, d1.y+200, d1.frame2
+       d0.body.gravity. y = 300
        d1.body.bounce.y = @pm.bounce.y
        d1.body.bounce.x = @pm.bounce.x
        d1.destroy()
