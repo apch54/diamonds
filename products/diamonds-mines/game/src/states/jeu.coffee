@@ -23,6 +23,7 @@ class @YourGame extends Phacker.GameState
 
         @buttonO = new Phacker.Game.Button @game, @basketsO, @diamondsO
         @inputO = new Phacker.Game.Input @game
+        @cocle_bodyO = new Phacker.Game.Socle_body @game, @diamondsO
 
     ### LOGIC OF YOUR GAME
     # Examples buttons actions

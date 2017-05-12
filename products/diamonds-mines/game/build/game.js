@@ -543,6 +543,62 @@
 }).call(this);
 
 
+/*  written by apch on 2017-05-12 */
+
+(function() {
+  Phacker.Game.Socle_body = (function() {
+    function Socle_body(gm, dmdO) {
+      this.gm = gm;
+      this.dmdO = dmdO;
+      this._fle_ = 'Socle body';
+      this.Pm = this.gm.parameters;
+      this.pm = this.Pm.sclb = {
+        w: 15,
+        h: 10,
+        x1: this.Pm.dmds.x1 + 5,
+        y1: this.Pm.dmds.y1 + 30,
+        x2: this.Pm.dmds.x2 + 2,
+        y2: this.Pm.dmds.y1 + 60
+      };
+      this.pm.delta1 = (this.pm.y2 - this.pm.y1) / (this.pm.x2 - this.pm.x1);
+      this.bdy = this.gm.add.physicsGroup();
+      this.bdy.enableBody = true;
+      this.mk_left();
+    }
+
+    Socle_body.prototype.mk_left = function() {
+      var dx, last, yy;
+      dx = 0;
+      while (dx < this.pm.x2 - this.pm.x1) {
+        yy = this.pm.y1 + dx * this.pm.delta1;
+        last = this.mk_rect(this.bdy, this.pm.x1 + dx, yy, this.pm.w, this.pm.h);
+        dx += this.pm.w + 3;
+      }
+      return this.mk_rect(this.bdy, this.pm.x2 - 2, this.pm.y2 + 12, this.pm.w, 28);
+    };
+
+    Socle_body.prototype.mk_rect = function(bdy_grp, x, y, w, h) {
+      var b, s;
+      b = this.gm.add.bitmapData(w, h);
+      b.ctx.beginPath();
+      b.ctx.rect(0, 0, w, h);
+      b.ctx.fillStyle = '#00ffff';
+      b.ctx.fill();
+      s = bdy_grp.create(x, y, b);
+      s.body.immovable = true;
+      s.body.moves = false;
+      s.alpha = 1;
+      s.anchor.setTo(0.5, 0.5);
+      return s;
+    };
+
+    return Socle_body;
+
+  })();
+
+}).call(this);
+
+
 /*  written by apch on 2017-05-07 : Jeu */
 
 (function() {
@@ -577,7 +633,8 @@
       this.diamondsO = new Phacker.Game.Diamonds(this.game);
       this.dmds = this.diamondsO.grp0;
       this.buttonO = new Phacker.Game.Button(this.game, this.basketsO, this.diamondsO);
-      return this.inputO = new Phacker.Game.Input(this.game);
+      this.inputO = new Phacker.Game.Input(this.game);
+      return this.cocle_bodyO = new Phacker.Game.Socle_body(this.game, this.diamondsO);
     };
 
 

@@ -48,26 +48,7 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_bsk:(dmd, bsk) ->
-        #console.log @_fle_,': ',bsk.branch
-#        if bsk.typ is 'lft'
-#            if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
-#                @twn_move dmd, dmd.x+20, dmd.y+30
-#            else if  bsk.x < dmd.x then dmd.body.velocity.x += @pm.vx2
-#            else if bsk.branch is 'S'
-#                console.log @_fle_,': ',bsk.branch
-#                @twn_move dmd, dmd.x-30, dmd.y+25 #dmd.body.velocity.x -= @pm.vx2 #; dmd.body.velocity.y = @pm.vx2
-#
-#        else if bsk.typ is 'rgt'
-#            if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
-#                @twn_move dmd, dmd.x-20, dmd.y+30
-#            else if bsk.x > dmd.x then dmd.body.velocity.x -= @pm.vx2
-#            else if bsk.branch is 'S'
-#                @twn_move dmd, dmd.x+25, dmd.y+25 #dmd.body.velocity.x += @pm.vx2 #; dmd.body.velocity.y = @pm.vx2
-#
-#        else if bsk.typ is 'btm'
-#            dmd.body.velocity.y =  0
-#            dmd.body.velocity.x =  0
-#            dmd.y = bsk.y-15 # dont sink
+        
         if bsk.typ is 'lft'
             if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
                 @twn_move dmd, dmd.x+20, dmd.y+30
