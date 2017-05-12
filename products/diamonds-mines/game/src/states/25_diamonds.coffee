@@ -25,7 +25,7 @@ class Phacker.Game.Diamonds
 
 
         @init()
-        d0 = @dmd_transfert(0);     d0.x=547;   d0.y=5
+        d0 = @dmd_transfert(0);     d0.x=547;   d0.y=-50
         d1 = @dmd_transfert(4);     d1.x=549;   d1.y=60
         d2 = @dmd_transfert(7);     d2.x=549;   d2.y=70
 #        @one_dmds_grp(549,50, 'blue_ball')
@@ -57,7 +57,7 @@ class Phacker.Game.Diamonds
     one_dmds_grp: (x, y, bll) ->
        dmd = @grp0.create x, y, bll
        #@gm.physics.arcade.enable dmd,Phaser.Physics.ARCADE
-       dmd.body.bounce.y = 0.05
+       dmd.body.bounce.y = 0.2
        dmd.body.bounce.x = .4
 
     #.----------.----------
@@ -76,8 +76,9 @@ class Phacker.Game.Diamonds
     #.----------.----------
     when_collide_bsk:(dmd, bsk) ->
         #console.log @_fle_,': ',bsk.typ
-        if bsk.typ is 'lft' then dmd.body.velocity.x = @pm.vx2
-        else if bsk.typ is 'rgt' then dmd.body.velocity.x = -@pm.vx2;
+        if      bsk.typ is 'lft' and bsk.x < dmd.x then dmd.body.velocity.x += @pm.vx2
+        else if bsk.typ is 'rgt' and bsk.x > dmd.x then dmd.body.velocity.x -= @pm.vx2;
+        if bsk.typ is 'btm' then dmd.y = bsk.y-15 # dont sink
 
         return true  # return it has collided
 
@@ -107,7 +108,7 @@ class Phacker.Game.Diamonds
     #.----------.----------
 
     # deep copy diamonds from grp1 to grp0 ; (gr0 is the dynamic group)
-    # and destroy diamonds from group 0 (grp0)
+    # and destroy diamonds from group 1 (grp1)
     dmd_transfert: (n) -> # n for the diamond number in grp1 begining at 0
        if (l = @grp1.length) < n then n = l-1
        d1 = @grp1.getAt(n)

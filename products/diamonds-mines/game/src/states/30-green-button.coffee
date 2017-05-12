@@ -29,7 +29,7 @@ class Phacker.Game.Button
         @btn.y = 800
         @btn.alpha = 0
 
-        @dmd.getAt(0).body.gravity.y = 250
-        @dmd.getAt(1).body.gravity.y = 250
-        @dmd.getAt(2).body.gravity.y = 240
+        @dmd.getAt(0).body.gravity.y = 300
+        @dmd.getAt(1).body.gravity.y = 300
+        @dmd.getAt(2).body.gravity.y = 300
 

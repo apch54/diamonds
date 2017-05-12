@@ -46,12 +46,12 @@ class Phacker.Game.Baskets
         for b in @bska
             #console.log @_fle_,': ',b
             b.move()
-
+            # beware : same initialization in one-basket body
             b.bsk.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 2
-            b.bsk.real_body.lft.y = b.bsk.y
+            b.bsk.real_body.lft.y = b.bsk.y + 5
 
             b.bsk.real_body.rgt.x = b.bsk.x + b.bsk.body.width/2 - 5
-            b.bsk.real_body.rgt.y = b.bsk.y
+            b.bsk.real_body.rgt.y = b.bsk.y + 5
 
             b.bsk.real_body.btm.x = b.bsk.x - 2
             b.bsk.real_body.btm.y = b.bsk.y + b.bsk.body.height/2 + 3

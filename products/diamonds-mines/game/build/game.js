@@ -149,7 +149,7 @@
         if (!this.bsk.down && this.gm.math.fuzzyEqual(this.bsk.x, this.pm.xrot1, 4)) {
           this.bsk.down = true;
           this.twn_up_down(160);
-          this.gm.time.events.add(Phaser.Timer.SECOND * 0.35, function() {
+          this.gm.time.events.add(Phaser.Timer.SECOND * 0.2, function() {
             return this.bsk.real_body.btm.body.enable = false;
           }, this);
         } else if (this.bsk.down && this.gm.math.fuzzyEqual(this.bsk.x, this.pm.xrot2, 4)) {
@@ -243,9 +243,9 @@
         b = ref[i];
         b.move();
         b.bsk.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 2;
-        b.bsk.real_body.lft.y = b.bsk.y;
+        b.bsk.real_body.lft.y = b.bsk.y + 5;
         b.bsk.real_body.rgt.x = b.bsk.x + b.bsk.body.width / 2 - 5;
-        b.bsk.real_body.rgt.y = b.bsk.y;
+        b.bsk.real_body.rgt.y = b.bsk.y + 5;
         b.bsk.real_body.btm.x = b.bsk.x - 2;
         results.push(b.bsk.real_body.btm.y = b.bsk.y + b.bsk.body.height / 2 + 3);
       }
@@ -278,11 +278,11 @@
       h = bkO.pm.h + 7;
       x = bkO.bsk.x;
       y = bkO.bsk.y;
-      this.btm = this.mk_rect(bdy_grp, x + 1, y + bkO.pm.h / 2 - 3, w + 3, 10);
+      this.btm = this.mk_rect(bdy_grp, x - 2, y + bkO.pm.h / 2 - 3, w + 3, 10);
       this.btm.typ = 'btm';
-      this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 2, y, 10, h);
+      this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 2, y + 5, 10, h);
       this.lft.typ = 'lft';
-      this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 3, y, 10, h);
+      this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 3, y + 5, 10, h);
       this.rgt.typ = 'rgt';
       return {
         lft: this.lft,
@@ -345,7 +345,7 @@
       this.init();
       d0 = this.dmd_transfert(0);
       d0.x = 547;
-      d0.y = 5;
+      d0.y = -50;
       d1 = this.dmd_transfert(4);
       d1.x = 549;
       d1.y = 60;
@@ -385,7 +385,7 @@
     Diamonds.prototype.one_dmds_grp = function(x, y, bll) {
       var dmd;
       dmd = this.grp0.create(x, y, bll);
-      dmd.body.bounce.y = 0.05;
+      dmd.body.bounce.y = 0.2;
       return dmd.body.bounce.x = .4;
     };
 
@@ -401,10 +401,13 @@
     };
 
     Diamonds.prototype.when_collide_bsk = function(dmd, bsk) {
-      if (bsk.typ === 'lft') {
-        dmd.body.velocity.x = this.pm.vx2;
-      } else if (bsk.typ === 'rgt') {
-        dmd.body.velocity.x = -this.pm.vx2;
+      if (bsk.typ === 'lft' && bsk.x < dmd.x) {
+        dmd.body.velocity.x += this.pm.vx2;
+      } else if (bsk.typ === 'rgt' && bsk.x > dmd.x) {
+        dmd.body.velocity.x -= this.pm.vx2;
+      }
+      if (bsk.typ === 'btm') {
+        dmd.y = bsk.y - 15;
       }
       return true;
     };
@@ -474,9 +477,9 @@
       this.bskO.mk_bsk();
       this.btn.y = 800;
       this.btn.alpha = 0;
-      this.dmd.getAt(0).body.gravity.y = 250;
-      this.dmd.getAt(1).body.gravity.y = 250;
-      return this.dmd.getAt(2).body.gravity.y = 240;
+      this.dmd.getAt(0).body.gravity.y = 300;
+      this.dmd.getAt(1).body.gravity.y = 300;
+      return this.dmd.getAt(2).body.gravity.y = 300;
     };
 
     return Button;

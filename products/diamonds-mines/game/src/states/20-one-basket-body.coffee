@@ -18,11 +18,12 @@ class Phacker.Game.One_basket_body
         h = bkO.pm.h+7
         x= bkO.bsk.x
         y= bkO.bsk.y
-        @btm = @mk_rect bdy_grp,  x + 1, y + bkO.pm.h/2 - 3, w + 3, 10
+        # beware same initialization in baskets.move
+        @btm = @mk_rect bdy_grp,  x - 2, y + bkO.pm.h/2 - 3, w + 3, 10
         @btm.typ = 'btm'
-        @lft = @mk_rect bdy_grp,  x - bkO.pm.w/2 + 2, y, 10 , h
+        @lft = @mk_rect bdy_grp,  x - bkO.pm.w/2 + 2, y+5, 10 , h
         @lft.typ = 'lft'
-        @rgt = @mk_rect bdy_grp,  x + bkO.pm.w/2 - 3, y, 10, h
+        @rgt = @mk_rect bdy_grp,  x + bkO.pm.w/2 - 3, y+5, 10, h
         @rgt.typ = 'rgt'
 
         return {lft: @lft,rgt: @rgt, btm: @btm}

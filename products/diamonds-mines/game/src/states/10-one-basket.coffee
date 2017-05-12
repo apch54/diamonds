@@ -48,7 +48,7 @@ class Phacker.Game.OneBasket
                 @bsk.down = true
                 @twn_up_down 160 # tween down
                 @gm.time.events.add( # open basket & diamond falling
-                    Phaser.Timer.SECOND * 0.35
+                    Phaser.Timer.SECOND * 0.2
                     ()-> @bsk.real_body.btm.body.enable = false
                     @
                 )
