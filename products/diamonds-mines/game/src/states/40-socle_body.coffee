@@ -2,7 +2,7 @@
 
 class Phacker.Game.Socle_body
 
-    constructor: (@gm,@dmdO) ->
+    constructor: (@gm) ->
         @_fle_ = 'Socle body'
         @Pm = @gm.parameters    # globals parameters
 

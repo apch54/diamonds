@@ -6,7 +6,9 @@ class @YourGame extends Phacker.GameState
         super() #Required
         @basketsO.move() if @buttonO.pm.start
         @diamondsO.collide_baskets @bskts
+        @diamondsO.collide_socle(@scl)
         @diamondsO.collide_itself()
+
 
     resetPlayer: ->
         console.log "Reset the player"
@@ -23,7 +25,10 @@ class @YourGame extends Phacker.GameState
 
         @buttonO = new Phacker.Game.Button @game, @basketsO, @diamondsO
         @inputO = new Phacker.Game.Input @game
-        @cocle_bodyO = new Phacker.Game.Socle_body @game, @diamondsO
+
+        @socle_bodyO= new Phacker.Game.Socle_body @game
+        @scl = @socle_bodyO.bdy
+
 
     ### LOGIC OF YOUR GAME
     # Examples buttons actions
