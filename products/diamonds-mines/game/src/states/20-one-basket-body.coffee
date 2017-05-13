@@ -45,7 +45,7 @@ class Phacker.Game.One_basket_body
         s = bdy_grp.create x, y, b
         s.body.immovable = true
         s.body.moves = false # require
-        s.alpha = 1
+        s.alpha = 0
         #s = @gm.add.sprite x, y, b
         s.anchor.setTo(0.5, 0.5)
         return s

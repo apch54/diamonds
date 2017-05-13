@@ -308,7 +308,7 @@
       s = bdy_grp.create(x, y, b);
       s.body.immovable = true;
       s.body.moves = false;
-      s.alpha = 1;
+      s.alpha = 0;
       s.anchor.setTo(0.5, 0.5);
       return s;
     };
@@ -327,7 +327,7 @@
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.dmds = {
         n: 97,
-        vx1: 30,
+        vx1: 20,
         vx2: 40,
         msg_bsk: 'not yet',
         names: ['blue_ball', 'green_ball', 'pink_ball', 'red_ball', 'yellow_ball'],
@@ -376,14 +376,14 @@
       if (bsk.typ === 'lft') {
         if ((-10 < (ref = bsk.y - dmd.y - bsk.body.height / 2) && ref < 10)) {
           this.twn_move(dmd, dmd.x + 20, dmd.y + 30);
-        } else if (bsk.x < dmd.x) {
-          dmd.body.velocity.x += this.pm.vx2;
+        } else {
+          dmd.x += 1;
         }
       } else if (bsk.typ === 'rgt') {
         if ((-10 < (ref1 = bsk.y - dmd.y - bsk.body.height / 2) && ref1 < 10)) {
           this.twn_move(dmd, dmd.x - 20, dmd.y + 30);
-        } else if (bsk.x > dmd.x) {
-          dmd.body.velocity.x -= this.pm.vx2;
+        } else {
+          dmd.x -= 1;
         }
       } else if (bsk.typ === 'btm') {
         dmd.body.velocity.y = 0;
@@ -404,8 +404,13 @@
     };
 
     Diamonds.prototype.when_collide_itself = function(d1, d2) {
-      d1.body.velocity.x = this.pm.vx1;
-      d2.body.velocity.x = -this.pm.vx1;
+      if (d1.x < d2.x) {
+        d1.body.velocity.x = -this.pm.vx1;
+        d2.body.velocity.x = this.pm.vx1;
+      } else {
+        d1.body.velocity.x = this.pm.vx1;
+        d2.body.velocity.x = -this.pm.vx1;
+      }
       return true;
     };
 

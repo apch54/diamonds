@@ -6,7 +6,7 @@ class Phacker.Game.Diamonds
         @Pm = @gm.parameters    # globals parameters
         @pm = @Pm.dmds = # as diamonds
             n: 97 # number of diamonds
-            vx1 : 30 # collision vx result with itself
+            vx1 : 20 # collision vx result with itself
             vx2 : 40 # diamond collide with basket
             msg_bsk: 'not yet'
             names: ['blue_ball', 'green_ball', 'pink_ball', 'red_ball', 'yellow_ball']
@@ -52,12 +52,12 @@ class Phacker.Game.Diamonds
         if bsk.typ is 'lft'
             if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
                 @twn_move dmd, dmd.x+20, dmd.y+30
-            else if  bsk.x < dmd.x then dmd.body.velocity.x += @pm.vx2
+            else dmd.x += 1 #body.velocity.x += @pm.vx2
 
         else if bsk.typ is 'rgt'
             if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
                 @twn_move dmd, dmd.x-20, dmd.y+30
-            else if bsk.x > dmd.x then dmd.body.velocity.x -= @pm.vx2;
+            else  dmd.x -= 1 #body.velocity.x -= @pm.vx2;
 
         else if bsk.typ is 'btm'
             dmd.body.velocity.y =  0
@@ -82,8 +82,12 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_itself:(d1, d2) ->
-        d1.body.velocity.x = @pm.vx1
-        d2.body.velocity.x = -@pm.vx1
+        if d1.x < d2.x
+            d1.body.velocity.x = -@pm.vx1
+            d2.body.velocity.x =  @pm.vx1
+        else
+            d1.body.velocity.x = @pm.vx1
+            d2.body.velocity.x = -@pm.vx1
         return true  # return it has collided
 
     #.----------.----------
