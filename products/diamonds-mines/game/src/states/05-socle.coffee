@@ -98,7 +98,7 @@ class Phacker.Game.Socle
     # make twen for object with lst variation paramaters an during t
     # __________.__________
 
-    mk_tween:(spt, lst , t) ->
+    mk_tween:(spt, lst , t) -> #for wheel
         tw = @gm.add.tween spt
         tw.to( lst, t, Phaser.Easing.Linear.None, true, 0, -1 )
 

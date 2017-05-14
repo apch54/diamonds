@@ -376,12 +376,19 @@
     };
 
     Diamonds.prototype.when_collide_scl = function(dmd, scl) {
-      if (dmd.x < this.pm.x2 - 10) {
-        dmd.body.velocity.x = this.pm.vx0;
-      } else if (dmd.x > this.pm.x2 + 10) {
-        dmd.body.velocity.x = -this.pm.vx0;
+      switch (scl.pos) {
+        case 'hight-left':
+          dmd.body.velocity.x = this.pm.vx0;
+          break;
+        case 'hight-right':
+          dmd.body.velocity.x = -this.pm.vx0;
+          break;
+        case 'bottom-left':
+          dmd.body.velocity.x = -this.pm.vx0;
+          break;
+        case 'bottom-right':
+          dmd.body.velocity.x = this.pm.vx0;
       }
-      console.log(this._fle_, ': ', dmd.body.velocity.x);
       return true;
     };
 
@@ -589,16 +596,26 @@
         x2: this.Pm.dmds.x2 + 2,
         y2: this.Pm.dmds.y1 + 60,
         x3: this.Pm.dmds.x2 + 43,
-        x4: this.Pm.dmds.x3 + 60
+        x4: this.Pm.dmds.x3 + 60,
+        x5: this.Pm.btm.x0 - this.Pm.btm.w / 2,
+        y5: this.Pm.btm.y0 + 20,
+        x6: this.Pm.btm.x0,
+        y6: this.Pm.btm.y0 + 3,
+        x7: this.Pm.btm.x0 + this.Pm.btm.w / 2
       };
       this.pm.y3 = this.pm.y2 + this.pm.h;
       this.pm.y4 = this.pm.y1;
+      this.pm.y7 = this.pm.y5;
       this.pm.delta1 = (this.pm.y2 - this.pm.y1) / (this.pm.x2 - this.pm.x1);
       this.pm.delta2 = -this.pm.delta1;
+      this.pm.delta3 = (this.pm.y6 - this.pm.y5) / (this.pm.x6 - this.pm.x5);
+      this.pm.delta4 = -this.pm.delta3;
       this.bdy = this.gm.add.physicsGroup();
       this.bdy.enableBody = true;
       this.mk_left();
       this.mk_right();
+      this.mk_btm_left();
+      this.mk_btm_right();
     }
 
     Socle_body.prototype.mk_left = function() {
@@ -606,27 +623,51 @@
       dx = 0;
       while (dx < this.pm.x2 - this.pm.x1) {
         yy = this.pm.y1 + dx * this.pm.delta1;
-        this.mk_rect(this.bdy, this.pm.x1 + dx, yy, this.pm.w, this.pm.h);
+        this.mk_rect(this.bdy, this.pm.x1 + dx, yy, this.pm.w, this.pm.h, 'hight-left');
         dx += this.pm.w + 3;
       }
-      return this.last = this.mk_rect(this.bdy, this.pm.x2 - 6, this.pm.y2 + 12, this.pm.w, 28);
+      return this.last = this.mk_rect(this.bdy, this.pm.x2 - 6, this.pm.y2 + 12, this.pm.w, 28, 'hight-left');
     };
 
     Socle_body.prototype.mk_right = function() {
       var dx, last, results, yy, yy0;
-      this.mk_rect(this.bdy, this.pm.x3, this.last.y, this.pm.w, 28);
+      this.mk_rect(this.bdy, this.pm.x3, this.last.y, this.pm.w, 28, 'hight-right');
       dx = this.pm.w + 3;
       yy0 = this.pm.y3 - this.pm.h;
       results = [];
       while (dx < this.pm.x4 - this.pm.x3) {
         yy = yy0 + dx * this.pm.delta2;
-        last = this.mk_rect(this.bdy, this.pm.x3 + dx, yy, this.pm.w, this.pm.h);
+        last = this.mk_rect(this.bdy, this.pm.x3 + dx, yy, this.pm.w, this.pm.h, 'hight-right');
         results.push(dx += this.pm.w + 3);
       }
       return results;
     };
 
-    Socle_body.prototype.mk_rect = function(bdy_grp, x, y, w, h) {
+    Socle_body.prototype.mk_btm_left = function() {
+      var dx, yy;
+      dx = 0;
+      while (dx < this.pm.x6 - this.pm.x5) {
+        yy = this.pm.y5 + dx * this.pm.delta3;
+        this.mk_rect(this.bdy, this.pm.x5 + dx, yy, this.pm.w, this.pm.h, 'bottom-left');
+        dx += this.pm.w + 3;
+      }
+      return this.last = this.mk_rect(this.bdy, this.pm.x6, this.pm.y6, this.pm.w, this.pm.h, 'bottom-left');
+    };
+
+    Socle_body.prototype.mk_btm_right = function() {
+      var dx, results, yy, yy0;
+      dx = this.pm.w + 3;
+      yy0 = this.last.y;
+      results = [];
+      while (dx < this.pm.x7 - this.pm.x6) {
+        yy = yy0 + dx * this.pm.delta4;
+        this.mk_rect(this.bdy, this.pm.x6 + dx, yy, this.pm.w, this.pm.h, 'bottom-right');
+        results.push(dx += this.pm.w + 3);
+      }
+      return results;
+    };
+
+    Socle_body.prototype.mk_rect = function(bdy_grp, x, y, w, h, pos) {
       var b, s;
       b = this.gm.add.bitmapData(w, h);
       b.ctx.beginPath();
@@ -638,6 +679,7 @@
       s.body.moves = false;
       s.alpha = 1;
       s.anchor.setTo(0.5, 0.5);
+      s.pos = pos;
       return s;
     };
 

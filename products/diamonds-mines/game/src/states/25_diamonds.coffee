@@ -53,10 +53,15 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_scl:(dmd, scl) ->
+        switch scl.pos
+            when 'hight-left'       then dmd.body.velocity.x = @pm.vx0
+            when 'hight-right'      then dmd.body.velocity.x = -@pm.vx0
+            when 'bottom-left'      then dmd.body.velocity.x = -@pm.vx0
+            when 'bottom-right'     then dmd.body.velocity.x = @pm.vx0
 
-        if dmd.x < @pm.x2-10 then dmd.body.velocity.x = @pm.vx0
-        else if dmd.x > @pm.x2+10 then dmd.body.velocity.x = -@pm.vx0
-        console.log @_fle_,': ',dmd.body.velocity.x
+
+#        if dmd.x < @pm.x2-10 then dmd.body.velocity.x = @pm.vx0
+#        else if dmd.x > @pm.x2+10 then dmd.body.velocity.x = -@pm.vx0
 
         return true  # return it has collided
 

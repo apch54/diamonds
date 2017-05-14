@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d91a320a-117f-4728-9dcf-90b277d1c71e" name="Default" comment="">
+    <list default="true" id="d91a320a-117f-4728-9dcf-90b277d1c71e" name="Default" comment="right scl part">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/game.js" afterPath="$PROJECT_DIR$/build/game.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/05-socle.coffee" afterPath="$PROJECT_DIR$/src/states/05-socle.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/25_diamonds.coffee" afterPath="$PROJECT_DIR$/src/states/25_diamonds.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/40-socle_body.coffee" afterPath="$PROJECT_DIR$/src/states/40-socle_body.coffee" />
     </list>
@@ -16,7 +17,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.372242">
+    <splitter split-orientation="horizontal" split-proportion="0.46192172">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="25_diamonds.coffee" pinned="false" current-in-tab="false">
@@ -25,10 +26,11 @@
                 <state relative-caret-position="432">
                   <caret line="24" column="31" lean-forward="false" selection-start-line="23" selection-start-column="8" selection-end-line="24" selection-end-column="31" />
                   <folding>
-                    <marker date="1494745399926" expanded="true" signature="188:759" ph="&quot;msg_bsk&quot;: 'not yet'..." />
-                    <marker date="1494745399926" expanded="true" signature="1178:1417" ph="..." />
-                    <marker date="1494745399926" expanded="true" signature="2603:2759" ph="..." />
-                    <marker date="1494745399926" expanded="true" signature="2806:2964" ph="..." />
+                    <marker date="1494780221185" expanded="true" signature="188:759" ph="&quot;msg_bsk&quot;: 'not yet'..." />
+                    <marker date="1494780221185" expanded="true" signature="1178:1417" ph="..." />
+                    <marker date="1494780221185" expanded="true" signature="2202:2349" ph="..." />
+                    <marker date="1494780221185" expanded="true" signature="2863:3019" ph="..." />
+                    <marker date="1494780221185" expanded="true" signature="3066:3224" ph="..." />
                   </folding>
                 </state>
               </provider>
@@ -57,8 +59,8 @@
           <file leaf-file-name="40-socle_body.coffee" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/states/40-socle_body.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="197">
-                  <caret line="17" column="49" lean-forward="false" selection-start-line="17" selection-start-column="49" selection-end-line="17" selection-end-column="49" />
+                <state relative-caret-position="-515">
+                  <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -91,14 +93,24 @@
           <file leaf-file-name="25_diamonds.coffee" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/states/25_diamonds.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="380">
-                  <caret line="57" column="62" lean-forward="false" selection-start-line="57" selection-start-column="62" selection-end-line="57" selection-end-column="62" />
+                <state relative-caret-position="254">
+                  <caret line="59" column="63" lean-forward="false" selection-start-line="59" selection-start-column="63" selection-end-line="59" selection-end-column="63" />
                   <folding>
-                    <marker date="1494745399926" expanded="true" signature="188:759" ph="&quot;msg_bsk&quot;: 'not yet'..." />
-                    <marker date="1494745399926" expanded="true" signature="1178:1417" ph="..." />
-                    <marker date="1494745399926" expanded="true" signature="2603:2759" ph="..." />
-                    <marker date="1494745399926" expanded="true" signature="2806:2964" ph="..." />
+                    <marker date="1494780221185" expanded="true" signature="188:759" ph="&quot;msg_bsk&quot;: 'not yet'..." />
+                    <marker date="1494780221185" expanded="true" signature="1178:1417" ph="..." />
+                    <marker date="1494780221185" expanded="true" signature="2863:3019" ph="..." />
+                    <marker date="1494780221185" expanded="true" signature="3066:3224" ph="..." />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="05-socle.coffee" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/states/05-socle.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="601">
+                  <caret line="95" column="0" lean-forward="true" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -144,7 +156,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/states/05-socle.coffee" />
         <option value="$PROJECT_DIR$/src/states/fffff.js" />
         <option value="$PROJECT_DIR$/src/states/25-green-button.coffee" />
         <option value="$PROJECT_DIR$/src/states/30-global-input.coffee" />
@@ -156,6 +167,7 @@
         <option value="$PROJECT_DIR$/src/states/15-baskets.coffee" />
         <option value="$PROJECT_DIR$/src/states/20-one-basket-body.coffee" />
         <option value="$PROJECT_DIR$/src/states/jeu.coffee" />
+        <option value="$PROJECT_DIR$/src/states/05-socle.coffee" />
         <option value="$PROJECT_DIR$/src/states/40-socle_body.coffee" />
         <option value="$PROJECT_DIR$/src/states/25_diamonds.coffee" />
       </list>
@@ -179,8 +191,8 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="180" />
-    <option name="y" value="51" />
+    <option name="x" value="67" />
+    <option name="y" value="65" />
     <option name="width" value="1703" />
     <option name="height" value="921" />
   </component>
@@ -200,8 +212,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -248,6 +258,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -385,7 +397,8 @@
       <workItem from="1494600829838" duration="7992000" />
       <workItem from="1494679029487" duration="5569000" />
       <workItem from="1494684664328" duration="449000" />
-      <workItem from="1494741400209" duration="4113000" />
+      <workItem from="1494741400209" duration="4459000" />
+      <workItem from="1494775472479" duration="4331000" />
     </task>
     <task id="LOCAL-00001" summary="one">
       <created>1494080708768</created>
@@ -569,14 +582,21 @@
       <option name="project" value="LOCAL" />
       <updated>1494684579199</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="right scl part">
+      <created>1494745554747</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1494745554747</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="133392000" />
+    <option name="totallyTimeSpent" value="138069000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="180" y="51" width="1703" height="921" extended-state="0" />
+    <frame x="67" y="65" width="1703" height="921" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -584,13 +604,13 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3616751" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3616751" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39974618" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39974618" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -631,7 +651,8 @@
     <MESSAGE value="socle body" />
     <MESSAGE value="fix moves of diamonds in the baskets" />
     <MESSAGE value="collide socle" />
-    <option name="LAST_COMMIT_MESSAGE" value="collide socle" />
+    <MESSAGE value="right scl part" />
+    <option name="LAST_COMMIT_MESSAGE" value="right scl part" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -946,13 +967,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/states/05-socle.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-545">
-          <caret line="20" column="20" lean-forward="false" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/states/10-one-basket.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -999,23 +1013,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/states/05-socle.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="601">
+          <caret line="95" column="0" lean-forward="true" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/states/40-socle_body.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="17" column="49" lean-forward="false" selection-start-line="17" selection-start-column="49" selection-end-line="17" selection-end-column="49" />
+        <state relative-caret-position="-515">
+          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/states/25_diamonds.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="57" column="62" lean-forward="false" selection-start-line="57" selection-start-column="62" selection-end-line="57" selection-end-column="62" />
+        <state relative-caret-position="254">
+          <caret line="59" column="63" lean-forward="false" selection-start-line="59" selection-start-column="63" selection-end-line="59" selection-end-column="63" />
           <folding>
-            <marker date="1494745399926" expanded="true" signature="188:759" ph="&quot;msg_bsk&quot;: 'not yet'..." />
-            <marker date="1494745399926" expanded="true" signature="1178:1417" ph="..." />
-            <marker date="1494745399926" expanded="true" signature="2603:2759" ph="..." />
-            <marker date="1494745399926" expanded="true" signature="2806:2964" ph="..." />
+            <marker date="1494780221185" expanded="true" signature="188:759" ph="&quot;msg_bsk&quot;: 'not yet'..." />
+            <marker date="1494780221185" expanded="true" signature="1178:1417" ph="..." />
+            <marker date="1494780221185" expanded="true" signature="2863:3019" ph="..." />
+            <marker date="1494780221185" expanded="true" signature="3066:3224" ph="..." />
           </folding>
         </state>
       </provider>
