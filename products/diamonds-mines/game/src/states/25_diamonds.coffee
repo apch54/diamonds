@@ -36,7 +36,7 @@ class Phacker.Game.Diamonds
         d0 = @dmd_transfert(0);     d0.x = @Pm.rop.x0 + @Pm.rop.w/2 - 2;   d0.y=1
         d1 = @dmd_transfert(4);     d1.x = @Pm.rop.x0 + @Pm.rop.w/2 - 2;   d1.y=60
         d2 = @dmd_transfert(7);     d2.x = @Pm.rop.x0 + @Pm.rop.w/2 - 2;   d2.y=70
-        d3 =@dmd_transfert(0)
+        d3 =@dmd_transfert(7)
 
     #.----------.----------
     # COLLIDE  with socle group
@@ -55,7 +55,8 @@ class Phacker.Game.Diamonds
     when_collide_scl:(dmd, scl) ->
 
         if dmd.x < @pm.x2-10 then dmd.body.velocity.x = @pm.vx0
-        else if dmd.x > @pm.x2+10 then d0.body.velocity.x = -@pm.vx0
+        else if dmd.x > @pm.x2+10 then dmd.body.velocity.x = -@pm.vx0
+        console.log @_fle_,': ',dmd.body.velocity.x
 
         return true  # return it has collided
 

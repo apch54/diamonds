@@ -361,7 +361,7 @@
       d2 = this.dmd_transfert(7);
       d2.x = this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2;
       d2.y = 70;
-      return d3 = this.dmd_transfert(0);
+      return d3 = this.dmd_transfert(7);
     };
 
     Diamonds.prototype.collide_socle = function(scl) {
@@ -379,8 +379,9 @@
       if (dmd.x < this.pm.x2 - 10) {
         dmd.body.velocity.x = this.pm.vx0;
       } else if (dmd.x > this.pm.x2 + 10) {
-        d0.body.velocity.x = -this.pm.vx0;
+        dmd.body.velocity.x = -this.pm.vx0;
       }
+      console.log(this._fle_, ': ', dmd.body.velocity.x);
       return true;
     };
 
@@ -581,28 +582,48 @@
       this._fle_ = 'Socle body';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.sclb = {
-        w: 15,
+        w: 20,
         h: 10,
         x1: this.Pm.dmds.x1 + 5,
         y1: this.Pm.dmds.y1 + 30,
         x2: this.Pm.dmds.x2 + 2,
-        y2: this.Pm.dmds.y1 + 60
+        y2: this.Pm.dmds.y1 + 60,
+        x3: this.Pm.dmds.x2 + 43,
+        x4: this.Pm.dmds.x3 + 60
       };
+      this.pm.y3 = this.pm.y2 + this.pm.h;
+      this.pm.y4 = this.pm.y1;
       this.pm.delta1 = (this.pm.y2 - this.pm.y1) / (this.pm.x2 - this.pm.x1);
+      this.pm.delta2 = -this.pm.delta1;
       this.bdy = this.gm.add.physicsGroup();
       this.bdy.enableBody = true;
       this.mk_left();
+      this.mk_right();
     }
 
     Socle_body.prototype.mk_left = function() {
-      var dx, last, yy;
+      var dx, yy;
       dx = 0;
       while (dx < this.pm.x2 - this.pm.x1) {
         yy = this.pm.y1 + dx * this.pm.delta1;
-        last = this.mk_rect(this.bdy, this.pm.x1 + dx, yy, this.pm.w, this.pm.h);
+        this.mk_rect(this.bdy, this.pm.x1 + dx, yy, this.pm.w, this.pm.h);
         dx += this.pm.w + 3;
       }
-      return this.mk_rect(this.bdy, this.pm.x2 - 2, this.pm.y2 + 12, this.pm.w, 28);
+      return this.last = this.mk_rect(this.bdy, this.pm.x2 - 6, this.pm.y2 + 12, this.pm.w, 28);
+    };
+
+    Socle_body.prototype.mk_right = function() {
+      var dx, last, results, yy, yy0;
+      this.mk_rect(this.bdy, this.pm.x3, this.last.y, this.pm.w, 28);
+      dx = this.pm.w + 3;
+      yy0 = this.pm.y3 - this.pm.h;
+      results = [];
+      while (dx < this.pm.x4 - this.pm.x3) {
+        yy = yy0 + dx * this.pm.delta2;
+        last = this.mk_rect(this.bdy, this.pm.x3 + dx, yy, this.pm.w, this.pm.h);
+        results.push(dx += this.pm.w + 3);
+      }
+      return results;
     };
 
     Socle_body.prototype.mk_rect = function(bdy_grp, x, y, w, h) {
