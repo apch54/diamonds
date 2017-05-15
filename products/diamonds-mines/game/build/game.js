@@ -380,8 +380,14 @@
         case 'hight-left':
           dmd.body.velocity.x = this.pm.vx0;
           break;
+        case 'middle-left':
+          dmd.body.velocity.x = this.pm.vx0 / 3;
+          break;
         case 'hight-right':
           dmd.body.velocity.x = -this.pm.vx0;
+          break;
+        case 'middle-right':
+          dmd.body.velocity.x = -this.pm.vx0 / 3;
           break;
         case 'bottom-left':
           dmd.body.velocity.x = -this.pm.vx0;
@@ -549,31 +555,45 @@
 }).call(this);
 
 (function() {
-  Phacker.Game.Input = (function() {
-    function Input(gm) {
+  Phacker.Game.Gate = (function() {
+    function Gate(gm, scl_bdy) {
       this.gm = gm;
-      this._fle_ = 'Input';
+      this.scl_bdy = scl_bdy;
+      this._fle_ = 'Gate';
       this.Pm = this.gm.parameters;
+      this.pm = this.Pm.gate = {
+        x0: this.Pm.mec.x0,
+        y0: this.Pm.mec.y0 + 148,
+        w: 28,
+        h: 7
+      };
       this.Pm.mouse_down = false;
       this.gm.input.onDown.add(this.on_mouse_down, this);
       this.gm.input.onUp.add(this.on_mouse_up, this);
+      this.gt = this.scl_bdy.create(this.pm.x0, this.pm.y0, 'mecanic_door_left');
+      this.gt.scale.setTo(this.pm.w / 14, this.pm.h / 3);
+      this.gt.anchor.setTo(0.5, 0);
+      this.gt.body.immovable = true;
+      this.gt.body.moves = false;
     }
 
-    Input.prototype.on_mouse_down = function() {
+    Gate.prototype.on_mouse_down = function() {
       if (!this.Pm.btn.start) {
         return;
       }
       return this.Pm.mouse_down = true;
     };
 
-    Input.prototype.on_mouse_up = function() {
+    Gate.prototype.on_mouse_up = function() {
       if (!this.Pm.btn.start) {
         return;
       }
       return this.Pm.mouse_down = false;
     };
 
-    return Input;
+    Gate.prototype.twn_left = function() {};
+
+    return Gate;
 
   })();
 
@@ -626,12 +646,12 @@
         this.mk_rect(this.bdy, this.pm.x1 + dx, yy, this.pm.w, this.pm.h, 'hight-left');
         dx += this.pm.w + 3;
       }
-      return this.last = this.mk_rect(this.bdy, this.pm.x2 - 6, this.pm.y2 + 12, this.pm.w, 28, 'hight-left');
+      return this.last = this.mk_rect(this.bdy, this.pm.x2 - 4, this.pm.y2 + 12, this.pm.w, 28, 'middle-left');
     };
 
     Socle_body.prototype.mk_right = function() {
       var dx, last, results, yy, yy0;
-      this.mk_rect(this.bdy, this.pm.x3, this.last.y, this.pm.w, 28, 'hight-right');
+      this.mk_rect(this.bdy, this.pm.x3, this.last.y, this.pm.w, 28, 'middle-right');
       dx = this.pm.w + 3;
       yy0 = this.pm.y3 - this.pm.h;
       results = [];
@@ -677,7 +697,7 @@
       s = bdy_grp.create(x, y, b);
       s.body.immovable = true;
       s.body.moves = false;
-      s.alpha = 1;
+      s.alpha = 0;
       s.anchor.setTo(0.5, 0.5);
       s.pos = pos;
       return s;
@@ -725,9 +745,9 @@
       this.diamondsO = new Phacker.Game.Diamonds(this.game);
       this.dmds = this.diamondsO.grp0;
       this.buttonO = new Phacker.Game.Button(this.game, this.basketsO, this.diamondsO);
-      this.inputO = new Phacker.Game.Input(this.game);
       this.socle_bodyO = new Phacker.Game.Socle_body(this.game);
-      return this.scl = this.socle_bodyO.bdy;
+      this.scl = this.socle_bodyO.bdy;
+      return this.gateO = new Phacker.Game.Gate(this.game, this.scl);
     };
 
 

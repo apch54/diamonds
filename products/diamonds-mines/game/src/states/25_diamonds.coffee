@@ -55,10 +55,11 @@ class Phacker.Game.Diamonds
     when_collide_scl:(dmd, scl) ->
         switch scl.pos
             when 'hight-left'       then dmd.body.velocity.x = @pm.vx0
+            when 'middle-left'      then dmd.body.velocity.x = @pm.vx0/3
             when 'hight-right'      then dmd.body.velocity.x = -@pm.vx0
+            when 'middle-right'     then dmd.body.velocity.x = -@pm.vx0/3
             when 'bottom-left'      then dmd.body.velocity.x = -@pm.vx0
             when 'bottom-right'     then dmd.body.velocity.x = @pm.vx0
-
 
 #        if dmd.x < @pm.x2-10 then dmd.body.velocity.x = @pm.vx0
 #        else if dmd.x > @pm.x2+10 then dmd.body.velocity.x = -@pm.vx0
@@ -135,7 +136,7 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     # Initialisation of all diamonds (ball)
-    # Creation of ball
+    # Creation of balls
     #.----------.----------
     init : () ->
         x=@pm.x1;           y=@pm.y1+10

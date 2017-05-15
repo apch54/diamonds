@@ -24,10 +24,11 @@ class @YourGame extends Phacker.GameState
         @dmds = @diamondsO.grp0 # all diamonds
 
         @buttonO = new Phacker.Game.Button @game, @basketsO, @diamondsO
-        @inputO = new Phacker.Game.Input @game
 
         @socle_bodyO= new Phacker.Game.Socle_body @game
         @scl = @socle_bodyO.bdy
+
+        @gateO = new Phacker.Game.Gate @game, @scl
 
 
     ### LOGIC OF YOUR GAME

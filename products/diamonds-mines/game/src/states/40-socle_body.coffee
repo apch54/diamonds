@@ -24,8 +24,9 @@ class Phacker.Game.Socle_body
         @pm.delta3= (@pm.y6 - @pm.y5) / (@pm.x6 - @pm.x5)       # line inclinaison height-left
         @pm.delta4= -@pm.delta3   # line inclinaison height-left
 
-        @bdy = @gm.add.physicsGroup()                           # basket body group; real bodies
+        @bdy = @gm.add.physicsGroup()                           # socle body group; real bodies
         @bdy.enableBody = true
+
         @mk_left()
         @mk_right()
         @mk_btm_left()
@@ -40,11 +41,11 @@ class Phacker.Game.Socle_body
             yy = @pm.y1 + dx * @pm.delta1
             @mk_rect @bdy, @pm.x1 + dx, yy, @pm.w, @pm.h ,'hight-left'# group,x,y,w,h
             dx += @pm.w + 3
-        @last = @mk_rect @bdy, @pm.x2 - 6 , @pm.y2 + 12 , @pm.w, 28,'hight-left'
+        @last = @mk_rect @bdy, @pm.x2 - 4 , @pm.y2 + 12 , @pm.w, 28,'middle-left'
 
     #.----------.----------
     mk_right:() ->
-        @mk_rect @bdy, @pm.x3 , @last.y, @pm.w, 28, 'hight-right'
+        @mk_rect @bdy, @pm.x3 , @last.y, @pm.w, 28, 'middle-right'
         dx= @pm.w + 3
         yy0= @pm.y3 - @pm.h
         while dx < @pm.x4 - @pm.x3
@@ -86,8 +87,8 @@ class Phacker.Game.Socle_body
         #add sprite in game
         s = bdy_grp.create x, y, b
         s.body.immovable = true
-        s.body.moves = false # require
-        s.alpha = 1
+        s.body.moves = false # required
+        s.alpha = 0
         #s = @gm.add.sprite x, y, b
         s.anchor.setTo(0.5, 0.5)
         s.pos = pos # location in body socle
