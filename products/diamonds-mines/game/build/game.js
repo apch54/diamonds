@@ -567,6 +567,9 @@
         w: 28,
         h: 7
       };
+      this.pm.to = {
+        x: this.pm.x0 + this.pm.w
+      };
       this.Pm.mouse_down = false;
       this.gm.input.onDown.add(this.on_mouse_down, this);
       this.gm.input.onUp.add(this.on_mouse_up, this);
@@ -581,17 +584,24 @@
       if (!this.Pm.btn.start) {
         return;
       }
-      return this.Pm.mouse_down = true;
+      this.Pm.mouse_down = true;
+      return this.twn_close_open(this.gt, this.pm.to.x);
     };
 
     Gate.prototype.on_mouse_up = function() {
       if (!this.Pm.btn.start) {
         return;
       }
-      return this.Pm.mouse_down = false;
+      this.Pm.mouse_down = false;
+      return this.twn_close_open(this.gt, this.pm.x0);
     };
 
-    Gate.prototype.twn_left = function() {};
+    Gate.prototype.twn_close_open = function(gt, x0) {
+      this.gt_move = this.gm.add.tween(gt);
+      return this.gt_move.to({
+        x: x0
+      }, 250, Phaser.Easing.Linear.None, true);
+    };
 
     return Gate;
 

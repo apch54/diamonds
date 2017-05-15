@@ -8,6 +8,7 @@ class Phacker.Game.Gate
             y0: @Pm.mec.y0 + 148
             w: 28
             h: 7
+        @pm.to ={x: @pm.x0 + @pm.w}
         @Pm.mouse_down = false
 
         @gm.input.onDown.add @on_mouse_down, @
@@ -26,14 +27,19 @@ class Phacker.Game.Gate
     on_mouse_down: ->
         if not @Pm.btn.start then return
         @Pm.mouse_down = true
-        #console.log @_fle_,': ','Down', @Pm.mouse_down
+        @twn_close_open(@gt, @pm.to.x)
 
     on_mouse_up: ->
         if not @Pm.btn.start then return
         @Pm.mouse_down = false
-        #console.log @_fle_,': ','Up', @Pm.mouse_down
+        @twn_close_open(@gt, @pm.x0)
 
     #.----------.----------
     # make tweem moves
     #.----------.----------
-    twn_left: () ->
+    twn_close_open: (gt,x0) ->
+        @gt_move = @gm.add.tween gt
+        @gt_move.to(
+            { x: x0 }
+            250,  Phaser.Easing.Linear.None, true
+        )
