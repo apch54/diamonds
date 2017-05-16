@@ -68,9 +68,8 @@ class Phacker.Game.Socle_body
         yy0= @last.y
         while dx < @pm.x7 - @pm.x6
             yy = yy0 + dx * @pm.delta4
-            @mk_rect @bdy, @pm.x6 + dx, yy, @pm.w, @pm.h,'bottom-right'
+            xx = @mk_rect @bdy, @pm.x6 + dx, yy, @pm.w, @pm.h,'bottom-right'
             dx += @pm.w + 3
-
 
     #.----------.----------
     #make a rectangle for  body
@@ -88,7 +87,8 @@ class Phacker.Game.Socle_body
         s = bdy_grp.create x, y, b
         s.body.immovable = true
         s.body.moves = false # required
-        s.alpha = 0
+        s.alpha = 1
+
         #s = @gm.add.sprite x, y, b
         s.anchor.setTo(0.5, 0.5)
         s.pos = pos # location in body socle

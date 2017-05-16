@@ -24,7 +24,7 @@ class Phacker.Game.Diamonds
             last_transfert_date: 0
             dt: 250 # ms
             used:0
-            dmd_in_game:28
+            dmd_in_game:5
 
 
 
@@ -68,13 +68,18 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_scl:(dmd, scl) ->
+        #console.log @_fle_,': ',scl.pos
         switch scl.pos
-            when 'hight-left'       then dmd.body.velocity.x = @pm.vx0
+            when 'hight-left'        then dmd.body.velocity.x = @pm.vx0
             #when 'middle-left'      then @twn_move(dmd, dmd.x+15, dmd.y+20) #dmd.body.velocity.x = @pm.vx0/3
-            when 'hight-right'      then dmd.body.velocity.x = -@pm.vx0
+            when 'hight-right'       then dmd.body.velocity.x = -@pm.vx0
             #when 'middle-right'     then @twn_move(dmd, dmd.x-15, dmd.y+20)
-            when 'bottom-left'      then dmd.body.velocity.x = -@pm.vx0
-            when 'bottom-right'     then dmd.body.velocity.x = @pm.vx0
+            when 'bottom-left'
+                if dmd.x < @Pm.btm.x0 -  @Pm.btm.w/2 then   @grp0.remove(dmd)
+                else dmd.body.velocity.x = -@pm.vx0
+            when 'bottom-right'
+                if dmd.x > @Pm.btm.x0 +  @Pm.btm.w/2  -  5 then   @grp0.remove(dmd)
+                else dmd.body.velocity.x = @pm.vx0
 
 #        if dmd.x < @pm.x2-10 then dmd.body.velocity.x = @pm.vx0
 #        else if dmd.x > @pm.x2+10 then dmd.body.velocity.x = -@pm.vx0

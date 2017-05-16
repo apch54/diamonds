@@ -345,7 +345,7 @@
         last_transfert_date: 0,
         dt: 250,
         used: 0,
-        dmd_in_game: 28
+        dmd_in_game: 5
       };
       this.grp0 = this.gm.add.physicsGroup();
       this.grp0.enableBody = true;
@@ -429,10 +429,18 @@
           dmd.body.velocity.x = -this.pm.vx0;
           break;
         case 'bottom-left':
-          dmd.body.velocity.x = -this.pm.vx0;
+          if (dmd.x < this.Pm.btm.x0 - this.Pm.btm.w / 2) {
+            this.grp0.remove(dmd);
+          } else {
+            dmd.body.velocity.x = -this.pm.vx0;
+          }
           break;
         case 'bottom-right':
-          dmd.body.velocity.x = this.pm.vx0;
+          if (dmd.x > this.Pm.btm.x0 + this.Pm.btm.w / 2 - 5) {
+            this.grp0.remove(dmd);
+          } else {
+            dmd.body.velocity.x = this.pm.vx0;
+          }
       }
       return true;
     };
@@ -712,13 +720,13 @@
     };
 
     Socle_body.prototype.mk_btm_right = function() {
-      var dx, results, yy, yy0;
+      var dx, results, xx, yy, yy0;
       dx = this.pm.w + 3;
       yy0 = this.last.y;
       results = [];
       while (dx < this.pm.x7 - this.pm.x6) {
         yy = yy0 + dx * this.pm.delta4;
-        this.mk_rect(this.bdy, this.pm.x6 + dx, yy, this.pm.w, this.pm.h, 'bottom-right');
+        xx = this.mk_rect(this.bdy, this.pm.x6 + dx, yy, this.pm.w, this.pm.h, 'bottom-right');
         results.push(dx += this.pm.w + 3);
       }
       return results;
@@ -734,7 +742,7 @@
       s = bdy_grp.create(x, y, b);
       s.body.immovable = true;
       s.body.moves = false;
-      s.alpha = 0;
+      s.alpha = 1;
       s.anchor.setTo(0.5, 0.5);
       s.pos = pos;
       return s;
