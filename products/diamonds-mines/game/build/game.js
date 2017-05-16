@@ -109,11 +109,11 @@
       this._fle_ = 'One bsk';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.bsk = {
-        xrot1: this.Pm.rop.x0 - this.Pm.rop.w / 3,
+        xrot1: this.Pm.rop.x0 - 70,
         xrot2: this.Pm.rop.x0 + this.Pm.rop.w / 6,
         w: 42,
         h: 54,
-        vx: 100,
+        vx: 60,
         names: ['blue_basket', 'green_basket', 'normal_basket', 'pink_basket', 'red_basket']
       };
       this.mk_bsk(this.lstP);
@@ -341,7 +341,11 @@
           x: .2,
           y: .05
         },
-        g: 300
+        g: 300,
+        last_transfert_date: 0,
+        dt: 250,
+        used: 0,
+        dmd_in_game: 28
       };
       this.grp0 = this.gm.add.physicsGroup();
       this.grp0.enableBody = true;
@@ -350,18 +354,59 @@
       this.init();
     }
 
-    Diamonds.prototype.start_game = function() {
-      var d0, d1, d2, d3;
-      d0 = this.dmd_transfert(0);
-      d0.x = this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2;
-      d0.y = 1;
-      d1 = this.dmd_transfert(4);
-      d1.x = this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2;
-      d1.y = 60;
-      d2 = this.dmd_transfert(7);
-      d2.x = this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2;
-      d2.y = 70;
-      return d3 = this.dmd_transfert(7);
+    Diamonds.prototype.check_diamonds = function() {
+      if (this.grp1.length < 1) {
+        return;
+      }
+      if (this.grp0.length <= this.pm.dmd_in_game - 1) {
+        switch (this.pm.used) {
+          case 0:
+          case 1:
+          case 2:
+          case 3:
+            this.dmd_transfert(5);
+            break;
+          case 4:
+          case 5:
+          case 6:
+          case 7:
+            this.dmd_transfert(15);
+            break;
+          case 8:
+          case 9:
+          case 10:
+          case 11:
+            this.dmd_transfert(25);
+            break;
+          case 12:
+          case 13:
+          case 14:
+          case 15:
+            this.dmd_transfert(35);
+            break;
+          case 16:
+          case 17:
+          case 18:
+          case 19:
+            this.dmd_transfert(45);
+            break;
+          case 20:
+          case 21:
+          case 22:
+          case 23:
+            this.dmd_transfert(55);
+            break;
+          case 24:
+          case 25:
+          case 26:
+          case 27:
+            this.dmd_transfert(65);
+            break;
+          default:
+            this.dmd_transfert(0);
+        }
+        return this.pm.used++;
+      }
     };
 
     Diamonds.prototype.collide_socle = function(scl) {
@@ -380,14 +425,8 @@
         case 'hight-left':
           dmd.body.velocity.x = this.pm.vx0;
           break;
-        case 'middle-left':
-          dmd.body.velocity.x = this.pm.vx0 / 3;
-          break;
         case 'hight-right':
           dmd.body.velocity.x = -this.pm.vx0;
-          break;
-        case 'middle-right':
-          dmd.body.velocity.x = -this.pm.vx0 / 3;
           break;
         case 'bottom-left':
           dmd.body.velocity.x = -this.pm.vx0;
@@ -415,13 +454,13 @@
         if ((-10 < (ref = bsk.y - dmd.y - bsk.body.height / 2) && ref < 10)) {
           this.twn_move(dmd, dmd.x + 20, dmd.y + 30);
         } else {
-          dmd.x += 1;
+          dmd.x += 2;
         }
       } else if (bsk.typ === 'rgt') {
         if ((-10 < (ref1 = bsk.y - dmd.y - bsk.body.height / 2) && ref1 < 10)) {
           this.twn_move(dmd, dmd.x - 20, dmd.y + 30);
         } else {
-          dmd.x -= 1;
+          dmd.x -= 2;
         }
       } else if (bsk.typ === 'btm') {
         dmd.body.velocity.y = 0;
@@ -442,13 +481,6 @@
     };
 
     Diamonds.prototype.when_collide_itself = function(d1, d2) {
-      if (d1.x < d2.x) {
-        d1.body.velocity.x -= this.pm.vx1;
-        d2.body.velocity.x += this.pm.vx1;
-      } else {
-        d1.body.velocity.x += this.pm.vx1;
-        d2.body.velocity.x -= this.pm.vx1;
-      }
       return true;
     };
 
@@ -490,21 +522,16 @@
 
     Diamonds.prototype.one_dmds_grp = function(x, y, bll) {
       var dmd;
-      dmd = this.grp0.create(x, y, bll);
-      dmd.body.bounce.y = 0.2;
-      return dmd.body.bounce.x = .4;
+      return dmd = this.grp0.create(x, y, bll);
     };
 
     Diamonds.prototype.dmd_transfert = function(n) {
-      var d0, d1, l;
-      if ((l = this.grp1.length) < n) {
-        n = l - 1;
-      }
+      var d0, d1;
       d1 = this.grp1.getAt(n);
       d0 = this.grp0.create(d1.x, d1.y, d1.frame2);
       d0.body.gravity.y = this.pm.g;
-      d0.body.bounce.y = this.pm.bounce.y;
-      d0.body.bounce.x = this.pm.bounce.x;
+      d0.body.bounce.y = 0;
+      d0.body.bounce.x = 0;
       d1.destroy();
       return d0;
     };
@@ -530,7 +557,7 @@
         y: this.gm.parameters.mec.y0 + 180,
         w: 72,
         h: 72,
-        start: false
+        game_started: false
       };
       this.dmd = this.dmdO.grp0;
       this.draw_button();
@@ -545,7 +572,7 @@
       this.bskO.mk_bsk();
       this.btn.y = 800;
       this.btn.alpha = 0;
-      return this.dmdO.start_game();
+      return this.pm.game_started = true;
     };
 
     return Button;
@@ -564,8 +591,8 @@
       this.pm = this.Pm.gate = {
         x0: this.Pm.mec.x0,
         y0: this.Pm.mec.y0 + 148,
-        w: 28,
-        h: 7
+        w: 30,
+        h: 8
       };
       this.pm.to = {
         x: this.pm.x0 + this.pm.w
@@ -619,8 +646,8 @@
       this._fle_ = 'Socle body';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.sclb = {
-        w: 20,
-        h: 10,
+        w: 10,
+        h: 12,
         x1: this.Pm.dmds.x1 + 5,
         y1: this.Pm.dmds.y1 + 30,
         x2: this.Pm.dmds.x2 + 2,
@@ -656,13 +683,13 @@
         this.mk_rect(this.bdy, this.pm.x1 + dx, yy, this.pm.w, this.pm.h, 'hight-left');
         dx += this.pm.w + 3;
       }
-      return this.last = this.mk_rect(this.bdy, this.pm.x2 - 4, this.pm.y2 + 12, this.pm.w, 28, 'middle-left');
+      return this.last = this.mk_rect(this.bdy, this.pm.x2 - 1, this.pm.y2 + 12, this.pm.w, 28, 'hight-left');
     };
 
     Socle_body.prototype.mk_right = function() {
       var dx, last, results, yy, yy0;
-      this.mk_rect(this.bdy, this.pm.x3, this.last.y, this.pm.w, 28, 'middle-right');
-      dx = this.pm.w + 3;
+      this.mk_rect(this.bdy, this.pm.x3 - 3, this.last.y, this.pm.w, 28, 'hight-right');
+      dx = this.pm.w - 5;
       yy0 = this.pm.y3 - this.pm.h;
       results = [];
       while (dx < this.pm.x4 - this.pm.x3) {
@@ -735,8 +762,11 @@
 
     YourGame.prototype.update = function() {
       YourGame.__super__.update.call(this);
-      if (this.buttonO.pm.start) {
+      if (this.buttonO.pm.game_started) {
         this.basketsO.move();
+      }
+      if (this.buttonO.pm.game_started) {
+        this.diamondsO.check_diamonds();
       }
       this.diamondsO.collide_baskets(this.bskts);
       this.diamondsO.collide_socle(this.scl);

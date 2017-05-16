@@ -4,7 +4,8 @@ class @YourGame extends Phacker.GameState
 
     update: ->
         super() #Required
-        @basketsO.move() if @buttonO.pm.start
+        @basketsO.move() if @buttonO.pm.game_started
+        @diamondsO.check_diamonds() if @buttonO.pm.game_started
         @diamondsO.collide_baskets @bskts
         @diamondsO.collide_socle(@scl)
         @diamondsO.collide_itself()

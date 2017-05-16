@@ -6,8 +6,8 @@ class Phacker.Game.Gate
         @pm = @Pm.gate =
             x0: @Pm.mec.x0 # gate paramaters
             y0: @Pm.mec.y0 + 148
-            w: 28
-            h: 7
+            w: 30
+            h: 8
         @pm.to ={x: @pm.x0 + @pm.w}
         @Pm.mouse_down = false
 
@@ -20,6 +20,7 @@ class Phacker.Game.Gate
         @gt.anchor.setTo(0.5, 0) # On middle top of sprite gate
         @gt.body.immovable = true
         @gt.body.moves = false # required
+        #@gt.body.mass = 1000
 
     #.----------.----------
     # set mouse events

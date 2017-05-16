@@ -10,7 +10,7 @@ class Phacker.Game.Button
             y:  @gm.parameters.mec.y0 + 180
             w:  72
             h:  72
-            start: false # for game starting
+            game_started: false # for game starting
         @dmd = @dmdO.grp0
 
         @draw_button()
@@ -30,5 +30,6 @@ class Phacker.Game.Button
         @btn.y = 800  # very low down
         @btn.alpha = 0
 
-        @dmdO.start_game()
+        #@dmdO.start_game()
+        @pm.game_started = on
 
