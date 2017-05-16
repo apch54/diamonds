@@ -5,6 +5,8 @@ class Phacker.Game.Diamonds
 
         @Pm = @gm.parameters    # globals parameters
         @pm = @Pm.dmds = # as diamonds
+            w: 10
+            h:10
             n: 97 # number of diamonds
             vx0: 100 #initial  diamond vx
             vx1 : 20 # collision vx result with itself
@@ -24,7 +26,7 @@ class Phacker.Game.Diamonds
             last_transfert_date: 0
             dt: 250 # ms
             used:0
-            dmd_in_game:5
+            dmd_in_game:28
 
 
 
@@ -71,18 +73,16 @@ class Phacker.Game.Diamonds
         #console.log @_fle_,': ',scl.pos
         switch scl.pos
             when 'hight-left'        then dmd.body.velocity.x = @pm.vx0
-            #when 'middle-left'      then @twn_move(dmd, dmd.x+15, dmd.y+20) #dmd.body.velocity.x = @pm.vx0/3
             when 'hight-right'       then dmd.body.velocity.x = -@pm.vx0
-            #when 'middle-right'     then @twn_move(dmd, dmd.x-15, dmd.y+20)
             when 'bottom-left'
                 if dmd.x < @Pm.btm.x0 -  @Pm.btm.w/2 then   @grp0.remove(dmd)
                 else dmd.body.velocity.x = -@pm.vx0
             when 'bottom-right'
                 if dmd.x > @Pm.btm.x0 +  @Pm.btm.w/2  -  5 then   @grp0.remove(dmd)
                 else dmd.body.velocity.x = @pm.vx0
-
-#        if dmd.x < @pm.x2-10 then dmd.body.velocity.x = @pm.vx0
-#        else if dmd.x > @pm.x2+10 then dmd.body.velocity.x = -@pm.vx0
+            when 'gate'
+                dmd.y = scl.y - @pm.h
+                console.log @_fle_,': ','in gate'
 
         return true  # return it has collided
 

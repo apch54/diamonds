@@ -20,6 +20,7 @@ class Phacker.Game.Gate
         @gt.anchor.setTo(0.5, 0) # On middle top of sprite gate
         @gt.body.immovable = true
         @gt.body.moves = false # required
+        @gt.pos ='gate'
         #@gt.body.mass = 1000
 
     #.----------.----------

@@ -326,6 +326,8 @@
       this._fle_ = 'Diamonds';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.dmds = {
+        w: 10,
+        h: 10,
         n: 97,
         vx0: 100,
         vx1: 20,
@@ -345,7 +347,7 @@
         last_transfert_date: 0,
         dt: 250,
         used: 0,
-        dmd_in_game: 5
+        dmd_in_game: 28
       };
       this.grp0 = this.gm.add.physicsGroup();
       this.grp0.enableBody = true;
@@ -441,6 +443,10 @@
           } else {
             dmd.body.velocity.x = this.pm.vx0;
           }
+          break;
+        case 'gate':
+          dmd.y = scl.y - this.pm.h;
+          console.log(this._fle_, ': ', 'in gate');
       }
       return true;
     };
@@ -613,6 +619,7 @@
       this.gt.anchor.setTo(0.5, 0);
       this.gt.body.immovable = true;
       this.gt.body.moves = false;
+      this.gt.pos = 'gate';
     }
 
     Gate.prototype.on_mouse_down = function() {
