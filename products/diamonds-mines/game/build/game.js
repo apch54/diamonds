@@ -210,7 +210,7 @@
         y3: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
         x4: this.Pm.rop.x0 - this.Pm.rop.w / 2 + 2,
         y4: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
-        n: 6
+        n: this.gm.gameOptions.life
       };
       this.pm.bsk_remaining = this.pm.n;
       this.bska = [];
