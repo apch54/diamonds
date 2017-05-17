@@ -3,10 +3,14 @@
 class @YourGame extends Phacker.GameState
 
     update: ->
+        @_fle = 'Update'
         super() #Required
         @basketsO.move() if @buttonO.pm.game_started
         @diamondsO.check_diamonds() if @buttonO.pm.game_started
-        @diamondsO.collide_baskets @bskts
+
+        msg = @diamondsO.collide_baskets @bskts
+        if msg is 'win_bsk' then  @win() #;console.log @_fle_,': ',@game.ge.score
+
         @diamondsO.collide_socle(@scl)
         @diamondsO.collide_itself()
 
@@ -40,14 +44,6 @@ class @YourGame extends Phacker.GameState
     lostBtn.y = @game.height*0.5 - lostBtn.height*0.5
     lostBtn.events.onInputDown.add ( ->
         @lost()
-    ).bind @
-
-    winBtn = @game.add.text(0, 0, "Good Action");
-    winBtn.inputEnabled = true;
-    winBtn.y = @game.height*0.5 - winBtn.height*0.5
-    winBtn.x = @game.width - winBtn.width
-    winBtn.events.onInputDown.add ( ->
-        @win()
     ).bind @
 
     lostLifeBtn = @game.add.text(0, 0, "Lost Life");

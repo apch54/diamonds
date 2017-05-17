@@ -21,8 +21,11 @@ class Phacker.Game.One_basket_body
         # beware same initialization in baskets.move
         @btm = @mk_rect bdy_grp,  x - 2, y + bkO.pm.h/2 - 3, w - 11, 10
         @btm.typ = 'btm'
-        @lft = @mk_rect bdy_grp,  x - bkO.pm.w/2 + 2, y+5, 5 , h
+        @btm.full = false
+
+        @lft = @mk_rect bdy_grp,  x - bkO.pm.w/2  + 2, y+5, 5 , h
         @lft.typ = 'lft'
+
         @rgt = @mk_rect bdy_grp,  x + bkO.pm.w/2 - 3, y+5, 5, h
         @rgt.typ = 'rgt'
 

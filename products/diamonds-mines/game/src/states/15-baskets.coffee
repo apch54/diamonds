@@ -33,7 +33,7 @@ class Phacker.Game.Baskets
     #introduve all the baskets ant then move all  baskets
     #.----------.----------
     move: () ->
-        # first complete basket
+        # first complete basket group
         if (l = @bska.length) < @pm.n
             b = @bska[l-1].bsk
             li = 2*(@Pm.rop.w + @Pm.rop.h)/@pm.n # space tween 2 baskets
@@ -44,12 +44,12 @@ class Phacker.Game.Baskets
 
         # then move the whole baskets
         for b in @bska
-            #console.log @_fle_,': ',b.bsk.branch
             b.move()
             # beware : same initialization in one-basket body
             b.bsk.real_body.lft.x = b.bsk.x - b.bsk.body.width / 2 + 7
             b.bsk.real_body.lft.y = b.bsk.y + 5
             b.bsk.real_body.lft.branch = b.bsk.branch
+
 
             b.bsk.real_body.rgt.x = b.bsk.x + b.bsk.body.width/2 - 7
             b.bsk.real_body.rgt.y = b.bsk.y + 5
@@ -58,3 +58,23 @@ class Phacker.Game.Baskets
             b.bsk.real_body.btm.x = b.bsk.x + 2
             b.bsk.real_body.btm.y = b.bsk.y + b.bsk.body.height/2 + 3
             b.bsk.real_body.btm.branch = b.bsk.branch
+
+            if b.bsk.branch is 'W'
+                if not b.bsk.real_body.btm.full then @twn_away(b.bsk)
+                #console.log @_fle_,': ',b.bsk.real_body.btm.full
+            else if b.bsk.branch is 'E' then b.bsk.real_body.btm.full = false
+
+    #.----------.----------
+    # tween the basket for escaping when empty (not full)
+    #.----------.----------
+    twn_away: (bsk ) ->
+        tw = @gm.add.tween bsk
+        tw.to( {x: bsk.x - 200, y: bsk.y + 270 , alpha: 0}, 1500, Phaser.Easing.Linear.None, true, 0, 0 )
+        tw.onComplete.add(
+            ()->
+                bsk.real_body.btm.enable = false
+                bsk.real_body.lft.enable = false
+                bsk.real_body.rgt.enable = false
+            @
+        )
+

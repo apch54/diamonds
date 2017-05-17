@@ -250,9 +250,35 @@
         b.bsk.real_body.rgt.branch = b.bsk.branch;
         b.bsk.real_body.btm.x = b.bsk.x + 2;
         b.bsk.real_body.btm.y = b.bsk.y + b.bsk.body.height / 2 + 3;
-        results.push(b.bsk.real_body.btm.branch = b.bsk.branch);
+        b.bsk.real_body.btm.branch = b.bsk.branch;
+        if (b.bsk.branch === 'W') {
+          if (!b.bsk.real_body.btm.full) {
+            results.push(this.twn_away(b.bsk));
+          } else {
+            results.push(void 0);
+          }
+        } else if (b.bsk.branch === 'E') {
+          results.push(b.bsk.real_body.btm.full = false);
+        } else {
+          results.push(void 0);
+        }
       }
       return results;
+    };
+
+    Baskets.prototype.twn_away = function(bsk) {
+      var tw;
+      tw = this.gm.add.tween(bsk);
+      tw.to({
+        x: bsk.x - 200,
+        y: bsk.y + 270,
+        alpha: 0
+      }, 1500, Phaser.Easing.Linear.None, true, 0, 0);
+      return tw.onComplete.add(function() {
+        bsk.real_body.btm.enable = false;
+        bsk.real_body.lft.enable = false;
+        return bsk.real_body.rgt.enable = false;
+      }, this);
     };
 
     return Baskets;
@@ -283,6 +309,7 @@
       y = bkO.bsk.y;
       this.btm = this.mk_rect(bdy_grp, x - 2, y + bkO.pm.h / 2 - 3, w - 11, 10);
       this.btm.typ = 'btm';
+      this.btm.full = false;
       this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 2, y + 5, 5, h);
       this.lft.typ = 'lft';
       this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 3, y + 5, 5, h);
@@ -423,6 +450,7 @@
     };
 
     Diamonds.prototype.when_collide_scl = function(dmd, scl) {
+      dmd.has_scored = false;
       switch (scl.pos) {
         case 'hight-left':
           dmd.body.velocity.x = this.pm.vx0;
@@ -446,7 +474,6 @@
           break;
         case 'gate':
           dmd.y = scl.y - this.pm.h;
-          console.log(this._fle_, ': ', 'in gate');
       }
       return true;
     };
@@ -457,13 +484,19 @@
       }, function(dmd, bsk) {
         return this.when_collide_bsk(dmd, bsk);
       }, this)) {
-        return this.pm.mes_bsk;
+        return this.pm.msg_bsk;
       }
       return 'no';
     };
 
     Diamonds.prototype.when_collide_bsk = function(dmd, bsk) {
       var ref, ref1;
+      if (!dmd.has_scored) {
+        dmd.has_scored = true;
+        this.pm.msg_bsk = 'win_bsk';
+      } else {
+        this.pm.msg_bsk = 'no';
+      }
       if (bsk.typ === 'lft') {
         if ((-10 < (ref = bsk.y - dmd.y - bsk.body.height / 2) && ref < 10)) {
           this.twn_move(dmd, dmd.x + 20, dmd.y + 30);
@@ -479,6 +512,7 @@
       } else if (bsk.typ === 'btm') {
         dmd.body.velocity.y = 0;
         dmd.y = bsk.y - 15;
+        bsk.full = true;
       }
       return true;
     };
@@ -529,7 +563,8 @@
           x += 10;
         }
         dmd = this.grp1.create(x, y, this.pm.names[col]);
-        results.push(dmd.frame2 = this.pm.names[col]);
+        dmd.frame2 = this.pm.names[col];
+        results.push(dmd.has_scored = false);
       }
       return results;
     };
@@ -776,6 +811,8 @@
     }
 
     YourGame.prototype.update = function() {
+      var msg;
+      this._fle = 'Update';
       YourGame.__super__.update.call(this);
       if (this.buttonO.pm.game_started) {
         this.basketsO.move();
@@ -783,7 +820,10 @@
       if (this.buttonO.pm.game_started) {
         this.diamondsO.check_diamonds();
       }
-      this.diamondsO.collide_baskets(this.bskts);
+      msg = this.diamondsO.collide_baskets(this.bskts);
+      if (msg === 'win_bsk') {
+        this.win();
+      }
       this.diamondsO.collide_socle(this.scl);
       return this.diamondsO.collide_itself();
     };
@@ -814,14 +854,6 @@
     lostBtn.y = @game.height*0.5 - lostBtn.height*0.5
     lostBtn.events.onInputDown.add ( ->
         @lost()
-    ).bind @
-    
-    winBtn = @game.add.text(0, 0, "Good Action");
-    winBtn.inputEnabled = true;
-    winBtn.y = @game.height*0.5 - winBtn.height*0.5
-    winBtn.x = @game.width - winBtn.width
-    winBtn.events.onInputDown.add ( ->
-        @win()
     ).bind @
     
     lostLifeBtn = @game.add.text(0, 0, "Lost Life");

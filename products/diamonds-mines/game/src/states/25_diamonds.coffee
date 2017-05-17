@@ -28,8 +28,6 @@ class Phacker.Game.Diamonds
             used:0
             dmd_in_game:28
 
-
-
         @grp0 = @gm.add.physicsGroup()       # basket body group; real bodies
         @grp0.enableBody = true
 
@@ -71,6 +69,7 @@ class Phacker.Game.Diamonds
     #.----------.----------
     when_collide_scl:(dmd, scl) ->
         #console.log @_fle_,': ',scl.pos
+        dmd.has_scored = false
         switch scl.pos
             when 'hight-left'        then dmd.body.velocity.x = @pm.vx0
             when 'hight-right'       then dmd.body.velocity.x = -@pm.vx0
@@ -82,7 +81,6 @@ class Phacker.Game.Diamonds
                 else dmd.body.velocity.x = @pm.vx0
             when 'gate'
                 dmd.y = scl.y - @pm.h
-                console.log @_fle_,': ','in gate'
 
         return true  # return it has collided
 
@@ -95,13 +93,17 @@ class Phacker.Game.Diamonds
             -> return true
             (dmd, bsk)-> @when_collide_bsk(dmd, bsk)
             @
-        ) then return @pm.mes_bsk # set message
+        ) then return @pm.msg_bsk # set message
 
         return 'no'
 
     #.----------.----------
     when_collide_bsk:(dmd, bsk) ->
-        
+        if not dmd.has_scored
+             dmd.has_scored = true
+             @pm.msg_bsk = 'win_bsk'
+        else @pm.msg_bsk ='no'
+
         if bsk.typ is 'lft'
             if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
                 @twn_move dmd, dmd.x+20, dmd.y+30
@@ -115,6 +117,7 @@ class Phacker.Game.Diamonds
         else if bsk.typ is 'btm'
             dmd.body.velocity.y =  0
             dmd.y = bsk.y-15 # dont sink
+            bsk.full = true
 
         return true  # return it has collided
 
@@ -160,7 +163,7 @@ class Phacker.Game.Diamonds
     #.----------.----------
     init : () ->
         x=@pm.x1;           y=@pm.y1+10
-        col1=@gm.rnd.integerInRange(0,4)
+        col1=@gm.rnd.integerInRange(0,4) # colors
         col2=(col1+1)%5
         col3=(col1+2)%5
 
@@ -171,6 +174,7 @@ class Phacker.Game.Diamonds
             else x += 10
             dmd = @grp1.create x, y, @pm.names[col]
             dmd.frame2 =  @pm.names[col]
+            dmd.has_scored = false
 
     #.----------.----------
     # create a diamond
