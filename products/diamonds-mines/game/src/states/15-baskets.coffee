@@ -12,6 +12,7 @@ class Phacker.Game.Baskets
             x3: @Pm.rop.x0 + @Pm.rop.w/2 - 2,         y3: @gm.parameters.rop.y0 + @Pm.rop.h - 2
             x4: @Pm.rop.x0 - @Pm.rop.w/2 + 2,         y4: @gm.parameters.rop.y0 + @Pm.rop.h - 2
             n: 6 # number of baskets
+        @pm.bsk_remaining = @pm.n
 
         @bska =[]                                   # Array of baskets object
 
@@ -59,10 +60,16 @@ class Phacker.Game.Baskets
             b.bsk.real_body.btm.y = b.bsk.y + b.bsk.body.height/2 + 3
             b.bsk.real_body.btm.branch = b.bsk.branch
 
-            if b.bsk.branch is 'W'
-                if not b.bsk.real_body.btm.full then @twn_away(b.bsk)
+            if b.bsk.branch is 'W'  # destroy basket
+                if not b.bsk.real_body.btm.full  and not b.bsk.real_body.btm.out
+                    b.bsk.real_body.btm.out = true
+                    @twn_away(b.bsk)
+                    @pm.bsk_remaining--
+
                 #console.log @_fle_,': ',b.bsk.real_body.btm.full
-            else if b.bsk.branch is 'E' then b.bsk.real_body.btm.full = false
+            else if b.bsk.branch is 'E' then b.bsk.real_body.btm.full = false # emty the basket
+
+        return @pm.bsk_remaining
 
     #.----------.----------
     # tween the basket for escaping when empty (not full)
@@ -70,7 +77,7 @@ class Phacker.Game.Baskets
     twn_away: (bsk ) ->
         tw = @gm.add.tween bsk
         tw.to( {x: bsk.x - 200, y: bsk.y + 270 , alpha: 0}, 1500, Phaser.Easing.Linear.None, true, 0, 0 )
-        tw.onComplete.add(
+        tw.onComplete.add(# on complete destoy basket real_body
             ()->
                 bsk.real_body.btm.enable = false
                 bsk.real_body.lft.enable = false

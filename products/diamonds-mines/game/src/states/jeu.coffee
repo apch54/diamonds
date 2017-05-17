@@ -2,11 +2,18 @@
 
 class @YourGame extends Phacker.GameState
 
-    update: ->
-        @_fle = 'Update'
+    update: ()->
+        @_fle_ = 'Update'
         super() #Required
-        @basketsO.move() if @buttonO.pm.game_started
-        @diamondsO.check_diamonds() if @buttonO.pm.game_started
+
+        n_bsk = @basketsO.move() if @buttonO.pm.game_started # test remaining baskets
+
+        if n_bsk < @n_basket
+            @lostLife()
+            console.log @_fle_,': ',n_bsk ,@game.ge.heart.length
+            @n_basket = n_bsk
+
+        @diamondsO.check_diamonds() if @buttonO.pm.game_started #Start the game
 
         msg = @diamondsO.collide_baskets @bskts
         if msg is 'win_bsk' then  @win() #;console.log @_fle_,': ',@game.ge.score
@@ -34,6 +41,8 @@ class @YourGame extends Phacker.GameState
         @scl = @socle_bodyO.bdy
 
         @gateO = new Phacker.Game.Gate @game, @scl
+
+        @n_basket = @game.parameters .bsks.n
 
 
     ### LOGIC OF YOUR GAME

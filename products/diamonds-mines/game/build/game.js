@@ -212,6 +212,7 @@
         y4: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
         n: 6
       };
+      this.pm.bsk_remaining = this.pm.n;
       this.bska = [];
       this.bbO = new Phacker.Game.One_basket_body(this.gm);
       this.bsk_bdy_grp = this.gm.add.physicsGroup();
@@ -229,7 +230,7 @@
     };
 
     Baskets.prototype.move = function() {
-      var b, i, l, len, li, ref, results;
+      var b, i, l, len, li, ref;
       if ((l = this.bska.length) < this.pm.n) {
         b = this.bska[l - 1].bsk;
         li = 2 * (this.Pm.rop.w + this.Pm.rop.h) / this.pm.n;
@@ -238,7 +239,6 @@
         }
       }
       ref = this.bska;
-      results = [];
       for (i = 0, len = ref.length; i < len; i++) {
         b = ref[i];
         b.move();
@@ -252,18 +252,16 @@
         b.bsk.real_body.btm.y = b.bsk.y + b.bsk.body.height / 2 + 3;
         b.bsk.real_body.btm.branch = b.bsk.branch;
         if (b.bsk.branch === 'W') {
-          if (!b.bsk.real_body.btm.full) {
-            results.push(this.twn_away(b.bsk));
-          } else {
-            results.push(void 0);
+          if (!b.bsk.real_body.btm.full && !b.bsk.real_body.btm.out) {
+            b.bsk.real_body.btm.out = true;
+            this.twn_away(b.bsk);
+            this.pm.bsk_remaining--;
           }
         } else if (b.bsk.branch === 'E') {
-          results.push(b.bsk.real_body.btm.full = false);
-        } else {
-          results.push(void 0);
+          b.bsk.real_body.btm.full = false;
         }
       }
-      return results;
+      return this.pm.bsk_remaining;
     };
 
     Baskets.prototype.twn_away = function(bsk) {
@@ -310,6 +308,7 @@
       this.btm = this.mk_rect(bdy_grp, x - 2, y + bkO.pm.h / 2 - 3, w - 11, 10);
       this.btm.typ = 'btm';
       this.btm.full = false;
+      this.btm.out = false;
       this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 2, y + 5, 5, h);
       this.lft.typ = 'lft';
       this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 3, y + 5, 5, h);
@@ -811,11 +810,16 @@
     }
 
     YourGame.prototype.update = function() {
-      var msg;
-      this._fle = 'Update';
+      var msg, n_bsk;
+      this._fle_ = 'Update';
       YourGame.__super__.update.call(this);
       if (this.buttonO.pm.game_started) {
-        this.basketsO.move();
+        n_bsk = this.basketsO.move();
+      }
+      if (n_bsk < this.n_basket) {
+        this.lostLife();
+        console.log(this._fle_, ': ', n_bsk, this.game.ge.heart.length);
+        this.n_basket = n_bsk;
       }
       if (this.buttonO.pm.game_started) {
         this.diamondsO.check_diamonds();
@@ -842,7 +846,8 @@
       this.buttonO = new Phacker.Game.Button(this.game, this.basketsO, this.diamondsO);
       this.socle_bodyO = new Phacker.Game.Socle_body(this.game);
       this.scl = this.socle_bodyO.bdy;
-      return this.gateO = new Phacker.Game.Gate(this.game, this.scl);
+      this.gateO = new Phacker.Game.Gate(this.game, this.scl);
+      return this.n_basket = this.game.parameters.bsks.n;
     };
 
 
