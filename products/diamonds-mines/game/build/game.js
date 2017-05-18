@@ -463,6 +463,7 @@
             this.grp0.remove(dmd);
           } else {
             dmd.body.velocity.x = -this.pm.vx0;
+            dmd.y = scl.y - 15;
           }
           break;
         case 'bottom-right':
@@ -470,6 +471,7 @@
             this.grp0.remove(dmd);
           } else {
             dmd.body.velocity.x = this.pm.vx0;
+            dmd.y = scl.y - 15;
           }
           break;
         case 'gate':

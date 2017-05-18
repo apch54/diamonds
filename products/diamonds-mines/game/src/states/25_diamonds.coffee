@@ -80,10 +80,14 @@ class Phacker.Game.Diamonds
             when 'hight-right'       then dmd.body.velocity.x = -@pm.vx0
             when 'bottom-left'
                 if dmd.x < @Pm.btm.x0 -  @Pm.btm.w/2 then   @grp0.remove(dmd)
-                else dmd.body.velocity.x = -@pm.vx0
+                else
+                    dmd.body.velocity.x = -@pm.vx0
+                    dmd.y = scl.y - 15
             when 'bottom-right'
                 if dmd.x > @Pm.btm.x0 +  @Pm.btm.w/2  -  5 then   @grp0.remove(dmd)
-                else dmd.body.velocity.x = @pm.vx0
+                else
+                    dmd.body.velocity.x = @pm.vx0
+                    dmd.y = scl.y - 15
             when 'gate'
                 dmd.y = scl.y - @pm.h
 

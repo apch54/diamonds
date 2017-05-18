@@ -5,8 +5,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/game.js" afterPath="$PROJECT_DIR$/build/game.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/25_diamonds.coffee" afterPath="$PROJECT_DIR$/src/states/25_diamonds.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/40-socle_body.coffee" afterPath="$PROJECT_DIR$/src/states/40-socle_body.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/jeu.coffee" afterPath="$PROJECT_DIR$/src/states/jeu.coffee" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -87,10 +85,10 @@
           <file leaf-file-name="25_diamonds.coffee" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/states/25_diamonds.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="224">
-                  <caret line="78" column="45" lean-forward="false" selection-start-line="78" selection-start-column="45" selection-end-line="78" selection-end-column="45" />
+                <state relative-caret-position="494">
+                  <caret line="84" column="38" lean-forward="false" selection-start-line="84" selection-start-column="38" selection-end-line="84" selection-end-column="38" />
                   <folding>
-                    <marker date="1495111381755" expanded="true" signature="223:794" ph="&quot;msg_bsk&quot;: 'not yet'..." />
+                    <marker date="1495112365294" expanded="true" signature="223:794" ph="&quot;msg_bsk&quot;: 'not yet'..." />
                   </folding>
                 </state>
               </provider>
@@ -113,8 +111,8 @@
           <file leaf-file-name="40-socle_body.coffee" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/states/40-socle_body.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="402">
-                  <caret line="66" column="17" lean-forward="false" selection-start-line="66" selection-start-column="17" selection-end-line="66" selection-end-column="17" />
+                <state relative-caret-position="276">
+                  <caret line="47" column="60" lean-forward="false" selection-start-line="47" selection-start-column="60" selection-end-line="47" selection-end-column="60" />
                   <folding />
                 </state>
               </provider>
@@ -189,8 +187,8 @@
         <option value="$PROJECT_DIR$/src/states/20-one-basket-body.coffee" />
         <option value="$PROJECT_DIR$/src/states/15-baskets.coffee" />
         <option value="$PROJECT_DIR$/src/states/jeu.coffee" />
-        <option value="$PROJECT_DIR$/src/states/25_diamonds.coffee" />
         <option value="$PROJECT_DIR$/src/states/40-socle_body.coffee" />
+        <option value="$PROJECT_DIR$/src/states/25_diamonds.coffee" />
       </list>
     </option>
   </component>
@@ -426,7 +424,7 @@
       <workItem from="1494999949224" duration="14650000" />
       <workItem from="1495016826761" duration="6981000" />
       <workItem from="1495086370351" duration="5163000" />
-      <workItem from="1495105486726" duration="6015000" />
+      <workItem from="1495105486726" duration="6917000" />
     </task>
     <task id="LOCAL-00001" summary="one">
       <created>1494080708768</created>
@@ -687,11 +685,18 @@
       <option name="project" value="LOCAL" />
       <updated>1495089194677</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="bottom diamond not sink">
+      <created>1495111561141</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1495111561141</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="213129000" />
+    <option name="totallyTimeSpent" value="214031000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="176" y="112" width="1609" height="955" extended-state="0" />
@@ -725,7 +730,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="introduction of all baskets" />
     <MESSAGE value="green button" />
     <MESSAGE value="modif basket O" />
     <MESSAGE value="real basket body" />
@@ -750,7 +754,8 @@
     <MESSAGE value="destry basket" />
     <MESSAGE value="lost life" />
     <MESSAGE value="vy = 0 on collide socle" />
-    <option name="LAST_COMMIT_MESSAGE" value="vy = 0 on collide socle" />
+    <MESSAGE value="bottom diamond not sink" />
+    <option name="LAST_COMMIT_MESSAGE" value="bottom diamond not sink" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1128,21 +1133,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/states/25_diamonds.coffee">
+    <entry file="file://$PROJECT_DIR$/src/states/40-socle_body.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="78" column="45" lean-forward="false" selection-start-line="78" selection-start-column="45" selection-end-line="78" selection-end-column="45" />
+        <state relative-caret-position="810">
+          <caret line="46" column="18" lean-forward="false" selection-start-line="46" selection-start-column="18" selection-end-line="46" selection-end-column="18" />
           <folding>
-            <marker date="1495111381755" expanded="true" signature="223:794" ph="&quot;msg_bsk&quot;: 'not yet'..." />
+            <marker date="1495111426454" expanded="true" signature="76:3560" ph="..." />
+            <marker date="1495111426454" expanded="true" signature="1738:1969" ph="..." />
+            <marker date="1495111426454" expanded="true" signature="3428:3560" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/states/40-socle_body.coffee">
+    <entry file="file://$PROJECT_DIR$/src/states/25_diamonds.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="66" column="17" lean-forward="false" selection-start-line="66" selection-start-column="17" selection-end-line="66" selection-end-column="17" />
-          <folding />
+        <state relative-caret-position="494">
+          <caret line="84" column="38" lean-forward="false" selection-start-line="84" selection-start-column="38" selection-end-line="84" selection-end-column="38" />
+          <folding>
+            <marker date="1495112365294" expanded="true" signature="223:794" ph="&quot;msg_bsk&quot;: 'not yet'..." />
+          </folding>
         </state>
       </provider>
     </entry>
