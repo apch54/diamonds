@@ -373,7 +373,7 @@
         last_transfert_date: 0,
         dt: 250,
         used: 0,
-        dmd_in_game: 28
+        dmd_in_game: 15
       };
       this.grp0 = this.gm.add.physicsGroup();
       this.grp0.enableBody = true;
@@ -449,7 +449,6 @@
     };
 
     Diamonds.prototype.when_collide_scl = function(dmd, scl) {
-      dmd.body.velocity.y = 0;
       dmd.has_scored = false;
       switch (scl.pos) {
         case 'hight-left':
@@ -459,20 +458,12 @@
           dmd.body.velocity.x = -this.pm.vx0;
           break;
         case 'bottom-left':
-          if (dmd.x < this.Pm.btm.x0 - this.Pm.btm.w / 2) {
-            this.grp0.remove(dmd);
-          } else {
-            dmd.body.velocity.x = -this.pm.vx0;
-            dmd.y = scl.y - 15;
-          }
+          dmd.y = scl.y - 25;
+          this.twn_dmd(dmd, 100, scl.y - 5);
           break;
         case 'bottom-right':
-          if (dmd.x > this.Pm.btm.x0 + this.Pm.btm.w / 2 - 5) {
-            this.grp0.remove(dmd);
-          } else {
-            dmd.body.velocity.x = this.pm.vx0;
-            dmd.y = scl.y - 15;
-          }
+          dmd.y = scl.y - 25;
+          this.twn_dmd(dmd, this.Pm.bg.w - 100, scl.y - 5);
           break;
         case 'gate':
           dmd.y = scl.y - this.pm.h;
@@ -540,6 +531,20 @@
         x: x0,
         y: y0
       }, 200, Phaser.Easing.Cubic.Out, true);
+    };
+
+    Diamonds.prototype.twn_dmd = function(dmd, x0, y0) {
+      var tw;
+      console.log(this._fle_, ': ', x0);
+      tw = this.gm.add.tween(dmd);
+      tw.to({
+        x: x0,
+        y: y0,
+        alpha: 0
+      }, 800, Phaser.Easing.Linear.None, true, 0, 0);
+      return tw.onComplete.add(function() {
+        return this.grp0.remove(dmd);
+      }, this);
     };
 
     Diamonds.prototype.init = function() {
@@ -821,6 +826,7 @@
       }
       if (n_bsk < this.n_basket) {
         this.lostLife();
+        console.log(this._fle_, ': ', n_bsk, this.game.ge.heart.length);
         this.n_basket = n_bsk;
       }
       if (this.buttonO.pm.game_started) {

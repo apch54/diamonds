@@ -10,7 +10,7 @@ class @YourGame extends Phacker.GameState
 
         if n_bsk < @n_basket
             @lostLife()
-            #console.log @_fle_,': ',n_bsk ,@game.ge.heart.length
+            console.log @_fle_,': ',n_bsk ,@game.ge.heart.length
             @n_basket = n_bsk
 
         @diamondsO.check_diamonds() if @buttonO.pm.game_started #Start the game

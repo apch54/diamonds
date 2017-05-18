@@ -26,7 +26,7 @@ class Phacker.Game.Diamonds
             last_transfert_date: 0
             dt: 250 # ms
             used:0
-            dmd_in_game:28
+            dmd_in_game:15
 
         @grp0 = @gm.add.physicsGroup()       # basket body group; real bodies
         @grp0.enableBody = true
@@ -68,26 +68,21 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_scl:(dmd, scl) ->
-
-        dmd.body.velocity.y = 0
-        #dmd.y = scl.y - scl.body.height/2 - dmd.body.height/2
-        #console.log @_fle_,': ', scl.y ,scl.body.height/2 , dmd.body.height/2
-
+        #console.log @_fle_,': ',scl.pos
         dmd.has_scored = false
         switch scl.pos
-            when 'hight-left'
-                dmd.body.velocity.x = @pm.vx0
+            when 'hight-left'        then dmd.body.velocity.x = @pm.vx0
             when 'hight-right'       then dmd.body.velocity.x = -@pm.vx0
             when 'bottom-left'
-                if dmd.x < @Pm.btm.x0 -  @Pm.btm.w/2 then   @grp0.remove(dmd)
-                else
-                    dmd.body.velocity.x = -@pm.vx0
-                    dmd.y = scl.y - 15
+                dmd.y = scl.y-25
+                @twn_dmd dmd, 100, scl.y-5
+#                if dmd.x < @Pm.btm.x0 -  @Pm.btm.w/2 then   @grp0.remove(dmd)
+#                else dmd.y = scl.y - 14 ; dmd.body.velocity.x = -@pm.vx0
             when 'bottom-right'
-                if dmd.x > @Pm.btm.x0 +  @Pm.btm.w/2  -  5 then   @grp0.remove(dmd)
-                else
-                    dmd.body.velocity.x = @pm.vx0
-                    dmd.y = scl.y - 15
+                dmd.y = scl.y-25
+                @twn_dmd dmd, @Pm.bg.w - 100, scl.y-5
+#                if dmd.x > @Pm.btm.x0 +  @Pm.btm.w/2  -  5 then   @grp0.remove(dmd)
+#                else dmd.y = scl.y - 14; dmd.body.velocity.x = @pm.vx0
             when 'gate'
                 dmd.y = scl.y - @pm.h
 
@@ -166,7 +161,17 @@ class Phacker.Game.Diamonds
             200, Phaser.Easing.Cubic.Out, true
         )
 
-    #.----------.----------
+    twn_dmd: (dmd,x0,y0 ) ->
+        console.log @_fle_,': ',x0
+        tw = @gm.add.tween dmd
+        tw.to( {x: x0, y: y0 , alpha: 0}, 800, Phaser.Easing.Linear.None, true, 0, 0 )
+        tw.onComplete.add(# on complete destoy basket real_body
+            ()-> @grp0.remove(dmd)
+            @
+        )
+
+
+#.----------.----------
     # Initialisation of all diamonds (ball)
     # Creation of balls
     #.----------.----------
@@ -183,7 +188,6 @@ class Phacker.Game.Diamonds
             else x += 10
             dmd = @grp1.create x, y, @pm.names[col]
             dmd.frame2 =  @pm.names[col]
-            #dmd.body.mass = 0
             dmd.has_scored = false
 
     #.----------.----------
