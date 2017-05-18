@@ -449,6 +449,7 @@
     };
 
     Diamonds.prototype.when_collide_scl = function(dmd, scl) {
+      dmd.body.velocity.y = 0;
       dmd.has_scored = false;
       switch (scl.pos) {
         case 'hight-left':
@@ -730,7 +731,7 @@
       while (dx < this.pm.x2 - this.pm.x1) {
         yy = this.pm.y1 + dx * this.pm.delta1;
         this.mk_rect(this.bdy, this.pm.x1 + dx, yy, this.pm.w, this.pm.h, 'hight-left');
-        dx += this.pm.w + 3;
+        dx += this.pm.w;
       }
       return this.last = this.mk_rect(this.bdy, this.pm.x2 - 1, this.pm.y2 + 12, this.pm.w, 28, 'hight-left');
     };
@@ -744,7 +745,7 @@
       while (dx < this.pm.x4 - this.pm.x3) {
         yy = yy0 + dx * this.pm.delta2;
         last = this.mk_rect(this.bdy, this.pm.x3 + dx, yy, this.pm.w, this.pm.h, 'hight-right');
-        results.push(dx += this.pm.w + 3);
+        results.push(dx += this.pm.w);
       }
       return results;
     };
@@ -755,7 +756,7 @@
       while (dx < this.pm.x6 - this.pm.x5) {
         yy = this.pm.y5 + dx * this.pm.delta3;
         this.mk_rect(this.bdy, this.pm.x5 + dx, yy, this.pm.w, this.pm.h, 'bottom-left');
-        dx += this.pm.w + 3;
+        dx += this.pm.w;
       }
       return this.last = this.mk_rect(this.bdy, this.pm.x6, this.pm.y6, this.pm.w, this.pm.h, 'bottom-left');
     };
@@ -768,7 +769,7 @@
       while (dx < this.pm.x7 - this.pm.x6) {
         yy = yy0 + dx * this.pm.delta4;
         xx = this.mk_rect(this.bdy, this.pm.x6 + dx, yy, this.pm.w, this.pm.h, 'bottom-right');
-        results.push(dx += this.pm.w + 3);
+        results.push(dx += this.pm.w);
       }
       return results;
     };

@@ -40,7 +40,7 @@ class Phacker.Game.Socle_body
         while dx < @pm.x2 - @pm.x1
             yy = @pm.y1 + dx * @pm.delta1
             @mk_rect @bdy, @pm.x1 + dx, yy, @pm.w, @pm.h ,'hight-left'# group,x,y,w,h
-            dx += @pm.w + 3
+            dx += @pm.w
         @last = @mk_rect @bdy, @pm.x2 - 1 , @pm.y2 + 12 , @pm.w, 28,'hight-left'
 
     #.----------.----------
@@ -51,7 +51,7 @@ class Phacker.Game.Socle_body
         while dx < @pm.x4 - @pm.x3
             yy = yy0 + dx * @pm.delta2
             last = @mk_rect @bdy, @pm.x3 + dx, yy, @pm.w, @pm.h,'hight-right'
-            dx += @pm.w + 3
+            dx += @pm.w
 
     #.----------.----------
     mk_btm_left:() ->
@@ -59,7 +59,7 @@ class Phacker.Game.Socle_body
         while dx < @pm.x6 - @pm.x5
             yy = @pm.y5 + dx * @pm.delta3
             @mk_rect @bdy, @pm.x5 + dx, yy, @pm.w, @pm.h ,'bottom-left'# group,x,y,w,h
-            dx += @pm.w + 3
+            dx += @pm.w
         @last = @mk_rect @bdy, @pm.x6 , @pm.y6 , @pm.w, @pm.h,'bottom-left'
 
     #.----------.----------
@@ -69,7 +69,7 @@ class Phacker.Game.Socle_body
         while dx < @pm.x7 - @pm.x6
             yy = yy0 + dx * @pm.delta4
             xx = @mk_rect @bdy, @pm.x6 + dx, yy, @pm.w, @pm.h,'bottom-right'
-            dx += @pm.w + 3
+            dx += @pm.w
 
     #.----------.----------
     #make a rectangle for  body
