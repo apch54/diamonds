@@ -68,13 +68,15 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_scl:(dmd, scl) ->
+
         dmd.body.velocity.y = 0
+        #dmd.y = scl.y - scl.body.height/2 - dmd.body.height/2
+        #console.log @_fle_,': ', scl.y ,scl.body.height/2 , dmd.body.height/2
+
         dmd.has_scored = false
         switch scl.pos
             when 'hight-left'
                 dmd.body.velocity.x = @pm.vx0
-
-
             when 'hight-right'       then dmd.body.velocity.x = -@pm.vx0
             when 'bottom-left'
                 if dmd.x < @Pm.btm.x0 -  @Pm.btm.w/2 then   @grp0.remove(dmd)
@@ -177,6 +179,7 @@ class Phacker.Game.Diamonds
             else x += 10
             dmd = @grp1.create x, y, @pm.names[col]
             dmd.frame2 =  @pm.names[col]
+            #dmd.body.mass = 0
             dmd.has_scored = false
 
     #.----------.----------

@@ -763,7 +763,7 @@
 
     Socle_body.prototype.mk_btm_right = function() {
       var dx, results, xx, yy, yy0;
-      dx = this.pm.w + 3;
+      dx = this.pm.w;
       yy0 = this.last.y;
       results = [];
       while (dx < this.pm.x7 - this.pm.x6) {
@@ -819,7 +819,6 @@
       }
       if (n_bsk < this.n_basket) {
         this.lostLife();
-        console.log(this._fle_, ': ', n_bsk, this.game.ge.heart.length);
         this.n_basket = n_bsk;
       }
       if (this.buttonO.pm.game_started) {

@@ -64,7 +64,7 @@ class Phacker.Game.Socle_body
 
     #.----------.----------
     mk_btm_right:() ->
-        dx= @pm.w + 3
+        dx= @pm.w
         yy0= @last.y
         while dx < @pm.x7 - @pm.x6
             yy = yy0 + dx * @pm.delta4
