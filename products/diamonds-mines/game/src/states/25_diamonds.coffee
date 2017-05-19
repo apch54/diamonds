@@ -27,7 +27,8 @@ class Phacker.Game.Diamonds
             last_transfert_date: 0
             dt: 250 # ms
             used:0
-            dmd_in_game:15
+            dead:0
+            dmd_in_game:16
 
         @grp0 = @gm.add.physicsGroup()       # basket body group; real bodies
         @grp0.enableBody = true
@@ -41,7 +42,7 @@ class Phacker.Game.Diamonds
     # transpert diamonds from grp1 to grp0 (live group)
     #.----------.----------
     check_diamonds:()->
-        if @grp1.length < 1 then return
+        if @grp1.length < 1 then return @pm.dead
         if @grp0.length <= @pm.dmd_in_game-1
             switch @pm.used
                 when 0,1,2,3      then @dmd_transfert(5)
@@ -53,6 +54,7 @@ class Phacker.Game.Diamonds
                 when 24,25,26,27  then @dmd_transfert(65)
                 else @dmd_transfert(0)
             @pm.used++
+        return @pm.dead
 
     #.----------.----------
     # COLLIDE  with socle group
@@ -77,13 +79,15 @@ class Phacker.Game.Diamonds
             when 'bottom-left'
                 dmd.y = scl.y-25
                 @twn_dmd dmd, @pm.escX, scl.y-15
-#                if dmd.x < @Pm.btm.x0 -  @Pm.btm.w/2 then   @grp0.remove(dmd)
-#                else dmd.y = scl.y - 14 ; dmd.body.velocity.x = -@pm.vx0
+                if not dmd.dead
+                    @pm.dead++
+                    dmd.dead = true
             when 'bottom-right'
                 dmd.y = scl.y-25
                 @twn_dmd dmd, @Pm.bg.w - @pm.escX, scl.y-15
-#                if dmd.x > @Pm.btm.x0 +  @Pm.btm.w/2  -  5 then   @grp0.remove(dmd)
-#                else dmd.y = scl.y - 14; dmd.body.velocity.x = @pm.vx0
+                if not dmd.dead
+                    @pm.dead++
+                    dmd.dead = true
             when 'gate'
                 dmd.y = scl.y - @pm.h
 
@@ -216,6 +220,7 @@ class Phacker.Game.Diamonds
        d0.body.gravity.y = @pm.g
        d0.body.bounce.y = 0 #@pm.bounce.y
        d0.body.bounce.x = 0 # @pm.bounce.x
+       d0.dead=false
        d1.destroy()
        return d0
 

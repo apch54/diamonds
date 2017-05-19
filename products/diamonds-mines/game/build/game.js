@@ -385,7 +385,8 @@
         last_transfert_date: 0,
         dt: 250,
         used: 0,
-        dmd_in_game: 15
+        dead: 0,
+        dmd_in_game: 16
       };
       this.grp0 = this.gm.add.physicsGroup();
       this.grp0.enableBody = true;
@@ -396,7 +397,7 @@
 
     Diamonds.prototype.check_diamonds = function() {
       if (this.grp1.length < 1) {
-        return;
+        return this.pm.dead;
       }
       if (this.grp0.length <= this.pm.dmd_in_game - 1) {
         switch (this.pm.used) {
@@ -445,8 +446,9 @@
           default:
             this.dmd_transfert(0);
         }
-        return this.pm.used++;
+        this.pm.used++;
       }
+      return this.pm.dead;
     };
 
     Diamonds.prototype.collide_socle = function(scl) {
@@ -472,10 +474,18 @@
         case 'bottom-left':
           dmd.y = scl.y - 25;
           this.twn_dmd(dmd, this.pm.escX, scl.y - 15);
+          if (!dmd.dead) {
+            this.pm.dead++;
+            dmd.dead = true;
+          }
           break;
         case 'bottom-right':
           dmd.y = scl.y - 25;
           this.twn_dmd(dmd, this.Pm.bg.w - this.pm.escX, scl.y - 15);
+          if (!dmd.dead) {
+            this.pm.dead++;
+            dmd.dead = true;
+          }
           break;
         case 'gate':
           dmd.y = scl.y - this.pm.h;
@@ -600,6 +610,7 @@
       d0.body.gravity.y = this.pm.g;
       d0.body.bounce.y = 0;
       d0.body.bounce.x = 0;
+      d0.dead = false;
       d1.destroy();
       return d0;
     };
@@ -882,7 +893,7 @@
     }
 
     YourGame.prototype.update = function() {
-      var msg, n_bsk;
+      var dead_diamonds, msg, n_bsk;
       this._fle_ = 'Update';
       YourGame.__super__.update.call(this);
       if (this.buttonO.pm.game_started) {
@@ -898,7 +909,10 @@
         this.n_basket = n_bsk;
       }
       if (this.buttonO.pm.game_started) {
-        this.diamondsO.check_diamonds();
+        dead_diamonds = this.diamondsO.check_diamonds();
+      }
+      if (dead_diamonds >= this.diamondsO.pm.n) {
+        this.lostLife();
       }
       msg = this.diamondsO.collide_baskets(this.bskts);
       if (msg === 'win_bsk') {

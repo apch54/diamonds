@@ -12,7 +12,10 @@ class @YourGame extends Phacker.GameState
             @lostLife()
             @n_basket = n_bsk
 
-        @diamondsO.check_diamonds() if @buttonO.pm.game_started #Start the game
+        dead_diamonds = @diamondsO.check_diamonds() if @buttonO.pm.game_started #Start the game
+        if dead_diamonds >= @diamondsO.pm.n
+            @lostLife()
+        #console.log @_fle_,': ',dead_diamonds
 
         msg = @diamondsO.collide_baskets @bskts
         if msg is 'win_bsk' then  @win() #;console.log @_fle_,': ',@game.ge.score
