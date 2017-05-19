@@ -79,9 +79,10 @@ class Phacker.Game.Baskets
         tw.to( {x: bsk.x - 200, y: bsk.y + 270 , alpha: 0}, 1500, Phaser.Easing.Linear.None, true, 0, 0 )
         tw.onComplete.add(# on complete destoy basket real_body
             ()->
-                bsk.real_body.btm.enable = false
-                bsk.real_body.lft.enable = false
-                bsk.real_body.rgt.enable = false
+                console.log @_fle_,': ',bsk.real_body
+                bsk.real_body.btm.body.enable = false
+                bsk.real_body.lft.body.enable = false
+                bsk.real_body.rgt.body.enable = false
             @
         )
 

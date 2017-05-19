@@ -273,9 +273,10 @@
         alpha: 0
       }, 1500, Phaser.Easing.Linear.None, true, 0, 0);
       return tw.onComplete.add(function() {
-        bsk.real_body.btm.enable = false;
-        bsk.real_body.lft.enable = false;
-        return bsk.real_body.rgt.enable = false;
+        console.log(this._fle_, ': ', bsk.real_body);
+        bsk.real_body.btm.body.enable = false;
+        bsk.real_body.lft.body.enable = false;
+        return bsk.real_body.rgt.body.enable = false;
       }, this);
     };
 
@@ -712,9 +713,9 @@
         x3: this.Pm.dmds.x2 + 43,
         x4: this.Pm.dmds.x3 + 60,
         x5: this.Pm.btm.x0 - this.Pm.btm.w / 2,
-        y5: this.Pm.btm.y0 + 20,
+        y5: this.Pm.btm.y0 + 30,
         x6: this.Pm.btm.x0,
-        y6: this.Pm.btm.y0 + 3,
+        y6: this.Pm.btm.y0 + 13,
         x7: this.Pm.btm.x0 + this.Pm.btm.w / 2
       };
       this.pm.y3 = this.pm.y2 + this.pm.h;
