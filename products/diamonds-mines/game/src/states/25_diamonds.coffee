@@ -1,6 +1,6 @@
 class Phacker.Game.Diamonds
 
-    constructor: (@gm) ->
+    constructor: (@gm, @effO) ->
         @_fle_ = 'Diamonds'
 
         @Pm = @gm.parameters    # globals parameters
@@ -162,11 +162,13 @@ class Phacker.Game.Diamonds
         )
 
     twn_dmd: (dmd,x0,y0 ) ->
-        console.log @_fle_,': ',x0
+        #console.log @_fle_,': ',x0
         tw = @gm.add.tween dmd
         tw.to( {x: x0, y: y0 , alpha: 0}, 800, Phaser.Easing.Linear.None, true, 0, 0 )
         tw.onComplete.add(# on complete destoy basket real_body
-            ()-> @grp0.remove(dmd)
+            ()->
+                @grp0.remove(dmd)   # destroy dmd
+                @effO.play dmd      # play effect
             @
         )
 

@@ -273,7 +273,6 @@
         alpha: 0
       }, 1500, Phaser.Easing.Linear.None, true, 0, 0);
       return tw.onComplete.add(function() {
-        console.log(this._fle_, ': ', bsk.real_body);
         bsk.real_body.btm.body.enable = false;
         bsk.real_body.lft.body.enable = false;
         return bsk.real_body.rgt.body.enable = false;
@@ -348,8 +347,9 @@
 
 (function() {
   Phacker.Game.Diamonds = (function() {
-    function Diamonds(gm) {
+    function Diamonds(gm, effO) {
       this.gm = gm;
+      this.effO = effO;
       this._fle_ = 'Diamonds';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.dmds = {
@@ -536,7 +536,6 @@
 
     Diamonds.prototype.twn_dmd = function(dmd, x0, y0) {
       var tw;
-      console.log(this._fle_, ': ', x0);
       tw = this.gm.add.tween(dmd);
       tw.to({
         x: x0,
@@ -544,7 +543,8 @@
         alpha: 0
       }, 800, Phaser.Easing.Linear.None, true, 0, 0);
       return tw.onComplete.add(function() {
-        return this.grp0.remove(dmd);
+        this.grp0.remove(dmd);
+        return this.effO.play(dmd);
       }, this);
     };
 
@@ -804,6 +804,58 @@
 
 }).call(this);
 
+(function() {
+  Phacker.Game.Effects = (function() {
+    function Effects(gm) {
+      this.gm = gm;
+      this._fle_ = 'Effect';
+      this.effects = ['effect1', 'effect3', 'effect4', 'effect5'];
+      this.last_eff_time = 0;
+      this.delay = 1000;
+    }
+
+    Effects.prototype.play = function(obj) {
+      var anim, n, nowt;
+      nowt = new Date().getTime();
+      if (nowt - this.last_eff_time < this.delay) {
+        return;
+      } else {
+        this.last_eff_time = nowt;
+      }
+      n = this.gm.rnd.integerInRange(0, 3);
+      switch (n) {
+        case 0:
+        case 1:
+          this.eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
+          anim = this.eff.animations.add('explode', [2, 1, 0, 1], 8, false);
+          break;
+        case 2:
+          this.eff = this.gm.add.sprite(50, 100, this.effects[n], 4);
+          anim = this.eff.animations.add('explode', [4, 3, 2, 1, 0, 1, 2, 3], 16, false);
+          break;
+        case 3:
+          this.eff = this.gm.add.sprite(50, 100, this.effects[n], 3);
+          anim = this.eff.animations.add('explode', [3, 2, 1, 0, 1, 2], 12, false);
+      }
+      this.eff.anchor.setTo(0.5, 0.5);
+      anim.onComplete.add(function() {
+        return this.eff.destroy();
+      }, this);
+      this.eff.x = obj.x;
+      this.eff.y = obj.y;
+      return this.eff.animations.play('explode');
+    };
+
+    Effects.prototype.stop = function() {
+      return this.eff.destroy();
+    };
+
+    return Effects;
+
+  })();
+
+}).call(this);
+
 
 /*  written by apch on 2017-05-07 : Jeu */
 
@@ -827,7 +879,6 @@
       }
       if (n_bsk < this.n_basket) {
         this.lostLife();
-        console.log(this._fle_, ': ', n_bsk, this.game.ge.heart.length);
         this.n_basket = n_bsk;
       }
       if (this.buttonO.pm.game_started) {
@@ -848,9 +899,10 @@
     YourGame.prototype.create = function() {
       YourGame.__super__.create.call(this);
       this.soleO = new Phacker.Game.Socle(this.game);
+      this.effectO = new Phacker.Game.Effects(this.game);
       this.basketsO = new Phacker.Game.Baskets(this.game);
       this.bskts = this.basketsO.bsk_bdy_grp;
-      this.diamondsO = new Phacker.Game.Diamonds(this.game);
+      this.diamondsO = new Phacker.Game.Diamonds(this.game, this.effectO);
       this.dmds = this.diamondsO.grp0;
       this.buttonO = new Phacker.Game.Button(this.game, this.basketsO, this.diamondsO);
       this.socle_bodyO = new Phacker.Game.Socle_body(this.game);

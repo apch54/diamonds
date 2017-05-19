@@ -10,7 +10,7 @@ class @YourGame extends Phacker.GameState
 
         if n_bsk < @n_basket
             @lostLife()
-            console.log @_fle_,': ',n_bsk ,@game.ge.heart.length
+            #console.log @_fle_,': ',n_bsk ,@game.ge.heart.length
             @n_basket = n_bsk
 
         @diamondsO.check_diamonds() if @buttonO.pm.game_started #Start the game
@@ -29,10 +29,12 @@ class @YourGame extends Phacker.GameState
         super() #Required
         @soleO = new Phacker.Game.Socle @game
 
+        @effectO = new Phacker.Game.Effects @game
+
         @basketsO = new Phacker.Game.Baskets @game
         @bskts = @basketsO.bsk_bdy_grp # all baskets
 
-        @diamondsO = new Phacker.Game.Diamonds @game
+        @diamondsO = new Phacker.Game.Diamonds @game, @effectO
         @dmds = @diamondsO.grp0 # all diamonds
 
         @buttonO = new Phacker.Game.Button @game, @basketsO, @diamondsO
@@ -43,6 +45,9 @@ class @YourGame extends Phacker.GameState
         @gateO = new Phacker.Game.Gate @game, @scl
 
         @n_basket = @game.parameters .bsks.n
+
+
+
 
 
     ### LOGIC OF YOUR GAME
