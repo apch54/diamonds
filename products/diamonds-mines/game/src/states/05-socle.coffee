@@ -32,7 +32,7 @@ class Phacker.Game.Socle
             w : 329
             h : 375
             r : 20 # rope radius at the four angles
-        @pm.rop.y0 = (@pm.btm.y0 - @pm.rop.h )/2 +15
+        @pm.rop.y0 = (@pm.btm.y0 - @pm.rop.h )/2 +10
 
         @pm.mec = # mechanic
             x0: @pm.bg.w2
@@ -102,12 +102,11 @@ class Phacker.Game.Socle
         tw = @gm.add.tween spt
         tw.to( lst, t, Phaser.Easing.Linear.None, true, 0, -1 )
 
-
     #.----------.----------
     # Tools
     #.----------.----------
-    # deep copy of an object
-    add_heart: ->
+    #
+    add_heart: -> # add a heart
         lastElement = @gm.ge.heart[0]
         heartImg = @gm.add.image(0, 0, 'heart')
         heartImg.x = lastElement.x + lastElement.width + 5

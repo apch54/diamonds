@@ -32,7 +32,7 @@
         h: 375,
         r: 20
       };
-      this.pm.rop.y0 = (this.pm.btm.y0 - this.pm.rop.h) / 2 + 15;
+      this.pm.rop.y0 = (this.pm.btm.y0 - this.pm.rop.h) / 2 + 10;
       this.pm.mec = {
         x0: this.pm.bg.w2,
         y0: this.pm.rop.y0 + 60,
@@ -217,7 +217,7 @@
         x2: this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2,
         y2: this.gm.parameters.rop.y0 + 2,
         x3: this.Pm.rop.x0 + this.Pm.rop.w / 2 - 2,
-        y3: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
+        y3: this.gm.parameters.rop.y0 + this.Pm.rop.h - 10,
         x4: this.Pm.rop.x0 - this.Pm.rop.w / 2 + 2,
         y4: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
         n: 6
@@ -471,11 +471,11 @@
           break;
         case 'bottom-left':
           dmd.y = scl.y - 25;
-          this.twn_dmd(dmd, this.pm.escX, scl.y - 25);
+          this.twn_dmd(dmd, this.pm.escX, scl.y - 15);
           break;
         case 'bottom-right':
           dmd.y = scl.y - 25;
-          this.twn_dmd(dmd, this.Pm.bg.w - this.pm.escX, scl.y - 25);
+          this.twn_dmd(dmd, this.Pm.bg.w - this.pm.escX, scl.y - 15);
           break;
         case 'gate':
           dmd.y = scl.y - this.pm.h;
@@ -890,10 +890,11 @@
       }
       if (n_bsk < this.n_basket) {
         if (n_bsk > 0) {
-          this.socleO.add_heart();
+          if (n_bsk > 0) {
+            this.socleO.add_heart();
+          }
         }
         this.lostLife();
-        console.log(this._fle_, ': ', n_bsk, this.game.ge.heart);
         this.n_basket = n_bsk;
       }
       if (this.buttonO.pm.game_started) {

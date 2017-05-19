@@ -8,10 +8,8 @@ class @YourGame extends Phacker.GameState
 
         n_bsk = @basketsO.move() if @buttonO.pm.game_started # test remaining baskets
         if n_bsk < @n_basket
-            @socleO.add_heart() if n_bsk > 0 #@game.ge.heart.push @game.ge.heart[0]
+            @socleO.add_heart() if n_bsk > 0 if n_bsk > 0
             @lostLife()
-
-            console.log @_fle_,': ',n_bsk ,@game.ge.heart
             @n_basket = n_bsk
 
         @diamondsO.check_diamonds() if @buttonO.pm.game_started #Start the game
