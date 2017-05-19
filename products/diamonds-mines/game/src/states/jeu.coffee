@@ -8,8 +8,9 @@ class @YourGame extends Phacker.GameState
 
         n_bsk = @basketsO.move() if @buttonO.pm.game_started # test remaining baskets
         if n_bsk < @n_basket
-            @game.ge.heart.push @game.ge.heart[0]  if n_bsk > 0
+            @socleO.add_heart() if n_bsk > 0 #@game.ge.heart.push @game.ge.heart[0]
             @lostLife()
+
             console.log @_fle_,': ',n_bsk ,@game.ge.heart
             @n_basket = n_bsk
 
@@ -27,7 +28,7 @@ class @YourGame extends Phacker.GameState
 
     create: ->
         super() #Required
-        @soleO = new Phacker.Game.Socle @game
+        @socleO = new Phacker.Game.Socle @game
 
         @effectO = new Phacker.Game.Effects @game
 

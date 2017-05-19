@@ -103,4 +103,16 @@ class Phacker.Game.Socle
         tw.to( lst, t, Phaser.Easing.Linear.None, true, 0, -1 )
 
 
+    #.----------.----------
+    # Tools
+    #.----------.----------
+    # deep copy of an object
+    add_heart: ->
+        lastElement = @gm.ge.heart[0]
+        heartImg = @gm.add.image(0, 0, 'heart')
+        heartImg.x = lastElement.x + lastElement.width + 5
+        heartImg.y = lastElement.y
+
+        heartImg.fixedToCamera = true
+        @gm.ge.heart.push heartImg
 

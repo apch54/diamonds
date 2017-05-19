@@ -92,6 +92,16 @@
       return tw.to(lst, t, Phaser.Easing.Linear.None, true, 0, -1);
     };
 
+    Socle.prototype.add_heart = function() {
+      var heartImg, lastElement;
+      lastElement = this.gm.ge.heart[0];
+      heartImg = this.gm.add.image(0, 0, 'heart');
+      heartImg.x = lastElement.x + lastElement.width + 5;
+      heartImg.y = lastElement.y;
+      heartImg.fixedToCamera = true;
+      return this.gm.ge.heart.push(heartImg);
+    };
+
     return Socle;
 
   })();
@@ -880,7 +890,7 @@
       }
       if (n_bsk < this.n_basket) {
         if (n_bsk > 0) {
-          this.game.ge.heart.push(this.game.ge.heart[0]);
+          this.socleO.add_heart();
         }
         this.lostLife();
         console.log(this._fle_, ': ', n_bsk, this.game.ge.heart);
@@ -903,7 +913,7 @@
 
     YourGame.prototype.create = function() {
       YourGame.__super__.create.call(this);
-      this.soleO = new Phacker.Game.Socle(this.game);
+      this.socleO = new Phacker.Game.Socle(this.game);
       this.effectO = new Phacker.Game.Effects(this.game);
       this.basketsO = new Phacker.Game.Baskets(this.game);
       this.bskts = this.basketsO.bsk_bdy_grp;
