@@ -19,6 +19,7 @@ class Phacker.Game.Diamonds
             x2: @Pm.mec.x0 - 20
             x3: @Pm.mec.x0 + @Pm.mec.w/2 - 56
             y1: @Pm.mec.y0 + 65
+            escX: if @gm.gameOptions.fullscreen  then 50 else 100 # when diamond is lost
 
             bounce: {x: .2, y: .05}
             g:300 #gravity.y
@@ -75,12 +76,12 @@ class Phacker.Game.Diamonds
             when 'hight-right'       then dmd.body.velocity.x = -@pm.vx0
             when 'bottom-left'
                 dmd.y = scl.y-25
-                @twn_dmd dmd, 100, scl.y-5
+                @twn_dmd dmd, @pm.escX, scl.y-25
 #                if dmd.x < @Pm.btm.x0 -  @Pm.btm.w/2 then   @grp0.remove(dmd)
 #                else dmd.y = scl.y - 14 ; dmd.body.velocity.x = -@pm.vx0
             when 'bottom-right'
                 dmd.y = scl.y-25
-                @twn_dmd dmd, @Pm.bg.w - 100, scl.y-5
+                @twn_dmd dmd, @Pm.bg.w - @pm.escX, scl.y-25
 #                if dmd.x > @Pm.btm.x0 +  @Pm.btm.w/2  -  5 then   @grp0.remove(dmd)
 #                else dmd.y = scl.y - 14; dmd.body.velocity.x = @pm.vx0
             when 'gate'
@@ -171,7 +172,6 @@ class Phacker.Game.Diamonds
                 @effO.play dmd      # play effect
             @
         )
-
 
 #.----------.----------
     # Initialisation of all diamonds (ball)

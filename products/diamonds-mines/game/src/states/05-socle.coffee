@@ -15,7 +15,7 @@ class Phacker.Game.Socle
         @pm = @gm.parameters = {}
 
         @pm.bg = # background
-            y0: 0
+            y0: 48
             w : if @gm.gameOptions.fullscreen  then 375 else 768
             h : if @gm.gameOptions.fullscreen  then 559 else 500
         @pm.bg.w2 = @pm.bg.w/2 # middle of background
@@ -32,7 +32,7 @@ class Phacker.Game.Socle
             w : 329
             h : 375
             r : 20 # rope radius at the four angles
-        @pm.rop.y0 = (@pm.btm.y0 - @pm.rop.h )/2
+        @pm.rop.y0 = (@pm.btm.y0 - @pm.rop.h )/2 +15
 
         @pm.mec = # mechanic
             x0: @pm.bg.w2

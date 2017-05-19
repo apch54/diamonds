@@ -14,7 +14,7 @@
       this._fle_ = 'Socle';
       this.pm = this.gm.parameters = {};
       this.pm.bg = {
-        y0: 0,
+        y0: 48,
         w: this.gm.gameOptions.fullscreen ? 375 : 768,
         h: this.gm.gameOptions.fullscreen ? 559 : 500
       };
@@ -32,7 +32,7 @@
         h: 375,
         r: 20
       };
-      this.pm.rop.y0 = (this.pm.btm.y0 - this.pm.rop.h) / 2;
+      this.pm.rop.y0 = (this.pm.btm.y0 - this.pm.rop.h) / 2 + 15;
       this.pm.mec = {
         x0: this.pm.bg.w2,
         y0: this.pm.rop.y0 + 60,
@@ -210,7 +210,7 @@
         y3: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
         x4: this.Pm.rop.x0 - this.Pm.rop.w / 2 + 2,
         y4: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
-        n: this.gm.gameOptions.life
+        n: 6
       };
       this.pm.bsk_remaining = this.pm.n;
       this.bska = [];
@@ -366,6 +366,7 @@
         x2: this.Pm.mec.x0 - 20,
         x3: this.Pm.mec.x0 + this.Pm.mec.w / 2 - 56,
         y1: this.Pm.mec.y0 + 65,
+        escX: this.gm.gameOptions.fullscreen ? 50 : 100,
         bounce: {
           x: .2,
           y: .05
@@ -460,11 +461,11 @@
           break;
         case 'bottom-left':
           dmd.y = scl.y - 25;
-          this.twn_dmd(dmd, 100, scl.y - 5);
+          this.twn_dmd(dmd, this.pm.escX, scl.y - 25);
           break;
         case 'bottom-right':
           dmd.y = scl.y - 25;
-          this.twn_dmd(dmd, this.Pm.bg.w - 100, scl.y - 5);
+          this.twn_dmd(dmd, this.Pm.bg.w - this.pm.escX, scl.y - 25);
           break;
         case 'gate':
           dmd.y = scl.y - this.pm.h;
@@ -878,7 +879,11 @@
         n_bsk = this.basketsO.move();
       }
       if (n_bsk < this.n_basket) {
+        if (n_bsk > 0) {
+          this.game.ge.heart.push(this.game.ge.heart[0]);
+        }
         this.lostLife();
+        console.log(this._fle_, ': ', n_bsk, this.game.ge.heart);
         this.n_basket = n_bsk;
       }
       if (this.buttonO.pm.game_started) {
@@ -911,51 +916,51 @@
       return this.n_basket = this.game.parameters.bsks.n;
     };
 
-
-    /* LOGIC OF YOUR GAME
-     * Examples buttons actions
-     *
-    lostBtn = @game.add.text(0, 0, "Bad Action");
-    lostBtn.inputEnabled = true;
-    lostBtn.y = @game.height*0.5 - lostBtn.height*0.5
-    lostBtn.events.onInputDown.add ( ->
-        @lost()
-    ).bind @
-    
-    lostLifeBtn = @game.add.text(0, 0, "Lost Life");
-    lostLifeBtn.inputEnabled = true;
-    lostLifeBtn.y = @game.height*0.5 - lostLifeBtn.height*0.5
-    lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
-    lostLifeBtn.events.onInputDown.add ( ->
-        @lostLife()
-    ).bind @
-    
-    bonusBtn = @game.add.text(0, 0, "Bonus");
-    bonusBtn.inputEnabled = true;
-    bonusBtn.y = @game.height*0.5 - bonusBtn.height*0.5 + 50
-    bonusBtn.x = @game.width - bonusBtn.width
-    bonusBtn.events.onInputDown.add ( ->
-        @winBonus()
-    ).bind @
-    
-    #Placement specific for mobile
-    
-    if @game.gameOptions.fullscreen
-        lostBtn.x = @game.width*0.5 - lostBtn.width*0.5
-        lostBtn.y = @game.height*0.25
-    
-        winBtn.x = @game.width*0.5 - winBtn.width*0.5
-        winBtn.y = @game.height*0.5
-    
-        lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
-        lostLifeBtn.y = @game.height*0.75
-    
-        bonusBtn.x = @game.width*0.5 - winBtn.width*0.5
-        bonusBtn.y = @game.height*0.5 + 50
-     */
-
     return YourGame;
 
   })(Phacker.GameState);
+
+
+  /* LOGIC OF YOUR GAME
+   * Examples buttons actions
+   *
+  lostBtn = @game.add.text(0, 0, "Bad Action");
+  lostBtn.inputEnabled = true;
+  lostBtn.y = @game.height*0.5 - lostBtn.height*0.5
+  lostBtn.events.onInputDown.add ( ->
+      @lost()
+  ).bind @
+  
+  lostLifeBtn = @game.add.text(0, 0, "Lost Life");
+  lostLifeBtn.inputEnabled = true;
+  lostLifeBtn.y = @game.height*0.5 - lostLifeBtn.height*0.5
+  lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
+  lostLifeBtn.events.onInputDown.add ( ->
+      @lostLife()
+  ).bind @
+  
+  bonusBtn = @game.add.text(0, 0, "Bonus");
+  bonusBtn.inputEnabled = true;
+  bonusBtn.y = @game.height*0.5 - bonusBtn.height*0.5 + 50
+  bonusBtn.x = @game.width - bonusBtn.width
+  bonusBtn.events.onInputDown.add ( ->
+      @winBonus()
+  ).bind @
+  
+  #Placement specific for mobile
+  
+  if @game.gameOptions.fullscreen
+      lostBtn.x = @game.width*0.5 - lostBtn.width*0.5
+      lostBtn.y = @game.height*0.25
+  
+      winBtn.x = @game.width*0.5 - winBtn.width*0.5
+      winBtn.y = @game.height*0.5
+  
+      lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
+      lostLifeBtn.y = @game.height*0.75
+  
+      bonusBtn.x = @game.width*0.5 - winBtn.width*0.5
+      bonusBtn.y = @game.height*0.5 + 50
+   */
 
 }).call(this);

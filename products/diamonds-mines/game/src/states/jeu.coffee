@@ -7,10 +7,10 @@ class @YourGame extends Phacker.GameState
         super() #Required
 
         n_bsk = @basketsO.move() if @buttonO.pm.game_started # test remaining baskets
-
         if n_bsk < @n_basket
+            @game.ge.heart.push @game.ge.heart[0]  if n_bsk > 0
             @lostLife()
-            #console.log @_fle_,': ',n_bsk ,@game.ge.heart.length
+            console.log @_fle_,': ',n_bsk ,@game.ge.heart
             @n_basket = n_bsk
 
         @diamondsO.check_diamonds() if @buttonO.pm.game_started #Start the game
@@ -44,53 +44,50 @@ class @YourGame extends Phacker.GameState
 
         @gateO = new Phacker.Game.Gate @game, @scl
 
-        @n_basket = @game.parameters .bsks.n
+        @n_basket = @game.parameters.bsks.n
 
 
+### LOGIC OF YOUR GAME
+# Examples buttons actions
+#
+lostBtn = @game.add.text(0, 0, "Bad Action");
+lostBtn.inputEnabled = true;
+lostBtn.y = @game.height*0.5 - lostBtn.height*0.5
+lostBtn.events.onInputDown.add ( ->
+    @lost()
+).bind @
 
+lostLifeBtn = @game.add.text(0, 0, "Lost Life");
+lostLifeBtn.inputEnabled = true;
+lostLifeBtn.y = @game.height*0.5 - lostLifeBtn.height*0.5
+lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
+lostLifeBtn.events.onInputDown.add ( ->
+    @lostLife()
+).bind @
 
+bonusBtn = @game.add.text(0, 0, "Bonus");
+bonusBtn.inputEnabled = true;
+bonusBtn.y = @game.height*0.5 - bonusBtn.height*0.5 + 50
+bonusBtn.x = @game.width - bonusBtn.width
+bonusBtn.events.onInputDown.add ( ->
+    @winBonus()
+).bind @
 
-    ### LOGIC OF YOUR GAME
-    # Examples buttons actions
-    #
-    lostBtn = @game.add.text(0, 0, "Bad Action");
-    lostBtn.inputEnabled = true;
-    lostBtn.y = @game.height*0.5 - lostBtn.height*0.5
-    lostBtn.events.onInputDown.add ( ->
-        @lost()
-    ).bind @
+#Placement specific for mobile
 
-    lostLifeBtn = @game.add.text(0, 0, "Lost Life");
-    lostLifeBtn.inputEnabled = true;
-    lostLifeBtn.y = @game.height*0.5 - lostLifeBtn.height*0.5
+if @game.gameOptions.fullscreen
+    lostBtn.x = @game.width*0.5 - lostBtn.width*0.5
+    lostBtn.y = @game.height*0.25
+
+    winBtn.x = @game.width*0.5 - winBtn.width*0.5
+    winBtn.y = @game.height*0.5
+
     lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
-    lostLifeBtn.events.onInputDown.add ( ->
-        @lostLife()
-    ).bind @
+    lostLifeBtn.y = @game.height*0.75
 
-    bonusBtn = @game.add.text(0, 0, "Bonus");
-    bonusBtn.inputEnabled = true;
-    bonusBtn.y = @game.height*0.5 - bonusBtn.height*0.5 + 50
-    bonusBtn.x = @game.width - bonusBtn.width
-    bonusBtn.events.onInputDown.add ( ->
-        @winBonus()
-    ).bind @
+    bonusBtn.x = @game.width*0.5 - winBtn.width*0.5
+    bonusBtn.y = @game.height*0.5 + 50
 
-    #Placement specific for mobile
-
-    if @game.gameOptions.fullscreen
-        lostBtn.x = @game.width*0.5 - lostBtn.width*0.5
-        lostBtn.y = @game.height*0.25
-
-        winBtn.x = @game.width*0.5 - winBtn.width*0.5
-        winBtn.y = @game.height*0.5
-
-        lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
-        lostLifeBtn.y = @game.height*0.75
-
-        bonusBtn.x = @game.width*0.5 - winBtn.width*0.5
-        bonusBtn.y = @game.height*0.5 + 50
-
-    ###
+###
 
 
