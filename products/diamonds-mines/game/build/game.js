@@ -367,7 +367,7 @@
         h: 10,
         n: 97,
         vx0: 70,
-        vx1: 20,
+        vx1: 1,
         msg_bsk: 'mes bsk',
         msg_scl: 'mes scl',
         msg_itself: 'mes itself',
@@ -506,7 +506,7 @@
           }
           break;
         case 'gate':
-          dmd.y = scl.y - this.pm.h;
+          dmd.y = scl.y - this.pm.h + 2;
       }
       return true;
     };
@@ -562,6 +562,13 @@
     };
 
     Diamonds.prototype.when_collide_itself = function(d1, d2) {
+      if (d1.x < d2.x) {
+        d1.body.velocity.x -= this.pm.vx1;
+        d2.body.velocity.x += this.pm.vx1;
+      } else {
+        d1.body.velocity.x += this.pm.vx1;
+        d2.body.velocity.x -= this.pm.vx1;
+      }
       return true;
     };
 

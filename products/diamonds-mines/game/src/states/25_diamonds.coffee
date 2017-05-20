@@ -9,7 +9,7 @@ class Phacker.Game.Diamonds
             h:10
             n: 97 # number of diamonds
             vx0: 70 #initial  diamond vx
-            vx1 : 20 # collision vx result with itself
+            vx1 : 1 # collision vx result with itself
             #vx2 : 40 # diamond collide with basket
             msg_bsk:        'mes bsk'
             msg_scl:        'mes scl'
@@ -105,7 +105,7 @@ class Phacker.Game.Diamonds
                     @pm.dead++
                     dmd.dead = true
             when 'gate'
-                dmd.y = scl.y - @pm.h
+                dmd.y = scl.y - @pm.h+2
 
         return true  # return it has collided
 
@@ -162,12 +162,12 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_itself:(d1, d2) ->
-#        if d1.x < d2.x
-#            d1.body.velocity.x -= @pm.vx1
-#            d2.body.velocity.x +=  @pm.vx1
-#        else
-#            d1.body.velocity.x += @pm.vx1
-#            d2.body.velocity.x -= @pm.vx1
+        if d1.x < d2.x
+            d1.body.velocity.x -= @pm.vx1
+            d2.body.velocity.x +=  @pm.vx1
+        else
+            d1.body.velocity.x += @pm.vx1
+            d2.body.velocity.x -= @pm.vx1
         return true  # return it has collided
 
     #.----------.----------
