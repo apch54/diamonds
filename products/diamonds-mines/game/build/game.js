@@ -366,7 +366,7 @@
         w: 10,
         h: 10,
         n: 97,
-        vx0: 100,
+        vx0: 70,
         vx1: 20,
         msg_bsk: 'mes bsk',
         msg_scl: 'mes scl',
@@ -466,14 +466,32 @@
       dmd.has_scored = false;
       switch (scl.pos) {
         case 'hight-left':
-          dmd.body.velocity.x = this.pm.vx0;
+          if (this.pm.x2 - dmd.x > 20) {
+            dmd.body.velocity.x = this.pm.vx0;
+            dmd.y -= 1;
+          } else {
+            dmd.body.velocity.x = this.pm.vx0;
+            dmd.y -= .1;
+          }
           break;
         case 'hight-right':
-          dmd.body.velocity.x = -this.pm.vx0;
+          if (dmd.x - this.pm.x3 > 20) {
+            dmd.body.velocity.x = -this.pm.vx0;
+            dmd.y -= 1;
+          } else {
+            dmd.body.velocity.x = -this.pm.vx0;
+            dmd.y -= .1;
+          }
+          break;
+        case 'middle-left':
+          dmd.x += .1;
+          break;
+        case 'middle-right':
+          dmd.x -= .1;
           break;
         case 'bottom-left':
           dmd.y = scl.y - 25;
-          this.twn_dmd(dmd, this.pm.escX, scl.y - 15);
+          this.twn_dmd(dmd, this.pm.escX, scl.y - 10);
           if (!dmd.dead) {
             this.pm.dead++;
             dmd.dead = true;
@@ -555,14 +573,17 @@
       }, 200, Phaser.Easing.Cubic.Out, true);
     };
 
-    Diamonds.prototype.twn_dmd = function(dmd, x0, y0) {
+    Diamonds.prototype.twn_dmd = function(dmd, x0, y0, t0) {
       var tw;
+      if (t0 == null) {
+        t0 = 1100;
+      }
       tw = this.gm.add.tween(dmd);
       tw.to({
         x: x0,
         y: y0,
         alpha: 0
-      }, 800, Phaser.Easing.Linear.None, true, 0, 0);
+      }, t0, Phaser.Easing.Linear.None, true, 0, 0);
       return tw.onComplete.add(function() {
         this.grp0.remove(dmd);
         return this.effO.play(dmd);
@@ -727,11 +748,11 @@
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.sclb = {
         w: 10,
-        h: 12,
+        h: 20,
         x1: this.Pm.dmds.x1 + 5,
-        y1: this.Pm.dmds.y1 + 30,
+        y1: this.Pm.dmds.y1 + 35,
         x2: this.Pm.dmds.x2 + 2,
-        y2: this.Pm.dmds.y1 + 60,
+        y2: this.Pm.dmds.y1 + 65,
         x3: this.Pm.dmds.x2 + 43,
         x4: this.Pm.dmds.x3 + 60,
         x5: this.Pm.btm.x0 - this.Pm.btm.w / 2,
@@ -763,18 +784,19 @@
         this.mk_rect(this.bdy, this.pm.x1 + dx, yy, this.pm.w, this.pm.h, 'hight-left');
         dx += this.pm.w;
       }
-      return this.last = this.mk_rect(this.bdy, this.pm.x2 - 1, this.pm.y2 + 12, this.pm.w, 28, 'hight-left');
+      this.last = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2, this.pm.w, this.pm.h, 'hight-left');
+      return this.last = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 + this.pm.h / 2 + 14, this.pm.w, 28, 'middle-left');
     };
 
     Socle_body.prototype.mk_right = function() {
-      var dx, last, results, yy, yy0;
-      this.mk_rect(this.bdy, this.pm.x3 - 3, this.last.y, this.pm.w, 28, 'hight-right');
-      dx = this.pm.w - 5;
+      var dx, results, yy, yy0;
+      this.mk_rect(this.bdy, this.pm.x3 - 6, this.last.y, this.pm.w, 28, 'middle-right');
+      dx = 0;
       yy0 = this.pm.y3 - this.pm.h;
       results = [];
       while (dx < this.pm.x4 - this.pm.x3) {
         yy = yy0 + dx * this.pm.delta2;
-        last = this.mk_rect(this.bdy, this.pm.x3 + dx, yy, this.pm.w, this.pm.h, 'hight-right');
+        this.mk_rect(this.bdy, this.pm.x3 - 6 + dx, yy, this.pm.w, this.pm.h, 'hight-right');
         results.push(dx += this.pm.w);
       }
       return results;
@@ -814,7 +836,7 @@
       s = bdy_grp.create(x, y, b);
       s.body.immovable = true;
       s.body.moves = false;
-      s.alpha = 1;
+      s.alpha = .3;
       s.anchor.setTo(0.5, 0.5);
       s.pos = pos;
       return s;

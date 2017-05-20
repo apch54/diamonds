@@ -8,7 +8,7 @@ class Phacker.Game.Diamonds
             w: 10
             h:10
             n: 97 # number of diamonds
-            vx0: 100 #initial  diamond vx
+            vx0: 70 #initial  diamond vx
             vx1 : 20 # collision vx result with itself
             #vx2 : 40 # diamond collide with basket
             msg_bsk:        'mes bsk'
@@ -74,11 +74,27 @@ class Phacker.Game.Diamonds
         #console.log @_fle_,': ',scl.pos
         dmd.has_scored = false
         switch scl.pos
-            when 'hight-left'        then dmd.body.velocity.x = @pm.vx0
-            when 'hight-right'       then dmd.body.velocity.x = -@pm.vx0
+            when 'hight-left'
+                if @pm.x2-dmd.x > 20
+                    dmd.body.velocity.x = @pm.vx0
+                    dmd.y -= 1
+                else
+                    dmd.body.velocity.x = @pm.vx0
+                    dmd.y -= .1
+            when 'hight-right'
+                if  dmd.x-@pm.x3 > 20
+                    dmd.body.velocity.x = -@pm.vx0
+                    dmd.y -= 1
+                else
+                    dmd.body.velocity.x = -@pm.vx0
+                    dmd.y -= .1
+            when 'middle-left'
+                dmd.x += .1
+            when 'middle-right'
+                dmd.x -= .1
             when 'bottom-left'
                 dmd.y = scl.y-25
-                @twn_dmd dmd, @pm.escX, scl.y-15
+                @twn_dmd dmd, @pm.escX, scl.y-10
                 if not dmd.dead
                     @pm.dead++
                     dmd.dead = true
@@ -166,10 +182,11 @@ class Phacker.Game.Diamonds
             200, Phaser.Easing.Cubic.Out, true
         )
 
-    twn_dmd: (dmd,x0,y0 ) ->
+    twn_dmd: (dmd,x0,y0, t0 ) ->
         #console.log @_fle_,': ',x0
+        if not t0? then t0=1100
         tw = @gm.add.tween dmd
-        tw.to( {x: x0, y: y0 , alpha: 0}, 800, Phaser.Easing.Linear.None, true, 0, 0 )
+        tw.to( {x: x0, y: y0 , alpha: 0}, t0, Phaser.Easing.Linear.None, true, 0, 0 )
         tw.onComplete.add(# on complete destoy basket real_body
             ()->
                 @grp0.remove(dmd)   # destroy dmd

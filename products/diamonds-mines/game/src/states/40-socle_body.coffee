@@ -7,9 +7,9 @@ class Phacker.Game.Socle_body
         @Pm = @gm.parameters    # globals parameters
 
         @pm = @Pm.sclb =        # socle_body parameters
-            w:10,                   h:12
-            x1: @Pm.dmds.x1 + 5,            y1: @Pm.dmds.y1+30  # hight-left of mecanic
-            x2: @Pm.dmds.x2 + 2,            y2: @Pm.dmds.y1+60  # low-left of mecanic
+            w:10,                   h:20
+            x1: @Pm.dmds.x1 + 5,            y1: @Pm.dmds.y1+35  # hight-left of mecanic
+            x2: @Pm.dmds.x2 + 2,            y2: @Pm.dmds.y1+65  # low-left of mecanic
             x3: @Pm.dmds.x2 + 43,                               # low-left of mecanic
             x4: @Pm.dmds.x3 + 60,                               # hight-right of mecanic
             x5: @Pm.btm.x0 - @Pm.btm.w/2,   y5: @Pm.btm.y0+30   # bottom left
@@ -41,18 +41,18 @@ class Phacker.Game.Socle_body
             yy = @pm.y1 + dx * @pm.delta1
             @mk_rect @bdy, @pm.x1 + dx, yy, @pm.w, @pm.h ,'hight-left'# group,x,y,w,h
             dx += @pm.w
-        @last = @mk_rect @bdy, @pm.x2 - 1 , @pm.y2 + 12 , @pm.w, 28,'hight-left'
+        @last = @mk_rect @bdy, @pm.x2 , @pm.y2 , @pm.w, @pm.h,'hight-left'
+        @last = @mk_rect @bdy, @pm.x2 , @pm.y2 + @pm.h/2 + 14 , @pm.w, 28,'middle-left'
 
     #.----------.----------
     mk_right:() ->
-        @mk_rect @bdy, @pm.x3-3 , @last.y, @pm.w, 28, 'hight-right'
-        dx= @pm.w-5
+        @mk_rect @bdy, @pm.x3-6 , @last.y, @pm.w, 28, 'middle-right'
+        dx= 0
         yy0= @pm.y3 - @pm.h
         while dx < @pm.x4 - @pm.x3
             yy = yy0 + dx * @pm.delta2
-            last = @mk_rect @bdy, @pm.x3 + dx, yy, @pm.w, @pm.h,'hight-right'
+            @mk_rect @bdy, @pm.x3 - 6 + dx, yy, @pm.w, @pm.h,'hight-right'
             dx += @pm.w
-
     #.----------.----------
     mk_btm_left:() ->
         dx= 0
@@ -87,7 +87,7 @@ class Phacker.Game.Socle_body
         s = bdy_grp.create x, y, b
         s.body.immovable = true
         s.body.moves = false # required
-        s.alpha = 1
+        s.alpha = .3
 
         #s = @gm.add.sprite x, y, b
         s.anchor.setTo(0.5, 0.5)
