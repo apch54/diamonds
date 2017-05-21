@@ -12,7 +12,7 @@ class Phacker.Game.OneBasket
 
             w:  42
             h:  54
-            vx: 60
+            vx: @Pm.bsks.v
             names: ['blue_basket','green_basket','normal_basket','pink_basket','red_basket']
 
         @mk_bsk(@lstP ) # lstP for list oparameters of the basket

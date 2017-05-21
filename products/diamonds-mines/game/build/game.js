@@ -123,7 +123,7 @@
         xrot2: this.Pm.rop.x0 + this.Pm.rop.w / 6,
         w: 42,
         h: 54,
-        vx: 60,
+        vx: this.Pm.bsks.v,
         names: ['blue_basket', 'green_basket', 'normal_basket', 'pink_basket', 'red_basket']
       };
       this.mk_bsk(this.lstP);
@@ -203,7 +203,7 @@
 }).call(this);
 
 
-/*  written by apch on 2017-05-07enemy */
+/*  written by apch on 2017-05-07 */
 
 (function() {
   Phacker.Game.Baskets = (function() {
@@ -220,7 +220,8 @@
         y3: this.gm.parameters.rop.y0 + this.Pm.rop.h - 10,
         x4: this.Pm.rop.x0 - this.Pm.rop.w / 2 + 2,
         y4: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
-        n: 6
+        n: 6,
+        v: 60
       };
       this.pm.bsk_remaining = this.pm.n;
       this.bska = [];
@@ -908,6 +909,77 @@
 }).call(this);
 
 
+/*  written by apch on 2017-05-20 */
+
+(function() {
+  Phacker.Game.Rules = (function() {
+    function Rules(gm, bsksO) {
+      this.gm = gm;
+      this.bsksO = bsksO;
+      this._fle_ = 'Rules';
+      this.Pm = this.gm.parameters;
+      this.pm = this.Pm.rls = {
+        dvx: 20,
+        scr: this.gm.ge.score,
+        lvl: 0,
+        v: this.Pm.bsks.v
+      };
+    }
+
+    Rules.prototype.check = function() {
+      if (this.bsksO.bska.length < 6) {
+        return;
+      }
+      switch (this.pm.lvl) {
+        case 0:
+          if (this.gm.ge.score < 6) {
+            return;
+          } else {
+            this.speedup(this.pm.v + this.pm.dvx);
+            this.pm.lvl = 1;
+          }
+          break;
+        case 1:
+          if (this.gm.ge.score < 12) {
+            return;
+          } else {
+            this.speedup(this.pm.v + this.pm.dvx * 2);
+            this.pm.lvl = 2;
+          }
+      }
+      return console.log(this._fle_, ': ', this.pm.lvl);
+    };
+
+    Rules.prototype.speedup = function(v0) {
+      var b, i, len, ref, results, v;
+      ref = this.bsksO.bska;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        b = ref[i];
+        v = b.bsk.body.velocity;
+        b.pm.vx = v0;
+        if (v.x < 0) {
+          results.push(v.x = -v0);
+        } else if (v.x > 0) {
+          results.push(v.x = v0);
+        } else if (v.y < 0) {
+          results.push(v.y = -v0);
+        } else if (v.y > 0) {
+          results.push(v.y = v0);
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
+    };
+
+    return Rules;
+
+  })();
+
+}).call(this);
+
+
 /*  written by apch on 2017-05-07 : Jeu */
 
 (function() {
@@ -948,7 +1020,8 @@
         this.win();
       }
       this.diamondsO.collide_socle(this.scl);
-      return this.diamondsO.collide_itself();
+      this.diamondsO.collide_itself();
+      return this.rulesO.check();
     };
 
     YourGame.prototype.resetPlayer = function() {
@@ -967,7 +1040,8 @@
       this.socle_bodyO = new Phacker.Game.Socle_body(this.game);
       this.scl = this.socle_bodyO.bdy;
       this.gateO = new Phacker.Game.Gate(this.game, this.scl);
-      return this.n_basket = this.game.parameters.bsks.n;
+      this.n_basket = this.game.parameters.bsks.n;
+      return this.rulesO = new Phacker.Game.Rules(this.game, this.basketsO);
     };
 
     return YourGame;

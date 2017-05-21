@@ -22,6 +22,7 @@ class @YourGame extends Phacker.GameState
 
         @diamondsO.collide_socle(@scl)
         @diamondsO.collide_itself()
+        @rulesO.check()
 
 
     resetPlayer: ->
@@ -45,8 +46,11 @@ class @YourGame extends Phacker.GameState
         @scl = @socle_bodyO.bdy
 
         @gateO = new Phacker.Game.Gate @game, @scl
+        @n_basket = @game.parameters.bsks.n # basket numbers
 
-        @n_basket = @game.parameters.bsks.n
+        @rulesO = new Phacker.Game.Rules @game, @basketsO
+
+
 
 
 ### LOGIC OF YOUR GAME
