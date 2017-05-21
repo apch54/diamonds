@@ -28,7 +28,7 @@ class Phacker.Game.Diamonds
             dt: 250 # ms
             used:0
             dead:0
-            dmd_in_game:16
+            dmd_in_game: 18
 
         @grp0 = @gm.add.physicsGroup()       # basket body group; real bodies
         @grp0.enableBody = true
@@ -74,6 +74,7 @@ class Phacker.Game.Diamonds
         #console.log @_fle_,': ',scl.pos
         dmd.has_scored = false
         switch scl.pos
+
             when 'hight-left'
                 if @pm.x2-dmd.x > 20
                     dmd.body.velocity.x = @pm.vx0
@@ -105,7 +106,8 @@ class Phacker.Game.Diamonds
                     @pm.dead++
                     dmd.dead = true
             when 'gate'
-                dmd.y = scl.y - @pm.h+2
+                if scl.body.touching.left then dmd.y += 20
+                else dmd.y = scl.y - @pm.h+2
 
         return true  # return it has collided
 
@@ -141,7 +143,7 @@ class Phacker.Game.Diamonds
 
         else if bsk.typ is 'btm'
             dmd.body.velocity.y =  0
-            dmd.y = bsk.y-15 # dont sink
+            dmd.y = bsk.y-14 # dont sink
             bsk.full = true
 
         return true  # return it has collided
@@ -164,10 +166,11 @@ class Phacker.Game.Diamonds
     when_collide_itself:(d1, d2) ->
         if d1.x < d2.x
             d1.body.velocity.x -= @pm.vx1
-            d2.body.velocity.x +=  @pm.vx1
+            #d2.body.velocity.x +=  @pm.vx1
         else
-            d1.body.velocity.x += @pm.vx1
             d2.body.velocity.x -= @pm.vx1
+            #d2.body.velocity.x -= @pm.vx1
+        #if d1.y > d2.y then d1.body.velocity.y = 0
         return true  # return it has collided
 
     #.----------.----------

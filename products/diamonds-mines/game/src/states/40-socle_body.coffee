@@ -42,11 +42,11 @@ class Phacker.Game.Socle_body
             @mk_rect @bdy, @pm.x1 + dx, yy, @pm.w, @pm.h ,'hight-left'# group,x,y,w,h
             dx += @pm.w
         @last = @mk_rect @bdy, @pm.x2 , @pm.y2 , @pm.w, @pm.h,'hight-left'
-        @last = @mk_rect @bdy, @pm.x2 , @pm.y2 + @pm.h/2 + 14 , @pm.w, 28,'middle-left'
+        @last = @mk_rect @bdy, @pm.x2 , @pm.y2 + @pm.h/2 + 3 , @pm.w, 6,'middle-left'
 
     #.----------.----------
     mk_right:() ->
-        @mk_rect @bdy, @pm.x3-6 , @last.y, @pm.w, 28, 'middle-right'
+        @mk_rect @bdy, @pm.x3-6 , @last.y, @pm.w, 6, 'middle-right'
         dx= 0
         yy0= @pm.y3 - @pm.h
         while dx < @pm.x4 - @pm.x3
@@ -87,7 +87,7 @@ class Phacker.Game.Socle_body
         s = bdy_grp.create x, y, b
         s.body.immovable = true
         s.body.moves = false # required
-        s.alpha = .3
+        s.alpha = 0
 
         #s = @gm.add.sprite x, y, b
         s.anchor.setTo(0.5, 0.5)

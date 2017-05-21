@@ -32,7 +32,7 @@ class Phacker.Game.Rules
                 else
                     @speedup(@pm.v + @pm.dvx * 2)
                     @pm.lvl = 2
-        console.log @_fle_,': ', @pm.lvl #@bsksO.bska[0].bsk.body.velocity.y
+        #console.log @_fle_,': ', @pm.lvl #@bsksO.bska[0].bsk.body.velocity.y
 
     #.----------.----------
     # acceleration depending on score

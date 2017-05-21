@@ -387,7 +387,7 @@
         dt: 250,
         used: 0,
         dead: 0,
-        dmd_in_game: 16
+        dmd_in_game: 18
       };
       this.grp0 = this.gm.add.physicsGroup();
       this.grp0.enableBody = true;
@@ -507,7 +507,11 @@
           }
           break;
         case 'gate':
-          dmd.y = scl.y - this.pm.h + 2;
+          if (scl.body.touching.left) {
+            dmd.y += 20;
+          } else {
+            dmd.y = scl.y - this.pm.h + 2;
+          }
       }
       return true;
     };
@@ -545,7 +549,7 @@
         }
       } else if (bsk.typ === 'btm') {
         dmd.body.velocity.y = 0;
-        dmd.y = bsk.y - 15;
+        dmd.y = bsk.y - 14;
         bsk.full = true;
       }
       return true;
@@ -565,9 +569,7 @@
     Diamonds.prototype.when_collide_itself = function(d1, d2) {
       if (d1.x < d2.x) {
         d1.body.velocity.x -= this.pm.vx1;
-        d2.body.velocity.x += this.pm.vx1;
       } else {
-        d1.body.velocity.x += this.pm.vx1;
         d2.body.velocity.x -= this.pm.vx1;
       }
       return true;
@@ -793,12 +795,12 @@
         dx += this.pm.w;
       }
       this.last = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2, this.pm.w, this.pm.h, 'hight-left');
-      return this.last = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 + this.pm.h / 2 + 14, this.pm.w, 28, 'middle-left');
+      return this.last = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 + this.pm.h / 2 + 3, this.pm.w, 6, 'middle-left');
     };
 
     Socle_body.prototype.mk_right = function() {
       var dx, results, yy, yy0;
-      this.mk_rect(this.bdy, this.pm.x3 - 6, this.last.y, this.pm.w, 28, 'middle-right');
+      this.mk_rect(this.bdy, this.pm.x3 - 6, this.last.y, this.pm.w, 6, 'middle-right');
       dx = 0;
       yy0 = this.pm.y3 - this.pm.h;
       results = [];
@@ -844,7 +846,7 @@
       s = bdy_grp.create(x, y, b);
       s.body.immovable = true;
       s.body.moves = false;
-      s.alpha = .3;
+      s.alpha = 0;
       s.anchor.setTo(0.5, 0.5);
       s.pos = pos;
       return s;
@@ -932,22 +934,21 @@
       }
       switch (this.pm.lvl) {
         case 0:
-          if (this.gm.ge.score < 6) {
-            return;
+          if (this.gm.ge.score < 60) {
+
           } else {
             this.speedup(this.pm.v + this.pm.dvx);
-            this.pm.lvl = 1;
+            return this.pm.lvl = 1;
           }
           break;
         case 1:
-          if (this.gm.ge.score < 12) {
-            return;
+          if (this.gm.ge.score < 120) {
+
           } else {
             this.speedup(this.pm.v + this.pm.dvx * 2);
-            this.pm.lvl = 2;
+            return this.pm.lvl = 2;
           }
       }
-      return console.log(this._fle_, ': ', this.pm.lvl);
     };
 
     Rules.prototype.speedup = function(v0) {
