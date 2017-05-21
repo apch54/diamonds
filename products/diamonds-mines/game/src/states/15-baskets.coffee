@@ -12,7 +12,7 @@ class Phacker.Game.Baskets
             x3: @Pm.rop.x0 + @Pm.rop.w/2 - 2,         y3: @gm.parameters.rop.y0 + @Pm.rop.h - 10
             x4: @Pm.rop.x0 - @Pm.rop.w/2 + 2,         y4: @gm.parameters.rop.y0 + @Pm.rop.h - 2
             n: 6 #@gm.gameOptions.life # number of baskets
-            v: 60 #baskets velocity
+            v:@gm.gameOptions.vx0 #baskets velocity
         @pm.bsk_remaining = @pm.n
 
         @bska =[]                                   # Array of baskets object

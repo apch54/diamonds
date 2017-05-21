@@ -221,7 +221,7 @@
         x4: this.Pm.rop.x0 - this.Pm.rop.w / 2 + 2,
         y4: this.gm.parameters.rop.y0 + this.Pm.rop.h - 2,
         n: 6,
-        v: 60
+        v: this.gm.gameOptions.vx0
       };
       this.pm.bsk_remaining = this.pm.n;
       this.bska = [];
