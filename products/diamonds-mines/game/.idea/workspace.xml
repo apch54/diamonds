@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="122e89c7-f58a-4dd9-a9b2-d99de275008b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/states/50-rules.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/game.js" afterPath="$PROJECT_DIR$/build/game.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/10-one-basket.coffee" afterPath="$PROJECT_DIR$/src/states/10-one-basket.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/15-baskets.coffee" afterPath="$PROJECT_DIR$/src/states/15-baskets.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/jeu.coffee" afterPath="$PROJECT_DIR$/src/states/jeu.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/50-rules.coffee" afterPath="$PROJECT_DIR$/src/states/50-rules.coffee" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -88,8 +84,8 @@
           <file leaf-file-name="50-rules.coffee" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/states/50-rules.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="511">
-                  <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+                <state relative-caret-position="421">
+                  <caret line="30" column="37" lean-forward="false" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
                   <folding />
                 </state>
               </provider>
@@ -156,8 +152,8 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="215" />
-    <option name="y" value="54" />
+    <option name="x" value="172" />
+    <option name="y" value="22" />
     <option name="width" value="1651" />
     <option name="height" value="943" />
   </component>
@@ -350,7 +346,7 @@
       <workItem from="1495284423118" duration="7161000" />
       <workItem from="1495295969383" duration="631000" />
       <workItem from="1495312505351" duration="3665000" />
-      <workItem from="1495349979721" duration="3785000" />
+      <workItem from="1495349979721" duration="3958000" />
     </task>
     <task id="LOCAL-00001" summary="again here">
       <created>1495185153936</created>
@@ -394,14 +390,21 @@
       <option name="project" value="LOCAL" />
       <updated>1495291590339</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="speedup">
+      <created>1495353801226</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1495353801226</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32320000" />
+    <option name="totallyTimeSpent" value="32493000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="215" y="54" width="1651" height="943" extended-state="0" />
+    <frame x="172" y="22" width="1651" height="943" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -484,7 +487,8 @@
     <MESSAGE value="diamonds end game" />
     <MESSAGE value="balls mvt" />
     <MESSAGE value="shivering ball" />
-    <option name="LAST_COMMIT_MESSAGE" value="shivering ball" />
+    <MESSAGE value="speedup" />
+    <option name="LAST_COMMIT_MESSAGE" value="speedup" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -864,8 +868,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/states/50-rules.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="511">
-          <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+        <state relative-caret-position="421">
+          <caret line="30" column="37" lean-forward="false" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
           <folding />
         </state>
       </provider>

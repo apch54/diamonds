@@ -23,12 +23,12 @@ class Phacker.Game.Rules
         if @bsksO.bska.length < 6 then return
         switch @pm.lvl
             when 0
-                if @gm.ge.score < 6 then return
+                if @gm.ge.score < 60 then return
                 else
                     @speedup(@pm.v + @pm.dvx)
                     @pm.lvl = 1
             when 1
-                if @gm.ge.score < 12 then return
+                if @gm.ge.score < 120 then return
                 else
                     @speedup(@pm.v + @pm.dvx * 2)
                     @pm.lvl = 2
