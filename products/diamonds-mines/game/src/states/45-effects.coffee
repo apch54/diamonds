@@ -12,7 +12,8 @@ class Phacker.Game.Effects
 
     play:(obj, n) -> # n is type of effect
         nowt = new Date().getTime()
-        if not (n is 3) and (nowt - @last_eff_time < @delay) then return else @last_eff_time =nowt
+        if not (n is 3) and (nowt - @last_eff_time < @delay) then return
+        else if n isnt 3 then  @last_eff_time =nowt
 
         #n = @gm.rnd.integerInRange 0, 3 # choose animation
         switch n

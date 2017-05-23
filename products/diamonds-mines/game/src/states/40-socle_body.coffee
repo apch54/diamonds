@@ -38,19 +38,21 @@ class Phacker.Game.Socle_body
     mk_left:() ->
         dx= 0
         while dx < @pm.x2 - @pm.x1
-            yy = @pm.y1 + dx * @pm.delta1
+            yy = @pm.y1 + dx * @pm.delta1 - 8
             @mk_rect @bdy, @pm.x1 + dx, yy, @pm.w, @pm.h ,'hight-left'# group,x,y,w,h
             dx += @pm.w
-        @last = @mk_rect @bdy, @pm.x2 , @pm.y2 , @pm.w, @pm.h,'hight-left'
-        @last = @mk_rect @bdy, @pm.x2 , @pm.y2 + @pm.h/2 + 3 , @pm.w, 6,'middle-left'
+        @last1 = @mk_rect @bdy, @pm.x2 , @pm.y2-7 , @pm.w, 6,'hight-left'
+        @last2 = @mk_rect @bdy, @pm.x2 , @pm.y2-1 , @pm.w, @pm.h,'middle-left'
+
 
     #.----------.----------
     mk_right:() ->
-        @mk_rect @bdy, @pm.x3-6 , @last.y, @pm.w, 6, 'middle-right'
-        dx= 0
-        yy0= @pm.y3 - @pm.h
+        @last3 = @mk_rect @bdy, @pm.x3-5 , @last1.y, @pm.w, 6, 'hight-right'
+        @mk_rect @bdy, @pm.x3-5 , @last2.y , @pm.w, @pm.h,'middle-right'
+        dx=0
+        yy0= @last3.y
         while dx < @pm.x4 - @pm.x3
-            yy = yy0 + dx * @pm.delta2
+            yy = yy0 + dx * @pm.delta2-2
             @mk_rect @bdy, @pm.x3 - 6 + dx, yy, @pm.w, @pm.h,'hight-right'
             dx += @pm.w
     #.----------.----------
@@ -90,6 +92,6 @@ class Phacker.Game.Socle_body
         s.alpha = 0
 
         #s = @gm.add.sprite x, y, b
-        s.anchor.setTo(0.5, 0.5)
+        s.anchor.setTo(0.5, 0)
         s.pos = pos # location in body socle
         return s

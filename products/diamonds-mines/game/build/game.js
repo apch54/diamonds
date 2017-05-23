@@ -155,6 +155,9 @@
     };
 
     OneBasket.prototype.move = function() {
+      if (this.bsk.real_body.btm.body == null) {
+        return;
+      }
       if (this.bsk.branch === 'N') {
         if (!this.bsk.down && this.gm.math.fuzzyEqual(this.bsk.x, this.pm.xrot1, 4)) {
           this.bsk.down = true;
@@ -284,9 +287,9 @@
         alpha: 0
       }, 1500, Phaser.Easing.Linear.None, true, 0, 0);
       return tw.onComplete.add(function() {
-        bsk.real_body.btm.body.enable = false;
-        bsk.real_body.lft.body.enable = false;
-        return bsk.real_body.rgt.body.enable = false;
+        bsk.real_body.btm.destroy();
+        bsk.real_body.lft.destroy();
+        return bsk.real_body.rgt.destroy();
       }, this);
     };
 
@@ -369,7 +372,7 @@
         n: 97,
         dmd_in_game: 15,
         vx0: 70,
-        vx1: 1,
+        vx1: 2,
         msg_bsk: 'mes bsk',
         msg_scl: 'mes scl',
         msg_itself: 'mes itself',
@@ -413,26 +416,16 @@
         case 'hight-left':
           if (this.pm.x2 - dmd.x > 20) {
             dmd.body.velocity.x = this.pm.vx0;
-            dmd.y -= 1;
           } else {
             dmd.body.velocity.x = this.pm.vx0;
-            dmd.y -= .1;
           }
           break;
         case 'hight-right':
           if (dmd.x - this.pm.x3 > 20) {
             dmd.body.velocity.x = -this.pm.vx0;
-            dmd.y -= 1;
           } else {
             dmd.body.velocity.x = -this.pm.vx0;
-            dmd.y -= .1;
           }
-          break;
-        case 'middle-left':
-          dmd.x += .1;
-          break;
-        case 'middle-right':
-          dmd.x -= .1;
           break;
         case 'bottom-left':
           dmd.y = scl.y - 25;
@@ -459,10 +452,8 @@
           }
           break;
         case 'gate':
-          if (scl.body.touching.left) {
-            dmd.y += 20;
-          } else {
-            dmd.y = scl.y - this.pm.h + 2;
+          if (dmd.y < scl.y - 5) {
+            dmd.y -= .2;
           }
       }
       return true;
@@ -720,7 +711,7 @@
       this._fle_ = 'Gate';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.gate = {
-        x0: this.Pm.mec.x0 - 14,
+        x0: this.Pm.mec.x0 - 13,
         y0: this.Pm.mec.y0 + 148,
         w: 14,
         h: 5
@@ -734,7 +725,7 @@
       this.gtl.body.immovable = true;
       this.gtl.body.moves = false;
       this.gtl.pos = 'gate';
-      this.gtr = this.scl_bdy.create(this.pm.x0 + 28, this.pm.y0, 'mecanic_door_right');
+      this.gtr = this.scl_bdy.create(this.pm.x0 + 26, this.pm.y0, 'mecanic_door_right');
       this.gtr.anchor.setTo(1, 0.5);
       this.gtr.body.immovable = true;
       this.gtr.body.moves = false;
@@ -846,22 +837,23 @@
       var dx, yy;
       dx = 0;
       while (dx < this.pm.x2 - this.pm.x1) {
-        yy = this.pm.y1 + dx * this.pm.delta1;
+        yy = this.pm.y1 + dx * this.pm.delta1 - 8;
         this.mk_rect(this.bdy, this.pm.x1 + dx, yy, this.pm.w, this.pm.h, 'hight-left');
         dx += this.pm.w;
       }
-      this.last = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2, this.pm.w, this.pm.h, 'hight-left');
-      return this.last = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 + this.pm.h / 2 + 3, this.pm.w, 6, 'middle-left');
+      this.last1 = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 - 7, this.pm.w, 6, 'hight-left');
+      return this.last2 = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 - 1, this.pm.w, this.pm.h, 'middle-left');
     };
 
     Socle_body.prototype.mk_right = function() {
       var dx, results, yy, yy0;
-      this.mk_rect(this.bdy, this.pm.x3 - 6, this.last.y, this.pm.w, 6, 'middle-right');
+      this.last3 = this.mk_rect(this.bdy, this.pm.x3 - 5, this.last1.y, this.pm.w, 6, 'hight-right');
+      this.mk_rect(this.bdy, this.pm.x3 - 5, this.last2.y, this.pm.w, this.pm.h, 'middle-right');
       dx = 0;
-      yy0 = this.pm.y3 - this.pm.h;
+      yy0 = this.last3.y;
       results = [];
       while (dx < this.pm.x4 - this.pm.x3) {
-        yy = yy0 + dx * this.pm.delta2;
+        yy = yy0 + dx * this.pm.delta2 - 2;
         this.mk_rect(this.bdy, this.pm.x3 - 6 + dx, yy, this.pm.w, this.pm.h, 'hight-right');
         results.push(dx += this.pm.w);
       }
@@ -903,7 +895,7 @@
       s.body.immovable = true;
       s.body.moves = false;
       s.alpha = 0;
-      s.anchor.setTo(0.5, 0.5);
+      s.anchor.setTo(0.5, 0);
       s.pos = pos;
       return s;
     };
@@ -929,7 +921,7 @@
       nowt = new Date().getTime();
       if (!(n === 3) && (nowt - this.last_eff_time < this.delay)) {
         return;
-      } else {
+      } else if (n !== 3) {
         this.last_eff_time = nowt;
       }
       switch (n) {

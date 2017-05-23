@@ -4,7 +4,7 @@ class Phacker.Game.Gate
         @_fle_ = 'Gate'
         @Pm = @gm.parameters
         @pm = @Pm.gate =
-            x0: @Pm.mec.x0-14 # gate paramaters
+            x0: @Pm.mec.x0-13 # gate paramaters
             y0: @Pm.mec.y0 + 148
             w: 14
             h: 5
@@ -24,7 +24,7 @@ class Phacker.Game.Gate
         @gtl.body.moves = false # required
         @gtl.pos ='gate'
 
-        @gtr = @scl_bdy.create @pm.x0+28, @pm.y0, 'mecanic_door_right'
+        @gtr = @scl_bdy.create @pm.x0+26, @pm.y0, 'mecanic_door_right'
         @gtr.anchor.setTo(1, 0.5) # On middle top of sprite gate
         #@gtr.scale.setTo(1, @pm.h/3)
         @gtr.body.immovable = true

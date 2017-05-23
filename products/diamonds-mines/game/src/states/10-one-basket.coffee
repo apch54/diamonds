@@ -43,6 +43,7 @@ class Phacker.Game.OneBasket
     #.----------.----------
 
     move: () ->
+        if not @bsk.real_body.btm.body? then return # the basket ids destroied
         if @bsk.branch is 'N'
             if not @bsk.down and @gm.math.fuzzyEqual(@bsk.x ,@pm.xrot1 , 4)  # rotation down
                 @bsk.down = true

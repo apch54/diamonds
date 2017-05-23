@@ -10,7 +10,7 @@ class Phacker.Game.Diamonds
             n: 97 # number of diamonds
             dmd_in_game: 15
             vx0: 70 #initial  diamond vx
-            vx1 : 1 # collision vx result with itself
+            vx1 : 2 # collision vx result with itself
             #vx2 : 40 # diamond collide with basket
             msg_bsk:        'mes bsk'
             msg_scl:        'mes scl'
@@ -62,21 +62,21 @@ class Phacker.Game.Diamonds
             when 'hight-left'
                 if @pm.x2-dmd.x > 20
                     dmd.body.velocity.x = @pm.vx0
-                    dmd.y -= 1
+                    #dmd.y -= 1
                 else
                     dmd.body.velocity.x = @pm.vx0
-                    dmd.y -= .1
+                    #dmd.y -= .1
             when 'hight-right'
                 if  dmd.x-@pm.x3 > 20
                     dmd.body.velocity.x = -@pm.vx0
-                    dmd.y -= 1
+                    #dmd.y -= 1
                 else
                     dmd.body.velocity.x = -@pm.vx0
-                    dmd.y -= .1
-            when 'middle-left'
-                dmd.x += .1
-            when 'middle-right'
-                dmd.x -= .1
+                    #dmd.y -= .1
+#            when 'middle-left'
+#                dmd.x += .1
+#            when 'middle-right'
+#                dmd.x -= .1
 
             when 'bottom-left'
                 dmd.y = scl.y-25
@@ -98,8 +98,8 @@ class Phacker.Game.Diamonds
                     @pm.dead++
                     dmd.dead = true
             when 'gate'
-                if scl.body.touching.left then dmd.y += 20
-                else dmd.y = scl.y - @pm.h+2
+                #if scl.body.touching.left then dmd.y =scl.y+5; dmd.x=(x2+x3)/2
+                 if dmd.y < scl.y-5 then dmd.y -= .2
 
         return true  # return it has collided
 

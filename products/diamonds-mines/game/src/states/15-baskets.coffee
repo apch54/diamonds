@@ -81,9 +81,10 @@ class Phacker.Game.Baskets
         tw.onComplete.add(# on complete destoy basket real_body
             ()->
                 #console.log @_fle_,': ',bsk.real_body
-                bsk.real_body.btm.body.enable = false
-                bsk.real_body.lft.body.enable = false
-                bsk.real_body.rgt.body.enable = false
+
+                bsk.real_body.btm.destroy() #body.enable = false
+                bsk.real_body.lft.destroy() #.body.enable = false
+                bsk.real_body.rgt.destroy() #.body.enable = false
             @
         )
 
