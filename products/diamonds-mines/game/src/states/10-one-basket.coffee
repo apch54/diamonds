@@ -1,4 +1,4 @@
-###  written by apch on 2017-05-07enemy  ###
+###  written by apch on 2017-05-07 ###
 
 class Phacker.Game.OneBasket
 

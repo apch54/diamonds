@@ -26,10 +26,13 @@ class @YourGame extends Phacker.GameState
 
 
     resetPlayer: ->
-        console.log "Reset the player"
+        console.log "Reset"
 
     create: ->
         super() #Required
+
+        @game.physics.startSystem(Phaser.Physics.ARCADE)
+
         @socleO = new Phacker.Game.Socle @game
 
         @effectO = new Phacker.Game.Effects @game
@@ -45,7 +48,7 @@ class @YourGame extends Phacker.GameState
         @socle_bodyO= new Phacker.Game.Socle_body @game
         @scl = @socle_bodyO.bdy
 
-        @gateO = new Phacker.Game.Gate @game, @scl
+        @gateO = new Phacker.Game.Gate @game, @socle_bodyO
         @n_basket = @game.parameters.bsks.n # basket numbers
 
         @rulesO = new Phacker.Game.Rules @game, @basketsO

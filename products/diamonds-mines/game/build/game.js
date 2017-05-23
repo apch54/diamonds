@@ -109,7 +109,7 @@
 }).call(this);
 
 
-/*  written by apch on 2017-05-07enemy */
+/*  written by apch on 2017-05-07 */
 
 (function() {
   Phacker.Game.OneBasket = (function() {
@@ -367,6 +367,7 @@
         w: 10,
         h: 10,
         n: 97,
+        dmd_in_game: 15,
         vx0: 70,
         vx1: 1,
         msg_bsk: 'mes bsk',
@@ -382,12 +383,11 @@
           x: .2,
           y: .05
         },
-        g: 300,
+        g: this.gm.gameOptions.gravityY,
         last_transfert_date: 0,
         dt: 250,
         used: 0,
-        dead: 0,
-        dmd_in_game: 18
+        dead: 0
       };
       this.grp0 = this.gm.add.physicsGroup();
       this.grp0.enableBody = true;
@@ -395,62 +395,6 @@
       this.grp1.enableBody = true;
       this.init();
     }
-
-    Diamonds.prototype.check_diamonds = function() {
-      if (this.grp1.length < 1) {
-        return this.pm.dead;
-      }
-      if (this.grp0.length <= this.pm.dmd_in_game - 1) {
-        switch (this.pm.used) {
-          case 0:
-          case 1:
-          case 2:
-          case 3:
-            this.dmd_transfert(5);
-            break;
-          case 4:
-          case 5:
-          case 6:
-          case 7:
-            this.dmd_transfert(15);
-            break;
-          case 8:
-          case 9:
-          case 10:
-          case 11:
-            this.dmd_transfert(25);
-            break;
-          case 12:
-          case 13:
-          case 14:
-          case 15:
-            this.dmd_transfert(35);
-            break;
-          case 16:
-          case 17:
-          case 18:
-          case 19:
-            this.dmd_transfert(45);
-            break;
-          case 20:
-          case 21:
-          case 22:
-          case 23:
-            this.dmd_transfert(55);
-            break;
-          case 24:
-          case 25:
-          case 26:
-          case 27:
-            this.dmd_transfert(65);
-            break;
-          default:
-            this.dmd_transfert(0);
-        }
-        this.pm.used++;
-      }
-      return this.pm.dead;
-    };
 
     Diamonds.prototype.collide_socle = function(scl) {
       if (this.gm.physics.arcade.collide(this.grp0, scl, function() {
@@ -492,6 +436,10 @@
           break;
         case 'bottom-left':
           dmd.y = scl.y - 25;
+          if (!dmd.out) {
+            dmd.out = true;
+            this.effO.play(dmd, this.gm.rnd.integerInRange(0, 2));
+          }
           this.twn_dmd(dmd, this.pm.escX, scl.y - 10);
           if (!dmd.dead) {
             this.pm.dead++;
@@ -500,6 +448,10 @@
           break;
         case 'bottom-right':
           dmd.y = scl.y - 25;
+          if (!dmd.out) {
+            dmd.out = true;
+            this.effO.play(dmd, this.gm.rnd.integerInRange(0, 2));
+          }
           this.twn_dmd(dmd, this.Pm.bg.w - this.pm.escX, scl.y - 15);
           if (!dmd.dead) {
             this.pm.dead++;
@@ -530,26 +482,27 @@
     Diamonds.prototype.when_collide_bsk = function(dmd, bsk) {
       var ref, ref1;
       if (!dmd.has_scored) {
-        dmd.has_scored = true;
         this.pm.msg_bsk = 'win_bsk';
+        this.effO.play(dmd, 3);
       } else {
         this.pm.msg_bsk = 'no';
       }
+      dmd.has_scored = true;
       if (bsk.typ === 'lft') {
         if ((-10 < (ref = bsk.y - dmd.y - bsk.body.height / 2) && ref < 10)) {
           this.twn_move(dmd, dmd.x + 20, dmd.y + 30);
         } else {
-          dmd.x += 2;
+          dmd.x += 1.5;
         }
       } else if (bsk.typ === 'rgt') {
         if ((-10 < (ref1 = bsk.y - dmd.y - bsk.body.height / 2) && ref1 < 10)) {
           this.twn_move(dmd, dmd.x - 20, dmd.y + 30);
         } else {
-          dmd.x -= 2;
+          dmd.x -= 1.5;
         }
       } else if (bsk.typ === 'btm') {
         dmd.body.velocity.y = 0;
-        dmd.y = bsk.y - 14;
+        dmd.y = bsk.y - 13;
         bsk.full = true;
       }
       return true;
@@ -595,9 +548,76 @@
         alpha: 0
       }, t0, Phaser.Easing.Linear.None, true, 0, 0);
       return tw.onComplete.add(function() {
-        this.grp0.remove(dmd);
-        return this.effO.play(dmd);
+        return this.grp0.remove(dmd);
       }, this);
+    };
+
+    Diamonds.prototype.check_diamonds = function() {
+      if (this.grp1.length < 1) {
+        return this.pm.dead;
+      }
+      if (this.grp0.length <= this.pm.dmd_in_game - 1) {
+        switch (this.pm.used) {
+          case 0:
+          case 1:
+          case 2:
+          case 3:
+            this.dmd_transfert(5);
+            break;
+          case 4:
+          case 5:
+          case 6:
+          case 7:
+            if (this.grp1.length > 15) {
+              this.dmd_transfert(15);
+            }
+            break;
+          case 8:
+          case 9:
+          case 10:
+          case 11:
+            if (this.grp1.length > 25) {
+              this.dmd_transfert(25);
+            }
+            break;
+          case 12:
+          case 13:
+          case 14:
+          case 15:
+            if (this.grp1.length > 35) {
+              this.dmd_transfert(35);
+            }
+            break;
+          case 16:
+          case 17:
+          case 18:
+          case 19:
+            if (this.grp1.length > 45) {
+              this.dmd_transfert(45);
+            }
+            break;
+          case 20:
+          case 21:
+          case 22:
+          case 23:
+            if (this.grp1.length > 45) {
+              this.dmd_transfert(55);
+            }
+            break;
+          case 24:
+          case 25:
+          case 26:
+          case 27:
+            if (this.grp1.length > 65) {
+              this.dmd_transfert(65);
+            }
+            break;
+          default:
+            this.dmd_transfert(0);
+        }
+        this.pm.used++;
+      }
+      return this.pm.dead;
     };
 
     Diamonds.prototype.init = function() {
@@ -623,8 +643,7 @@
           x += 10;
         }
         dmd = this.grp1.create(x, y, this.pm.names[col]);
-        dmd.frame2 = this.pm.names[col];
-        results.push(dmd.has_scored = false);
+        results.push(dmd.frame2 = this.pm.names[col]);
       }
       return results;
     };
@@ -642,6 +661,8 @@
       d0.body.bounce.y = 0;
       d0.body.bounce.x = 0;
       d0.dead = false;
+      d0.has_scored = false;
+      d0.out = false;
       d1.destroy();
       return d0;
     };
@@ -693,29 +714,32 @@
 
 (function() {
   Phacker.Game.Gate = (function() {
-    function Gate(gm, scl_bdy) {
+    function Gate(gm, sclO) {
       this.gm = gm;
-      this.scl_bdy = scl_bdy;
+      this.sclO = sclO;
       this._fle_ = 'Gate';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.gate = {
-        x0: this.Pm.mec.x0,
+        x0: this.Pm.mec.x0 - 14,
         y0: this.Pm.mec.y0 + 148,
-        w: 30,
-        h: 8
-      };
-      this.pm.to = {
-        x: this.pm.x0 + this.pm.w
+        w: 14,
+        h: 5
       };
       this.Pm.mouse_down = false;
+      this.scl_bdy = this.sclO.bdy;
       this.gm.input.onDown.add(this.on_mouse_down, this);
       this.gm.input.onUp.add(this.on_mouse_up, this);
-      this.gt = this.scl_bdy.create(this.pm.x0, this.pm.y0, 'mecanic_door_left');
-      this.gt.scale.setTo(this.pm.w / 14, this.pm.h / 3);
-      this.gt.anchor.setTo(0.5, 0);
-      this.gt.body.immovable = true;
-      this.gt.body.moves = false;
-      this.gt.pos = 'gate';
+      this.gtl = this.scl_bdy.create(this.pm.x0, this.pm.y0, 'mecanic_door_left');
+      this.gtl.anchor.setTo(0, 0.5);
+      this.gtl.body.immovable = true;
+      this.gtl.body.moves = false;
+      this.gtl.pos = 'gate';
+      this.gtr = this.scl_bdy.create(this.pm.x0 + 28, this.pm.y0, 'mecanic_door_right');
+      this.gtr.anchor.setTo(1, 0.5);
+      this.gtr.body.immovable = true;
+      this.gtr.body.moves = false;
+      this.gtr.pos = 'gate';
+      this.rect = this.mk_rect(this.scl_bdy, this.pm.x0, this.pm.y0, this.pm.w * 2, 20, 'gate');
     }
 
     Gate.prototype.on_mouse_down = function() {
@@ -723,22 +747,54 @@
         return;
       }
       this.Pm.mouse_down = true;
-      return this.twn_close_open(this.gt, this.pm.to.x);
+      this.gtl.body.enable = false;
+      this.gtr.body.enable = false;
+      this.rect.body.enable = false;
+      this.twn_close_open(this.gtl, 90);
+      this.twn_close_open(this.gtr, -90);
+      return this.twn_close_open_rect(this.rect, this.pm.x0 + 30);
     };
 
     Gate.prototype.on_mouse_up = function() {
       if (!this.Pm.btn.start) {
         return;
       }
+      this.gtl.body.enable = true;
+      this.gtr.body.enable = true;
+      this.rect.body.enable = true;
       this.Pm.mouse_down = false;
-      return this.twn_close_open(this.gt, this.pm.x0);
+      this.twn_close_open(this.gtl, 0);
+      this.twn_close_open(this.gtr, 0);
+      return this.twn_close_open_rect(this.rect, this.pm.x0);
     };
 
-    Gate.prototype.twn_close_open = function(gt, x0) {
+    Gate.prototype.twn_close_open = function(gt, a0) {
+      this.gt_move = this.gm.add.tween(gt);
+      return this.gt_move.to({
+        angle: a0
+      }, 200, Phaser.Easing.Linear.None, true);
+    };
+
+    Gate.prototype.twn_close_open_rect = function(gt, x0) {
       this.gt_move = this.gm.add.tween(gt);
       return this.gt_move.to({
         x: x0
-      }, 250, Phaser.Easing.Linear.None, true);
+      }, 200, Phaser.Easing.Linear.None, true);
+    };
+
+    Gate.prototype.mk_rect = function(bdy_grp, x, y, w, h, pos) {
+      var b, s;
+      b = this.gm.add.bitmapData(w, h);
+      b.ctx.beginPath();
+      b.ctx.rect(0, 0, w, h);
+      b.ctx.fillStyle = '#00ffff';
+      b.ctx.fill();
+      s = bdy_grp.create(x, y, b);
+      s.body.immovable = true;
+      s.body.moves = false;
+      s.alpha = 0;
+      s.pos = pos;
+      return s;
     };
 
     return Gate;
@@ -865,43 +921,38 @@
       this._fle_ = 'Effect';
       this.effects = ['effect1', 'effect3', 'effect4', 'effect5'];
       this.last_eff_time = 0;
-      this.delay = 1000;
+      this.delay = 250;
     }
 
-    Effects.prototype.play = function(obj) {
-      var anim, n, nowt;
+    Effects.prototype.play = function(obj, n) {
+      var anim, eff, nowt;
       nowt = new Date().getTime();
-      if (nowt - this.last_eff_time < this.delay) {
+      if (!(n === 3) && (nowt - this.last_eff_time < this.delay)) {
         return;
       } else {
         this.last_eff_time = nowt;
       }
-      n = this.gm.rnd.integerInRange(0, 3);
       switch (n) {
         case 0:
         case 1:
-          this.eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
-          anim = this.eff.animations.add('explode', [2, 1, 0, 1], 8, false);
+          eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
+          anim = eff.animations.add('explode', [2, 1, 0, 1], 8, false);
           break;
         case 2:
-          this.eff = this.gm.add.sprite(50, 100, this.effects[n], 4);
-          anim = this.eff.animations.add('explode', [4, 3, 2, 1, 0, 1, 2, 3], 16, false);
+          eff = this.gm.add.sprite(50, 100, this.effects[n], 4);
+          anim = eff.animations.add('explode', [4, 3, 2, 1, 0, 1, 2, 3], 16, false);
           break;
         case 3:
-          this.eff = this.gm.add.sprite(50, 100, this.effects[n], 3);
-          anim = this.eff.animations.add('explode', [3, 2, 1, 0, 1, 2], 12, false);
+          eff = this.gm.add.sprite(50, 100, this.effects[n], 3);
+          anim = eff.animations.add('explode', [3, 2, 1, 0, 1, 2], 12, false);
       }
-      this.eff.anchor.setTo(0.5, 0.5);
+      eff.anchor.setTo(0.5, 0.5);
       anim.onComplete.add(function() {
-        return this.eff.destroy();
+        return eff.destroy();
       }, this);
-      this.eff.x = obj.x;
-      this.eff.y = obj.y;
-      return this.eff.animations.play('explode');
-    };
-
-    Effects.prototype.stop = function() {
-      return this.eff.destroy();
+      eff.x = obj.x;
+      eff.y = obj.y;
+      return eff.animations.play('explode');
     };
 
     return Effects;
@@ -1026,11 +1077,12 @@
     };
 
     YourGame.prototype.resetPlayer = function() {
-      return console.log("Reset the player");
+      return console.log("Reset");
     };
 
     YourGame.prototype.create = function() {
       YourGame.__super__.create.call(this);
+      this.game.physics.startSystem(Phaser.Physics.ARCADE);
       this.socleO = new Phacker.Game.Socle(this.game);
       this.effectO = new Phacker.Game.Effects(this.game);
       this.basketsO = new Phacker.Game.Baskets(this.game);
@@ -1040,7 +1092,7 @@
       this.buttonO = new Phacker.Game.Button(this.game, this.basketsO, this.diamondsO);
       this.socle_bodyO = new Phacker.Game.Socle_body(this.game);
       this.scl = this.socle_bodyO.bdy;
-      this.gateO = new Phacker.Game.Gate(this.game, this.scl);
+      this.gateO = new Phacker.Game.Gate(this.game, this.socle_bodyO);
       this.n_basket = this.game.parameters.bsks.n;
       return this.rulesO = new Phacker.Game.Rules(this.game, this.basketsO);
     };

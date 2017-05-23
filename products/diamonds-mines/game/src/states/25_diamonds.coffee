@@ -8,6 +8,7 @@ class Phacker.Game.Diamonds
             w: 10
             h:10
             n: 97 # number of diamonds
+            dmd_in_game: 15
             vx0: 70 #initial  diamond vx
             vx1 : 1 # collision vx result with itself
             #vx2 : 40 # diamond collide with basket
@@ -22,13 +23,13 @@ class Phacker.Game.Diamonds
             escX: if @gm.gameOptions.fullscreen  then 50 else 100 # when diamond is lost
 
             bounce: {x: .2, y: .05}
-            g:300 #gravity.y
+            g: @gm.gameOptions.gravityY #gravity.y
 
             last_transfert_date: 0
             dt: 250 # ms
             used:0
             dead:0
-            dmd_in_game: 18
+
 
         @grp0 = @gm.add.physicsGroup()       # basket body group; real bodies
         @grp0.enableBody = true
@@ -38,23 +39,6 @@ class Phacker.Game.Diamonds
 
         @init()
 
-    #.----------.----------
-    # transpert diamonds from grp1 to grp0 (live group)
-    #.----------.----------
-    check_diamonds:()->
-        if @grp1.length < 1 then return @pm.dead
-        if @grp0.length <= @pm.dmd_in_game-1
-            switch @pm.used
-                when 0,1,2,3      then @dmd_transfert(5)
-                when 4,5,6,7      then @dmd_transfert(15)
-                when 8,9,10,11    then @dmd_transfert(25)
-                when 12,13,14,15  then @dmd_transfert(35)
-                when 16,17,18,19  then @dmd_transfert(45)
-                when 20,21,22,23  then @dmd_transfert(55)
-                when 24,25,26,27  then @dmd_transfert(65)
-                else @dmd_transfert(0)
-            @pm.used++
-        return @pm.dead
 
     #.----------.----------
     # COLLIDE  with socle group
@@ -71,7 +55,7 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_scl:(dmd, scl) ->
-        #console.log @_fle_,': ',scl.pos
+        #console.log @_fle_,': ',dmd
         dmd.has_scored = false
         switch scl.pos
 
@@ -93,14 +77,22 @@ class Phacker.Game.Diamonds
                 dmd.x += .1
             when 'middle-right'
                 dmd.x -= .1
+
             when 'bottom-left'
                 dmd.y = scl.y-25
+                if not dmd.out
+                    dmd.out = true
+                    @effO.play dmd , @gm.rnd.integerInRange 0, 2     # play effect
                 @twn_dmd dmd, @pm.escX, scl.y-10
                 if not dmd.dead
                     @pm.dead++
                     dmd.dead = true
+
             when 'bottom-right'
                 dmd.y = scl.y-25
+                if not dmd.out
+                    dmd.out = true
+                    @effO.play dmd , @gm.rnd.integerInRange 0, 2     # play effect
                 @twn_dmd dmd, @Pm.bg.w - @pm.escX, scl.y-15
                 if not dmd.dead
                     @pm.dead++
@@ -126,24 +118,26 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_bsk:(dmd, bsk) ->
+
         if not dmd.has_scored
-             dmd.has_scored = true
              @pm.msg_bsk = 'win_bsk'
+             @effO.play dmd , 3    # play effect
         else @pm.msg_bsk ='no'
+        dmd.has_scored = true
 
         if bsk.typ is 'lft'
             if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
                 @twn_move dmd, dmd.x+20, dmd.y+30
-            else dmd.x += 2 #body.velocity.x += @pm.vx2
+            else dmd.x += 1.5 #body.velocity.x += @pm.vx2
 
         else if bsk.typ is 'rgt'
             if  -10 < (bsk.y - dmd.y - bsk.body.height/2) < 10
                 @twn_move dmd, dmd.x-20, dmd.y+30
-            else  dmd.x -= 2 #body.velocity.x -= @pm.vx2;
+            else  dmd.x -= 1.5 #body.velocity.x -= @pm.vx2;
 
         else if bsk.typ is 'btm'
             dmd.body.velocity.y =  0
-            dmd.y = bsk.y-14 # dont sink
+            dmd.y = bsk.y-13 # dont sink
             bsk.full = true
 
         return true  # return it has collided
@@ -186,18 +180,36 @@ class Phacker.Game.Diamonds
         )
 
     twn_dmd: (dmd,x0,y0, t0 ) ->
-        #console.log @_fle_,': ',x0
+
         if not t0? then t0=1100
         tw = @gm.add.tween dmd
         tw.to( {x: x0, y: y0 , alpha: 0}, t0, Phaser.Easing.Linear.None, true, 0, 0 )
         tw.onComplete.add(# on complete destoy basket real_body
             ()->
                 @grp0.remove(dmd)   # destroy dmd
-                @effO.play dmd      # play effect
+                #@effO.play dmd      # play effect
             @
         )
 
-#.----------.----------
+    #.----------.----------
+    # transfert diamonds from grp1 to grp0 (live group)
+    #.----------.----------
+    check_diamonds:()->
+    #console.log @_fle_,': ',@grp1.length
+        if @grp1.length < 1 then return @pm.dead
+        if @grp0.length <= @pm.dmd_in_game-1
+            switch @pm.used
+                when 0,1,2,3      then @dmd_transfert(5)
+                when 4,5,6,7      then @dmd_transfert(15) if @grp1.length > 15
+                when 8,9,10,11    then @dmd_transfert(25) if @grp1.length > 25
+                when 12,13,14,15  then @dmd_transfert(35) if @grp1.length > 35
+                when 16,17,18,19  then @dmd_transfert(45) if @grp1.length > 45
+                when 20,21,22,23  then @dmd_transfert(55) if @grp1.length > 45
+                when 24,25,26,27  then @dmd_transfert(65) if @grp1.length > 65
+                else @dmd_transfert(0)
+            @pm.used++
+        return @pm.dead
+    #.----------.----------
     # Initialisation of all diamonds (ball)
     # Creation of balls
     #.----------.----------
@@ -214,7 +226,6 @@ class Phacker.Game.Diamonds
             else x += 10
             dmd = @grp1.create x, y, @pm.names[col]
             dmd.frame2 =  @pm.names[col]
-            dmd.has_scored = false
 
     #.----------.----------
     # create a diamond
@@ -241,6 +252,9 @@ class Phacker.Game.Diamonds
        d0.body.bounce.y = 0 #@pm.bounce.y
        d0.body.bounce.x = 0 # @pm.bounce.x
        d0.dead=false
+       d0.has_scored = false
+       d0.out= false
+
        d1.destroy()
        return d0
 
