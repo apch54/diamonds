@@ -4,7 +4,7 @@ class Phacker.Game.Gate
         @_fle_ = 'Gate'
         @Pm = @gm.parameters
         @pm = @Pm.gate =
-            x0: @Pm.mec.x0-13 # gate paramaters
+            x0: @Pm.mec.x0-14 # gate paramaters
             y0: @Pm.mec.y0 + 148
             w: 14
             h: 5
@@ -24,15 +24,15 @@ class Phacker.Game.Gate
         @gtl.body.moves = false # required
         @gtl.pos ='gate'
 
-        @gtr = @scl_bdy.create @pm.x0+26, @pm.y0, 'mecanic_door_right'
+        @gtr = @scl_bdy.create @pm.x0+28, @pm.y0, 'mecanic_door_right'
         @gtr.anchor.setTo(1, 0.5) # On middle top of sprite gate
         #@gtr.scale.setTo(1, @pm.h/3)
         @gtr.body.immovable = true
         @gtr.body.moves = false # required
         @gtr.pos ='gate'
 
-        @rect = @mk_rect( @scl_bdy,  @pm.x0,  @pm.y0,  @pm.w*2, 20, 'gate')
-
+        @rect = @mk_rect( @scl_bdy,  @pm.x0-@pm.w,  @pm.y0,  @pm.w*4, 20, 'gate')
+        @rect.body.immovable = true
 #        @gtl.body.enable = false
 #        @gtr.body.enable = false
 
@@ -58,7 +58,7 @@ class Phacker.Game.Gate
         @Pm.mouse_down = false
         @twn_close_open(@gtl, 0)
         @twn_close_open(@gtr, 0)
-        @twn_close_open_rect(@rect, @pm.x0)
+        @twn_close_open_rect(@rect, @pm.x0-14)
 
     #.----------.----------
     # make tweem moves
@@ -92,7 +92,8 @@ class Phacker.Game.Gate
         s = bdy_grp.create x, y, b
         s.body.immovable = true
         s.body.moves = false # required
-        s.alpha = 0
+        s.alpha = 0.2
+
 
         #s = @gm.add.sprite x, y, b
         #s.anchor.setTo(0.5, 0.5)

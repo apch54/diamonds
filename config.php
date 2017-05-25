@@ -17,7 +17,7 @@ $gameOptions = array(
     //Here You can add new specific parameters
     //initial basket velocity
     'vx0'=> 60,
-    'gravityY'=> 400
+    'gravityY'=> 1000
 
 );
 

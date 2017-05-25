@@ -155,9 +155,6 @@
     };
 
     OneBasket.prototype.move = function() {
-      if (this.bsk.real_body.btm.body == null) {
-        return;
-      }
       if (this.bsk.branch === 'N') {
         if (!this.bsk.down && this.gm.math.fuzzyEqual(this.bsk.x, this.pm.xrot1, 4)) {
           this.bsk.down = true;
@@ -287,9 +284,9 @@
         alpha: 0
       }, 1500, Phaser.Easing.Linear.None, true, 0, 0);
       return tw.onComplete.add(function() {
-        bsk.real_body.btm.destroy();
-        bsk.real_body.lft.destroy();
-        return bsk.real_body.rgt.destroy();
+        bsk.real_body.btm.body.enable = false;
+        bsk.real_body.lft.body.enable = false;
+        return bsk.real_body.rgt.body.enable = false;
       }, this);
     };
 
@@ -370,9 +367,9 @@
         w: 10,
         h: 10,
         n: 97,
-        dmd_in_game: 15,
+        dmd_in_game: 20,
         vx0: 70,
-        vx1: 2,
+        vx1: 1,
         msg_bsk: 'mes bsk',
         msg_scl: 'mes scl',
         msg_itself: 'mes itself',
@@ -416,23 +413,29 @@
         case 'hight-left':
           if (this.pm.x2 - dmd.x > 20) {
             dmd.body.velocity.x = this.pm.vx0;
+            dmd.y -= 1;
           } else {
             dmd.body.velocity.x = this.pm.vx0;
+            dmd.y -= .1;
           }
           break;
         case 'hight-right':
           if (dmd.x - this.pm.x3 > 20) {
             dmd.body.velocity.x = -this.pm.vx0;
+            dmd.y -= 1;
           } else {
             dmd.body.velocity.x = -this.pm.vx0;
+            dmd.y -= .1;
           }
+          break;
+        case 'middle-left':
+          dmd.x += .1;
+          break;
+        case 'middle-right':
+          dmd.x -= .1;
           break;
         case 'bottom-left':
           dmd.y = scl.y - 25;
-          if (!dmd.out) {
-            dmd.out = true;
-            this.effO.play(dmd, this.gm.rnd.integerInRange(0, 2));
-          }
           this.twn_dmd(dmd, this.pm.escX, scl.y - 10);
           if (!dmd.dead) {
             this.pm.dead++;
@@ -441,10 +444,6 @@
           break;
         case 'bottom-right':
           dmd.y = scl.y - 25;
-          if (!dmd.out) {
-            dmd.out = true;
-            this.effO.play(dmd, this.gm.rnd.integerInRange(0, 2));
-          }
           this.twn_dmd(dmd, this.Pm.bg.w - this.pm.escX, scl.y - 15);
           if (!dmd.dead) {
             this.pm.dead++;
@@ -452,8 +451,10 @@
           }
           break;
         case 'gate':
-          if (dmd.y < scl.y - 5) {
-            dmd.y -= .2;
+          if (scl.body.touching.left) {
+            dmd.y += 20;
+          } else {
+            dmd.y = scl.y - this.pm.h;
           }
       }
       return true;
@@ -474,7 +475,6 @@
       var ref, ref1;
       if (!dmd.has_scored) {
         this.pm.msg_bsk = 'win_bsk';
-        this.effO.play(dmd, 3);
       } else {
         this.pm.msg_bsk = 'no';
       }
@@ -539,7 +539,8 @@
         alpha: 0
       }, t0, Phaser.Easing.Linear.None, true, 0, 0);
       return tw.onComplete.add(function() {
-        return this.grp0.remove(dmd);
+        this.grp0.remove(dmd);
+        return this.effO.play(dmd);
       }, this);
     };
 
@@ -653,7 +654,6 @@
       d0.body.bounce.x = 0;
       d0.dead = false;
       d0.has_scored = false;
-      d0.out = false;
       d1.destroy();
       return d0;
     };
@@ -711,7 +711,7 @@
       this._fle_ = 'Gate';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.gate = {
-        x0: this.Pm.mec.x0 - 13,
+        x0: this.Pm.mec.x0 - 14,
         y0: this.Pm.mec.y0 + 148,
         w: 14,
         h: 5
@@ -725,12 +725,13 @@
       this.gtl.body.immovable = true;
       this.gtl.body.moves = false;
       this.gtl.pos = 'gate';
-      this.gtr = this.scl_bdy.create(this.pm.x0 + 26, this.pm.y0, 'mecanic_door_right');
+      this.gtr = this.scl_bdy.create(this.pm.x0 + 28, this.pm.y0, 'mecanic_door_right');
       this.gtr.anchor.setTo(1, 0.5);
       this.gtr.body.immovable = true;
       this.gtr.body.moves = false;
       this.gtr.pos = 'gate';
-      this.rect = this.mk_rect(this.scl_bdy, this.pm.x0, this.pm.y0, this.pm.w * 2, 20, 'gate');
+      this.rect = this.mk_rect(this.scl_bdy, this.pm.x0 - this.pm.w, this.pm.y0, this.pm.w * 4, 20, 'gate');
+      this.rect.body.immovable = true;
     }
 
     Gate.prototype.on_mouse_down = function() {
@@ -756,7 +757,7 @@
       this.Pm.mouse_down = false;
       this.twn_close_open(this.gtl, 0);
       this.twn_close_open(this.gtr, 0);
-      return this.twn_close_open_rect(this.rect, this.pm.x0);
+      return this.twn_close_open_rect(this.rect, this.pm.x0 - 14);
     };
 
     Gate.prototype.twn_close_open = function(gt, a0) {
@@ -783,7 +784,7 @@
       s = bdy_grp.create(x, y, b);
       s.body.immovable = true;
       s.body.moves = false;
-      s.alpha = 0;
+      s.alpha = 0.2;
       s.pos = pos;
       return s;
     };
@@ -837,23 +838,23 @@
       var dx, yy;
       dx = 0;
       while (dx < this.pm.x2 - this.pm.x1) {
-        yy = this.pm.y1 + dx * this.pm.delta1 - 8;
+        yy = this.pm.y1 + dx * this.pm.delta1;
         this.mk_rect(this.bdy, this.pm.x1 + dx, yy, this.pm.w, this.pm.h, 'hight-left');
         dx += this.pm.w;
       }
-      this.last1 = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 - 7, this.pm.w, 6, 'hight-left');
-      return this.last2 = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 - 1, this.pm.w, this.pm.h, 'middle-left');
+      this.last1 = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 - 5, this.pm.w, 6, 'hight-left');
+      return this.last = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 + 21, this.pm.w, this.pm.h + 25, 'middle-left');
     };
 
     Socle_body.prototype.mk_right = function() {
       var dx, results, yy, yy0;
-      this.last3 = this.mk_rect(this.bdy, this.pm.x3 - 5, this.last1.y, this.pm.w, 6, 'hight-right');
-      this.mk_rect(this.bdy, this.pm.x3 - 5, this.last2.y, this.pm.w, this.pm.h, 'middle-right');
-      dx = 0;
-      yy0 = this.last3.y;
+      this.mk_rect(this.bdy, this.pm.x3 - 6, this.last1.y, this.pm.w, 6, 'hight-right');
+      this.mk_rect(this.bdy, this.pm.x3 - 6, this.last.y, this.pm.w, this.pm.h + 25, 'middle-right');
+      dx = 6;
+      yy0 = this.pm.y3 - this.pm.h;
       results = [];
       while (dx < this.pm.x4 - this.pm.x3) {
-        yy = yy0 + dx * this.pm.delta2 - 2;
+        yy = yy0 + dx * this.pm.delta2;
         this.mk_rect(this.bdy, this.pm.x3 - 6 + dx, yy, this.pm.w, this.pm.h, 'hight-right');
         results.push(dx += this.pm.w);
       }
@@ -889,13 +890,13 @@
       b = this.gm.add.bitmapData(w, h);
       b.ctx.beginPath();
       b.ctx.rect(0, 0, w, h);
-      b.ctx.fillStyle = '#00ffff';
+      b.ctx.fillStyle = '#ff00ff';
       b.ctx.fill();
       s = bdy_grp.create(x, y, b);
       s.body.immovable = true;
       s.body.moves = false;
-      s.alpha = 0;
-      s.anchor.setTo(0.5, 0);
+      s.alpha = 0.7;
+      s.anchor.setTo(0.5, 0.5);
       s.pos = pos;
       return s;
     };
@@ -913,38 +914,43 @@
       this._fle_ = 'Effect';
       this.effects = ['effect1', 'effect3', 'effect4', 'effect5'];
       this.last_eff_time = 0;
-      this.delay = 250;
+      this.delay = 1000;
     }
 
-    Effects.prototype.play = function(obj, n) {
-      var anim, eff, nowt;
+    Effects.prototype.play = function(obj) {
+      var anim, n, nowt;
       nowt = new Date().getTime();
-      if (!(n === 3) && (nowt - this.last_eff_time < this.delay)) {
+      if (nowt - this.last_eff_time < this.delay) {
         return;
-      } else if (n !== 3) {
+      } else {
         this.last_eff_time = nowt;
       }
+      n = this.gm.rnd.integerInRange(0, 3);
       switch (n) {
         case 0:
         case 1:
-          eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
-          anim = eff.animations.add('explode', [2, 1, 0, 1], 8, false);
+          this.eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
+          anim = this.eff.animations.add('explode', [2, 1, 0, 1], 8, false);
           break;
         case 2:
-          eff = this.gm.add.sprite(50, 100, this.effects[n], 4);
-          anim = eff.animations.add('explode', [4, 3, 2, 1, 0, 1, 2, 3], 16, false);
+          this.eff = this.gm.add.sprite(50, 100, this.effects[n], 4);
+          anim = this.eff.animations.add('explode', [4, 3, 2, 1, 0, 1, 2, 3], 16, false);
           break;
         case 3:
-          eff = this.gm.add.sprite(50, 100, this.effects[n], 3);
-          anim = eff.animations.add('explode', [3, 2, 1, 0, 1, 2], 12, false);
+          this.eff = this.gm.add.sprite(50, 100, this.effects[n], 3);
+          anim = this.eff.animations.add('explode', [3, 2, 1, 0, 1, 2], 12, false);
       }
-      eff.anchor.setTo(0.5, 0.5);
+      this.eff.anchor.setTo(0.5, 0.5);
       anim.onComplete.add(function() {
-        return eff.destroy();
+        return this.eff.destroy();
       }, this);
-      eff.x = obj.x;
-      eff.y = obj.y;
-      return eff.animations.play('explode');
+      this.eff.x = obj.x;
+      this.eff.y = obj.y;
+      return this.eff.animations.play('explode');
+    };
+
+    Effects.prototype.stop = function() {
+      return this.eff.destroy();
     };
 
     return Effects;

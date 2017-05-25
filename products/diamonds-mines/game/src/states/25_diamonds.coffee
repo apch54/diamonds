@@ -8,9 +8,9 @@ class Phacker.Game.Diamonds
             w: 10
             h:10
             n: 97 # number of diamonds
-            dmd_in_game: 15
+            dmd_in_game: 20
             vx0: 70 #initial  diamond vx
-            vx1 : 2 # collision vx result with itself
+            vx1 : 1 # collision vx result with itself
             #vx2 : 40 # diamond collide with basket
             msg_bsk:        'mes bsk'
             msg_scl:        'mes scl'
@@ -62,44 +62,36 @@ class Phacker.Game.Diamonds
             when 'hight-left'
                 if @pm.x2-dmd.x > 20
                     dmd.body.velocity.x = @pm.vx0
-                    #dmd.y -= 1
+                    dmd.y -= 1
                 else
                     dmd.body.velocity.x = @pm.vx0
-                    #dmd.y -= .1
+                    dmd.y -= .1
             when 'hight-right'
                 if  dmd.x-@pm.x3 > 20
                     dmd.body.velocity.x = -@pm.vx0
-                    #dmd.y -= 1
+                    dmd.y -= 1
                 else
                     dmd.body.velocity.x = -@pm.vx0
-                    #dmd.y -= .1
-#            when 'middle-left'
-#                dmd.x += .1
-#            when 'middle-right'
-#                dmd.x -= .1
-
+                    dmd.y -= .1
+            when 'middle-left'
+                dmd.x += .1
+            when 'middle-right'
+                dmd.x -= .1
             when 'bottom-left'
                 dmd.y = scl.y-25
-                if not dmd.out
-                    dmd.out = true
-                    @effO.play dmd , @gm.rnd.integerInRange 0, 2     # play effect
                 @twn_dmd dmd, @pm.escX, scl.y-10
                 if not dmd.dead
                     @pm.dead++
                     dmd.dead = true
-
             when 'bottom-right'
                 dmd.y = scl.y-25
-                if not dmd.out
-                    dmd.out = true
-                    @effO.play dmd , @gm.rnd.integerInRange 0, 2     # play effect
                 @twn_dmd dmd, @Pm.bg.w - @pm.escX, scl.y-15
                 if not dmd.dead
                     @pm.dead++
                     dmd.dead = true
             when 'gate'
-                #if scl.body.touching.left then dmd.y =scl.y+5; dmd.x=(x2+x3)/2
-                 if dmd.y < scl.y-5 then dmd.y -= .2
+                if scl.body.touching.left then dmd.y += 20
+                else dmd.y = scl.y - @pm.h
 
         return true  # return it has collided
 
@@ -121,7 +113,6 @@ class Phacker.Game.Diamonds
 
         if not dmd.has_scored
              @pm.msg_bsk = 'win_bsk'
-             @effO.play dmd , 3    # play effect
         else @pm.msg_bsk ='no'
         dmd.has_scored = true
 
@@ -187,7 +178,7 @@ class Phacker.Game.Diamonds
         tw.onComplete.add(# on complete destoy basket real_body
             ()->
                 @grp0.remove(dmd)   # destroy dmd
-                #@effO.play dmd      # play effect
+                @effO.play dmd      # play effect
             @
         )
 
@@ -253,7 +244,6 @@ class Phacker.Game.Diamonds
        d0.body.bounce.x = 0 # @pm.bounce.x
        d0.dead=false
        d0.has_scored = false
-       d0.out= false
 
        d1.destroy()
        return d0
