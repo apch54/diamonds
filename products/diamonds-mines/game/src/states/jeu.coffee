@@ -25,6 +25,7 @@ class @YourGame extends Phacker.GameState
         @rulesO.check()
 
 
+
     resetPlayer: ->
         console.log "Reset"
 
@@ -53,6 +54,8 @@ class @YourGame extends Phacker.GameState
 
         @rulesO = new Phacker.Game.Rules @game, @basketsO
 
+#    render: ->
+#        @game.debug.spriteInfo @diamondsO.grp0[0]
 
 
 

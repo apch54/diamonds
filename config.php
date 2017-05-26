@@ -4,7 +4,7 @@
 define('PRODUCT', 'diamonds-mines');
 
 $gameOptions = array(
-	'duration' => 60,
+	'duration' => 80,
 	'pointEarned' => 2,
     'pointLost' => 2,
 	'pointToLevel1' => 300,
@@ -17,7 +17,7 @@ $gameOptions = array(
     //Here You can add new specific parameters
     //initial basket velocity
     'vx0'=> 60,
-    'gravityY'=> 1000
+    'gravityY'=> 1200
 
 );
 

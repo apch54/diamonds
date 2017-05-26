@@ -422,7 +422,6 @@
         case 'hight-right':
           if (dmd.x - this.pm.x3 > 40) {
             dmd.body.velocity.x = -this.pm.vx0 / 2;
-            dmd.y -= 1;
           } else {
             dmd.body.velocity.x = -this.pm.vx0;
             dmd.y -= .1;
@@ -518,10 +517,13 @@
         if (!d1.body.touching.up) {
           d1.body.velocity.x -= this.pm.vx1;
         }
-        d1.body.velocity.y = 0;
-      } else {
         if (!d2.body.touching.up) {
-          d2.body.velocity.x -= this.pm.vx1;
+          d2.body.velocity.x += this.pm.vx1;
+        }
+        d1.body.velocity.y /= 2;
+      } else {
+        if (!d1.body.touching.up) {
+          d1.body.velocity.x -= this.pm.vx1;
         }
       }
       return true;

@@ -70,7 +70,7 @@ class Phacker.Game.Diamonds
             when 'hight-right'
                 if  dmd.x-@pm.x3 > 40
                     dmd.body.velocity.x = -@pm.vx0/2
-                    dmd.y -= 1
+                    #dmd.y -= 1
                 else
                     dmd.body.velocity.x = -@pm.vx0
                     dmd.y -= .1
@@ -78,8 +78,8 @@ class Phacker.Game.Diamonds
                 dmd.x += .1
             when 'middle-right'
                 dmd.x -= .1
-            when 'bottom-left'
 
+            when 'bottom-left'
                 dmd.y = scl.y-25
                 @effO.play dmd      # play effect
                 @twn_dmd dmd, @pm.escX, scl.y-15,500
@@ -93,6 +93,7 @@ class Phacker.Game.Diamonds
                 if not dmd.dead
                     @pm.dead++
                     dmd.dead = true
+
             when 'gate'
                 if scl.body.touching.left then dmd.y += 20
                 else dmd.y = scl.y - @pm.h
@@ -158,10 +159,14 @@ class Phacker.Game.Diamonds
         @grp0.setAll('body.immovable', false)
         if d1.x < d2.x
             d1.body.velocity.x -= @pm.vx1 if not d1.body.touching.up
-            d1.body.velocity.y = 0
+            d2.body.velocity.x += @pm.vx1 if not d2.body.touching.up
+            #console.log @_fle_,': ', d1.y , @Pm.sclb.y2
+            d1.body.velocity.y  /=  2 #if d1.y in [@Pm.sclb.y2-20..@Pm.sclb.y2+20]
+            #d2.body.velocity.y  =  0 if d2.y in [@Pm.sclb.y2-20..@Pm.sclb.y2+20]
         else
-            d2.body.velocity.x -= @pm.vx1 if not d2.body.touching.up
-            #d2.body.velocity.y = 0
+            d1.body.velocity.x -= @pm.vx1 if not d1.body.touching.up
+            #d2.body.velocity.x -= @pm.vx1 if not d2.body.touching.up
+            #d1.body.velocity.y  = d2.body.velocity.y = 0
         #if d1.y > d2.y then d1.body.velocity.y = 0
         return true  # return it has collided
 
