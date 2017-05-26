@@ -411,17 +411,17 @@
       dmd.has_scored = false;
       switch (scl.pos) {
         case 'hight-left':
-          if (this.pm.x2 - dmd.x > 20) {
+          if (this.pm.x2 - dmd.x > 40) {
             dmd.body.velocity.x = this.pm.vx0;
             dmd.y -= 1;
           } else {
-            dmd.body.velocity.x = this.pm.vx0;
+            dmd.body.velocity.x = this.pm.vx0 / 2;
             dmd.y -= .1;
           }
           break;
         case 'hight-right':
-          if (dmd.x - this.pm.x3 > 20) {
-            dmd.body.velocity.x = -this.pm.vx0;
+          if (dmd.x - this.pm.x3 > 40) {
+            dmd.body.velocity.x = -this.pm.vx0 / 2;
             dmd.y -= 1;
           } else {
             dmd.body.velocity.x = -this.pm.vx0;
@@ -518,6 +518,7 @@
         if (!d1.body.touching.up) {
           d1.body.velocity.x -= this.pm.vx1;
         }
+        d1.body.velocity.y = 0;
       } else {
         if (!d2.body.touching.up) {
           d2.body.velocity.x -= this.pm.vx1;
@@ -827,7 +828,7 @@
         y1: this.Pm.dmds.y1 + 35,
         x2: this.Pm.dmds.x2 + 2,
         y2: this.Pm.dmds.y1 + 65,
-        x3: this.Pm.dmds.x2 + 41,
+        x3: this.Pm.dmds.x2 + 40,
         x4: this.Pm.dmds.x3 + 60,
         x5: this.Pm.btm.x0 - this.Pm.btm.w / 2,
         y5: this.Pm.btm.y0 + 30,

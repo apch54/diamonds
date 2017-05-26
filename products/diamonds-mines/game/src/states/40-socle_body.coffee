@@ -10,7 +10,7 @@ class Phacker.Game.Socle_body
             w:10,                   h:20
             x1: @Pm.dmds.x1 + 5,            y1: @Pm.dmds.y1+35  # hight-left of mecanic
             x2: @Pm.dmds.x2 + 2,            y2: @Pm.dmds.y1+65  # low-left of mecanic
-            x3: @Pm.dmds.x2 + 41,                               # low-left of mecanic
+            x3: @Pm.dmds.x2 + 40,                               # low-left of mecanic
             x4: @Pm.dmds.x3 + 60,                               # hight-right of mecanic
             x5: @Pm.btm.x0 - @Pm.btm.w/2,   y5: @Pm.btm.y0+30   # bottom left
             x6: @Pm.btm.x0 ,                y6: @Pm.btm.y0+13    # bottom middle
