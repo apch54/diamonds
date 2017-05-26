@@ -370,7 +370,7 @@
         dmd_in_game: 20,
         vx0: 70,
         vx1: 1,
-        msg_bsk: 'mes bsk',
+        msg_bsks: [],
         msg_scl: 'mes scl',
         msg_itself: 'mes itself',
         names: ['blue_ball', 'green_ball', 'pink_ball', 'red_ball', 'yellow_ball'],
@@ -436,15 +436,15 @@
           break;
         case 'bottom-left':
           dmd.y = scl.y - 25;
-          this.twn_dmd(dmd, this.pm.escX, scl.y - 10);
+          this.twn_dmd(dmd, this.pm.escX, scl.y - 15, 500);
           if (!dmd.dead) {
             this.pm.dead++;
             dmd.dead = true;
           }
           break;
         case 'bottom-right':
-          dmd.y = scl.y - 25;
-          this.twn_dmd(dmd, this.Pm.bg.w - this.pm.escX, scl.y - 15);
+          dmd.y = scl.y - 30;
+          this.twn_dmd(dmd, this.Pm.bg.w - this.pm.escX, scl.y - 15, 500);
           if (!dmd.dead) {
             this.pm.dead++;
             dmd.dead = true;
@@ -466,7 +466,7 @@
       }, function(dmd, bsk) {
         return this.when_collide_bsk(dmd, bsk);
       }, this)) {
-        return this.pm.msg_bsk;
+        return this.last_msg_bsk();
       }
       return 'no';
     };
@@ -474,9 +474,8 @@
     Diamonds.prototype.when_collide_bsk = function(dmd, bsk) {
       var ref, ref1;
       if (!dmd.has_scored) {
-        this.pm.msg_bsk = 'win_bsk';
-      } else {
-        this.pm.msg_bsk = 'no';
+        this.pm.msg_bsks.push('win_bsk');
+        this.effO.play(dmd, 3);
       }
       dmd.has_scored = true;
       if (bsk.typ === 'lft') {
@@ -656,6 +655,15 @@
       d0.has_scored = false;
       d1.destroy();
       return d0;
+    };
+
+    Diamonds.prototype.last_msg_bsk = function() {
+      console.log(this._fle_, ': ', this.pm.msg_bsks.length);
+      if (this.pm.msg_bsks.length === 0) {
+        return 'no msg';
+      } else {
+        return this.pm.msg_bsks.pop();
+      }
     };
 
     return Diamonds;
@@ -914,43 +922,41 @@
       this._fle_ = 'Effect';
       this.effects = ['effect1', 'effect3', 'effect4', 'effect5'];
       this.last_eff_time = 0;
-      this.delay = 1000;
+      this.delay = 250;
     }
 
-    Effects.prototype.play = function(obj) {
-      var anim, n, nowt;
+    Effects.prototype.play = function(obj, n) {
+      var anim, eff, nowt;
       nowt = new Date().getTime();
-      if (nowt - this.last_eff_time < this.delay) {
+      if (!(n === 3) && (nowt - this.last_eff_time < this.delay)) {
         return;
-      } else {
+      } else if (n !== 3) {
         this.last_eff_time = nowt;
       }
-      n = this.gm.rnd.integerInRange(0, 3);
+      if (n == null) {
+        n = this.gm.rnd.integerInRange(0, 2);
+      }
       switch (n) {
         case 0:
         case 1:
-          this.eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
-          anim = this.eff.animations.add('explode', [2, 1, 0, 1], 8, false);
+          eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
+          anim = eff.animations.add('explode', [2, 1, 0, 1], 8, false);
           break;
         case 2:
-          this.eff = this.gm.add.sprite(50, 100, this.effects[n], 4);
-          anim = this.eff.animations.add('explode', [4, 3, 2, 1, 0, 1, 2, 3], 16, false);
+          eff = this.gm.add.sprite(50, 100, this.effects[n], 4);
+          anim = eff.animations.add('explode', [4, 3, 2, 1, 0, 1, 2, 3], 16, false);
           break;
         case 3:
-          this.eff = this.gm.add.sprite(50, 100, this.effects[n], 3);
-          anim = this.eff.animations.add('explode', [3, 2, 1, 0, 1, 2], 12, false);
+          eff = this.gm.add.sprite(50, 100, this.effects[n], 3);
+          anim = eff.animations.add('explode', [3, 2, 1, 0, 1, 2], 12, false);
       }
-      this.eff.anchor.setTo(0.5, 0.5);
+      eff.anchor.setTo(0.5, 0.5);
       anim.onComplete.add(function() {
-        return this.eff.destroy();
+        return eff.destroy();
       }, this);
-      this.eff.x = obj.x;
-      this.eff.y = obj.y;
-      return this.eff.animations.play('explode');
-    };
-
-    Effects.prototype.stop = function() {
-      return this.eff.destroy();
+      eff.x = obj.x;
+      eff.y = obj.y;
+      return eff.animations.play('explode');
     };
 
     return Effects;

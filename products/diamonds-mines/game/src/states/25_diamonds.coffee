@@ -12,7 +12,8 @@ class Phacker.Game.Diamonds
             vx0: 70 #initial  diamond vx
             vx1 : 1 # collision vx result with itself
             #vx2 : 40 # diamond collide with basket
-            msg_bsk:        'mes bsk'
+            #msg_bsk:        'mes bsk'
+            msg_bsks:[]     # all mes baskets
             msg_scl:        'mes scl'
             msg_itself:     'mes itself'
             names: ['blue_ball', 'green_ball', 'pink_ball', 'red_ball', 'yellow_ball']
@@ -79,13 +80,13 @@ class Phacker.Game.Diamonds
                 dmd.x -= .1
             when 'bottom-left'
                 dmd.y = scl.y-25
-                @twn_dmd dmd, @pm.escX, scl.y-10
+                @twn_dmd dmd, @pm.escX, scl.y-15,500
                 if not dmd.dead
                     @pm.dead++
                     dmd.dead = true
             when 'bottom-right'
-                dmd.y = scl.y-25
-                @twn_dmd dmd, @Pm.bg.w - @pm.escX, scl.y-15
+                dmd.y = scl.y-30
+                @twn_dmd dmd, @Pm.bg.w - @pm.escX, scl.y-15,500
                 if not dmd.dead
                     @pm.dead++
                     dmd.dead = true
@@ -104,7 +105,7 @@ class Phacker.Game.Diamonds
             -> return true
             (dmd, bsk)-> @when_collide_bsk(dmd, bsk)
             @
-        ) then return @pm.msg_bsk # set message
+        ) then return @last_msg_bsk()# set message
 
         return 'no'
 
@@ -112,8 +113,9 @@ class Phacker.Game.Diamonds
     when_collide_bsk:(dmd, bsk) ->
 
         if not dmd.has_scored
-             @pm.msg_bsk = 'win_bsk'
-        else @pm.msg_bsk ='no'
+             @pm.msg_bsks.push 'win_bsk'
+             @effO.play dmd , 3    # play effect
+        #else @pm.msg_bsks.push 'no'
         dmd.has_scored = true
 
         if bsk.typ is 'lft'
@@ -247,6 +249,19 @@ class Phacker.Game.Diamonds
 
        d1.destroy()
        return d0
+
+    #.----------.----------
+    #manage the pioes messgas baskets
+    #.----------.----------
+
+    last_msg_bsk:()->
+        console.log @_fle_,': ',@pm.msg_bsks.length
+        if  @pm.msg_bsks.length is 0
+            return 'no msg'
+        else
+            return @pm.msg_bsks.pop()
+
+
 
 
 
