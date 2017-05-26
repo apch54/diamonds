@@ -92,7 +92,7 @@ class Phacker.Game.Gate
         s = bdy_grp.create x, y, b
         s.body.immovable = true
         s.body.moves = false # required
-        s.alpha = 0.2
+        s.alpha = 0
 
 
         #s = @gm.add.sprite x, y, b

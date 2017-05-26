@@ -10,7 +10,7 @@ class Phacker.Game.Socle_body
             w:10,                   h:20
             x1: @Pm.dmds.x1 + 5,            y1: @Pm.dmds.y1+35  # hight-left of mecanic
             x2: @Pm.dmds.x2 + 2,            y2: @Pm.dmds.y1+65  # low-left of mecanic
-            x3: @Pm.dmds.x2 + 43,                               # low-left of mecanic
+            x3: @Pm.dmds.x2 + 41,                               # low-left of mecanic
             x4: @Pm.dmds.x3 + 60,                               # hight-right of mecanic
             x5: @Pm.btm.x0 - @Pm.btm.w/2,   y5: @Pm.btm.y0+30   # bottom left
             x6: @Pm.btm.x0 ,                y6: @Pm.btm.y0+13    # bottom middle
@@ -40,21 +40,21 @@ class Phacker.Game.Socle_body
         while dx < @pm.x2 - @pm.x1
             yy = @pm.y1 + dx * @pm.delta1
             @mk_rect @bdy, @pm.x1 + dx, yy, @pm.w, @pm.h ,'hight-left'# group,x,y,w,h
-            dx += @pm.w
+            dx += (@pm.w-5)
 
-        @last1 = @mk_rect @bdy, @pm.x2 , @pm.y2-5 , @pm.w, 6,'hight-left'
         @last = @mk_rect @bdy, @pm.x2 , @pm.y2+21, @pm.w, @pm.h+25,'middle-left'
+        @last1 = @mk_rect @bdy, @pm.x2 , @pm.y2-5 , @pm.w, 6,'hight-left2'
 
     #.----------.----------
     mk_right:() ->
-        @mk_rect @bdy, @pm.x3-6 , @last1.y, @pm.w, 6, 'hight-right'
+        @mk_rect @bdy, @pm.x3-6 , @last1.y, @pm.w, 6, 'hight-right2'
         @mk_rect @bdy, @pm.x3-6 , @last.y, @pm.w, @pm.h+25,'middle-right'
         dx= 6
         yy0= @pm.y3 - @pm.h
         while dx < @pm.x4 - @pm.x3
             yy = yy0 + dx * @pm.delta2
             @mk_rect @bdy, @pm.x3 - 6 + dx, yy, @pm.w, @pm.h,'hight-right'
-            dx += @pm.w
+            dx += (@pm.w-5)
     #.----------.----------
     mk_btm_left:() ->
         dx= 0
@@ -89,7 +89,7 @@ class Phacker.Game.Socle_body
         s = bdy_grp.create x, y, b
         s.body.immovable = true
         s.body.moves = false # required
-        s.alpha = 0.7
+        s.alpha = 0
 
         #s = @gm.add.sprite x, y, b
         s.anchor.setTo(0.5, 0.5)

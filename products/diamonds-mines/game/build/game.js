@@ -436,6 +436,7 @@
           break;
         case 'bottom-left':
           dmd.y = scl.y - 25;
+          this.effO.play(dmd);
           this.twn_dmd(dmd, this.pm.escX, scl.y - 15, 500);
           if (!dmd.dead) {
             this.pm.dead++;
@@ -444,6 +445,7 @@
           break;
         case 'bottom-right':
           dmd.y = scl.y - 30;
+          this.effO.play(dmd);
           this.twn_dmd(dmd, this.Pm.bg.w - this.pm.escX, scl.y - 15, 500);
           if (!dmd.dead) {
             this.pm.dead++;
@@ -499,6 +501,7 @@
     };
 
     Diamonds.prototype.collide_itself = function() {
+      this.grp0.setAll('body.immovable', true);
       if (this.gm.physics.arcade.collide(this.grp0, this.grp0, function() {
         return true;
       }, function(d1, d2) {
@@ -510,10 +513,15 @@
     };
 
     Diamonds.prototype.when_collide_itself = function(d1, d2) {
+      this.grp0.setAll('body.immovable', false);
       if (d1.x < d2.x) {
-        d1.body.velocity.x -= this.pm.vx1;
+        if (!d1.body.touching.up) {
+          d1.body.velocity.x -= this.pm.vx1;
+        }
       } else {
-        d2.body.velocity.x -= this.pm.vx1;
+        if (!d2.body.touching.up) {
+          d2.body.velocity.x -= this.pm.vx1;
+        }
       }
       return true;
     };
@@ -538,8 +546,7 @@
         alpha: 0
       }, t0, Phaser.Easing.Linear.None, true, 0, 0);
       return tw.onComplete.add(function() {
-        this.grp0.remove(dmd);
-        return this.effO.play(dmd);
+        return this.grp0.remove(dmd);
       }, this);
     };
 
@@ -658,7 +665,6 @@
     };
 
     Diamonds.prototype.last_msg_bsk = function() {
-      console.log(this._fle_, ': ', this.pm.msg_bsks.length);
       if (this.pm.msg_bsks.length === 0) {
         return 'no msg';
       } else {
@@ -792,7 +798,7 @@
       s = bdy_grp.create(x, y, b);
       s.body.immovable = true;
       s.body.moves = false;
-      s.alpha = 0.2;
+      s.alpha = 0;
       s.pos = pos;
       return s;
     };
@@ -819,7 +825,7 @@
         y1: this.Pm.dmds.y1 + 35,
         x2: this.Pm.dmds.x2 + 2,
         y2: this.Pm.dmds.y1 + 65,
-        x3: this.Pm.dmds.x2 + 43,
+        x3: this.Pm.dmds.x2 + 41,
         x4: this.Pm.dmds.x3 + 60,
         x5: this.Pm.btm.x0 - this.Pm.btm.w / 2,
         y5: this.Pm.btm.y0 + 30,
@@ -848,15 +854,15 @@
       while (dx < this.pm.x2 - this.pm.x1) {
         yy = this.pm.y1 + dx * this.pm.delta1;
         this.mk_rect(this.bdy, this.pm.x1 + dx, yy, this.pm.w, this.pm.h, 'hight-left');
-        dx += this.pm.w;
+        dx += this.pm.w - 5;
       }
-      this.last1 = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 - 5, this.pm.w, 6, 'hight-left');
-      return this.last = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 + 21, this.pm.w, this.pm.h + 25, 'middle-left');
+      this.last = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 + 21, this.pm.w, this.pm.h + 25, 'middle-left');
+      return this.last1 = this.mk_rect(this.bdy, this.pm.x2, this.pm.y2 - 5, this.pm.w, 6, 'hight-left2');
     };
 
     Socle_body.prototype.mk_right = function() {
       var dx, results, yy, yy0;
-      this.mk_rect(this.bdy, this.pm.x3 - 6, this.last1.y, this.pm.w, 6, 'hight-right');
+      this.mk_rect(this.bdy, this.pm.x3 - 6, this.last1.y, this.pm.w, 6, 'hight-right2');
       this.mk_rect(this.bdy, this.pm.x3 - 6, this.last.y, this.pm.w, this.pm.h + 25, 'middle-right');
       dx = 6;
       yy0 = this.pm.y3 - this.pm.h;
@@ -864,7 +870,7 @@
       while (dx < this.pm.x4 - this.pm.x3) {
         yy = yy0 + dx * this.pm.delta2;
         this.mk_rect(this.bdy, this.pm.x3 - 6 + dx, yy, this.pm.w, this.pm.h, 'hight-right');
-        results.push(dx += this.pm.w);
+        results.push(dx += this.pm.w - 5);
       }
       return results;
     };
@@ -903,7 +909,7 @@
       s = bdy_grp.create(x, y, b);
       s.body.immovable = true;
       s.body.moves = false;
-      s.alpha = 0.7;
+      s.alpha = 0;
       s.anchor.setTo(0.5, 0.5);
       s.pos = pos;
       return s;

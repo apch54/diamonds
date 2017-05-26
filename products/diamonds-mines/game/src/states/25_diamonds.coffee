@@ -80,12 +80,14 @@ class Phacker.Game.Diamonds
                 dmd.x -= .1
             when 'bottom-left'
                 dmd.y = scl.y-25
+                @effO.play dmd      # play effect
                 @twn_dmd dmd, @pm.escX, scl.y-15,500
                 if not dmd.dead
                     @pm.dead++
                     dmd.dead = true
             when 'bottom-right'
                 dmd.y = scl.y-30
+                @effO.play dmd      # play effect
                 @twn_dmd dmd, @Pm.bg.w - @pm.escX, scl.y-15,500
                 if not dmd.dead
                     @pm.dead++
@@ -140,6 +142,7 @@ class Phacker.Game.Diamonds
     #.----------.----------
 
     collide_itself: () ->
+        @grp0.setAll('body.immovable', true)
         if @gm.physics.arcade.collide(
             @grp0, @grp0 # twice diamonds group
             -> return true
@@ -151,12 +154,13 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_itself:(d1, d2) ->
+        @grp0.setAll('body.immovable', false)
         if d1.x < d2.x
-            d1.body.velocity.x -= @pm.vx1
+            d1.body.velocity.x -= @pm.vx1 if not d1.body.touching.up
             #d2.body.velocity.x +=  @pm.vx1
         else
-            d2.body.velocity.x -= @pm.vx1
-            #d2.body.velocity.x -= @pm.vx1
+            d2.body.velocity.x -= @pm.vx1 if not d2.body.touching.up
+            #d1.body.velocity.x += @pm.vx1
         #if d1.y > d2.y then d1.body.velocity.y = 0
         return true  # return it has collided
 
@@ -180,7 +184,7 @@ class Phacker.Game.Diamonds
         tw.onComplete.add(# on complete destoy basket real_body
             ()->
                 @grp0.remove(dmd)   # destroy dmd
-                @effO.play dmd      # play effect
+                #@effO.play dmd      # play effect
             @
         )
 
@@ -242,6 +246,7 @@ class Phacker.Game.Diamonds
        d1 = @grp1.getAt(n)
        d0 = @grp0.create d1.x, d1.y, d1.frame2
        d0.body.gravity.y = @pm.g
+       #d0.body.immovable = true
        d0.body.bounce.y = 0 #@pm.bounce.y
        d0.body.bounce.x = 0 # @pm.bounce.x
        d0.dead=false
@@ -251,11 +256,11 @@ class Phacker.Game.Diamonds
        return d0
 
     #.----------.----------
-    #manage the pioes messgas baskets
+    #manage the  messages baskets
     #.----------.----------
 
     last_msg_bsk:()->
-        console.log @_fle_,': ',@pm.msg_bsks.length
+        #console.log @_fle_,': ',@pm.msg_bsks.length
         if  @pm.msg_bsks.length is 0
             return 'no msg'
         else
