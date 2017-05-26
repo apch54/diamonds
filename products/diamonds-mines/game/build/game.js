@@ -648,7 +648,9 @@
 
     Diamonds.prototype.one_dmds_grp = function(x, y, bll) {
       var dmd;
-      return dmd = this.grp0.create(x, y, bll);
+      dmd = this.grp0.create(x, y, bll);
+      this.gm.physics.arcade.enable(dmd, Phaser.Physics.ARCADE);
+      return d0.body.setCircle(5);
     };
 
     Diamonds.prototype.dmd_transfert = function(n) {

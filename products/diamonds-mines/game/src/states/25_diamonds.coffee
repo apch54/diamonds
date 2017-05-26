@@ -229,7 +229,8 @@ class Phacker.Game.Diamonds
     #.----------.----------
     one_dmds_grp: (x, y, bll) ->
         dmd = @grp0.create x, y, bll
-        #@gm.physics.arcade.enable dmd,Phaser.Physics.ARCADE
+        @gm.physics.arcade.enable dmd,Phaser.Physics.ARCADE
+        d0.body.setCircle 5
 #        dmd.body.bounce.y = 0.2
 #        dmd.body.bounce.x = .2
 
@@ -245,6 +246,8 @@ class Phacker.Game.Diamonds
        #if (l = @grp1.length) < 1 then return #n then n = l-1
        d1 = @grp1.getAt(n)
        d0 = @grp0.create d1.x, d1.y, d1.frame2
+       #@gm.physics.arcade.enable d0,Phaser.Physics.ARCADE
+       #d0.body.setCircle 5
        d0.body.gravity.y = @pm.g
        #d0.body.immovable = true
        d0.body.bounce.y = 0 #@pm.bounce.y
