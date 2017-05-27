@@ -1080,7 +1080,7 @@
         fill: "#ffff00",
         align: "center"
       };
-      this.text = this.gm.add.text(xx, obj.y - 50, "Bonus", style);
+      this.text = this.gm.add.text(xx, obj.y - 45, "Bonus", style);
       this.text.anchor.set(0.5);
       this.text.alpha = 1;
       dx = -this.Pm.bsks.v / 7;
