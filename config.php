@@ -20,7 +20,7 @@ $gameOptions = array(
     // gravity of diamonds (balls)
     'gravityY'				=> 1200,
     // number of diamonds in basket to score a bonus
-    'n_diamonds_for_bonus' 	=> 5
+    'n_diamonds_for_bonus' 	=> 3
 
 );
 

@@ -19,7 +19,9 @@ class @YourGame extends Phacker.GameState
 
         msg = @diamondsO.collide_baskets @bskts
         if msg is 'win_bsk' then  @win() #;console.log @_fle_,': ',@game.ge.score
-        else if msg is 'bonus' then  @winBonus()
+        else if msg is 'bonus'
+            @winBonus()
+            #@bonusO.draw_bonus()
 
         @diamondsO.collide_socle(@scl)
         @diamondsO.collide_itself()
@@ -42,7 +44,9 @@ class @YourGame extends Phacker.GameState
         @basketsO = new Phacker.Game.Baskets @game
         @bskts = @basketsO.bsk_bdy_grp # all baskets
 
-        @diamondsO = new Phacker.Game.Diamonds @game, @effectO
+        @bonusO = new Phacker.Game.Bonus @game
+
+        @diamondsO = new Phacker.Game.Diamonds @game, @effectO, @bonusO
         @dmds = @diamondsO.grp0 # all diamonds
 
         @buttonO = new Phacker.Game.Button @game, @basketsO, @diamondsO
@@ -54,6 +58,7 @@ class @YourGame extends Phacker.GameState
         @n_basket = @game.parameters.bsks.n # basket numbers
 
         @rulesO = new Phacker.Game.Rules @game, @basketsO
+        @bonusO = new Phacker.Game.Bonus @game
 
 #    render: ->
 #        @game.debug.spriteInfo @diamondsO.grp0[0]
@@ -70,36 +75,11 @@ lostBtn.events.onInputDown.add ( ->
     @lost()
 ).bind @
 
-lostLifeBtn = @game.add.text(0, 0, "Lost Life");
-lostLifeBtn.inputEnabled = true;
-lostLifeBtn.y = @game.height*0.5 - lostLifeBtn.height*0.5
-lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
-lostLifeBtn.events.onInputDown.add ( ->
-    @lostLife()
-).bind @
-
-bonusBtn = @game.add.text(0, 0, "Bonus");
-bonusBtn.inputEnabled = true;
-bonusBtn.y = @game.height*0.5 - bonusBtn.height*0.5 + 50
-bonusBtn.x = @game.width - bonusBtn.width
-bonusBtn.events.onInputDown.add ( ->
-    @winBonus()
-).bind @
-
 #Placement specific for mobile
 
 if @game.gameOptions.fullscreen
     lostBtn.x = @game.width*0.5 - lostBtn.width*0.5
     lostBtn.y = @game.height*0.25
-
-    winBtn.x = @game.width*0.5 - winBtn.width*0.5
-    winBtn.y = @game.height*0.5
-
-    lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
-    lostLifeBtn.y = @game.height*0.75
-
-    bonusBtn.x = @game.width*0.5 - winBtn.width*0.5
-    bonusBtn.y = @game.height*0.5 + 50
 
 ###
 

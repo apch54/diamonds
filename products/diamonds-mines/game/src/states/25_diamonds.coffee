@@ -1,6 +1,6 @@
 class Phacker.Game.Diamonds
 
-    constructor: (@gm, @effO) ->
+    constructor: (@gm, @effO, @bonusO) ->
         @_fle_ = 'Diamonds'
 
         @Pm = @gm.parameters    # globals parameters
@@ -117,15 +117,17 @@ class Phacker.Game.Diamonds
 
     #.----------.----------
     when_collide_bsk:(dmd, bsk) ->
+        if not dmd.has_scored                   # only one score per round
+            bsk.in.n++                          # increase dmd in basket for bonus
 
-        if not dmd.has_scored
-             bsk.in.n++     # increase dmd in basket for bonus
-             console.log @_fle_,': ', bsk.in.n, @pm.n_diamonds_for_bonus,@gm.ge.score
-             if bsk.in.n is @pm.n_diamonds_for_bonus and @gm.ge.score > 30
-                 @pm.msg_bsks.push 'bonus' # score a bonus
-             else @pm.msg_bsks.push 'win_bsk'
-             #console.log @_fle_,': ',@pm.msg_bsks
-             @effO.play dmd , 3    # play effect for bonus
+            if bsk.in.n is @pm.n_diamonds_for_bonus and @gm.ge.score > 30
+                @pm.msg_bsks.push 'bonus'       # score a bonus
+                @bonusO.draw_bonus bsk          # draw bonus animation on basket
+
+            else
+                @pm.msg_bsks.push 'win_bsk'     # score normal
+                @effO.play dmd, 3               # play effect for bonus
+
         #else @pm.msg_bsks.push 'no'
         dmd.has_scored = true
 
@@ -168,7 +170,7 @@ class Phacker.Game.Diamonds
             d1.body.velocity.x -= @pm.vx1 if not d1.body.touching.up
             d2.body.velocity.x += @pm.vx1 if not d2.body.touching.up
             #console.log @_fle_,': ', d1.y , @Pm.sclb.y2
-            d1.body.velocity.y  /=  2 #if d1.y in [@Pm.sclb.y2-20..@Pm.sclb.y2+20]
+            d1.body.velocity.y  /=  1.5 #if d1.y in [@Pm.sclb.y2-20..@Pm.sclb.y2+20]
             #d2.body.velocity.y  =  0 if d2.y in [@Pm.sclb.y2-20..@Pm.sclb.y2+20]
         else
             d1.body.velocity.x -= @pm.vx1 if not d1.body.touching.up

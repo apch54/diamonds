@@ -364,9 +364,10 @@
 
 (function() {
   Phacker.Game.Diamonds = (function() {
-    function Diamonds(gm, effO) {
+    function Diamonds(gm, effO, bonusO) {
       this.gm = gm;
       this.effO = effO;
+      this.bonusO = bonusO;
       this._fle_ = 'Diamonds';
       this.Pm = this.gm.parameters;
       this.pm = this.Pm.dmds = {
@@ -484,13 +485,13 @@
       var ref, ref1;
       if (!dmd.has_scored) {
         bsk["in"].n++;
-        console.log(this._fle_, ': ', bsk["in"].n, this.pm.n_diamonds_for_bonus, this.gm.ge.score);
         if (bsk["in"].n === this.pm.n_diamonds_for_bonus && this.gm.ge.score > 30) {
           this.pm.msg_bsks.push('bonus');
+          this.bonusO.draw_bonus(bsk);
         } else {
           this.pm.msg_bsks.push('win_bsk');
+          this.effO.play(dmd, 3);
         }
-        this.effO.play(dmd, 3);
       }
       dmd.has_scored = true;
       if (bsk.typ === 'lft') {
@@ -534,7 +535,7 @@
         if (!d2.body.touching.up) {
           d2.body.velocity.x += this.pm.vx1;
         }
-        d1.body.velocity.y /= 2;
+        d1.body.velocity.y /= 1.5;
       } else {
         if (!d1.body.touching.up) {
           d1.body.velocity.x -= this.pm.vx1;
@@ -1061,6 +1062,46 @@
 }).call(this);
 
 
+/*  written by apch  on 2017-05-28 */
+
+(function() {
+  Phacker.Game.Bonus = (function() {
+    function Bonus(gm) {
+      this.gm = gm;
+      this._fle_ = 'Bonus';
+      this.Pm = this.gm.parameters;
+    }
+
+    Bonus.prototype.draw_bonus = function(obj) {
+      var dx, mvt, style, tw, xx;
+      xx = obj.x - 8;
+      style = {
+        font: "15px Arial",
+        fill: "#ffff00",
+        align: "center"
+      };
+      this.text = this.gm.add.text(xx, obj.y - 50, "Bonus", style);
+      this.text.anchor.set(0.5);
+      this.text.alpha = 1;
+      dx = -this.Pm.bsks.v / 7;
+      mvt = {
+        alpha: [0, 1, 0, 1, 0, 1, 0],
+        angle: [0, 0, 0, -20, 20, -20, 360],
+        x: [xx + dx, xx + 2 * dx, xx + 3 * dx, xx + 4 * dx, xx + 5 * dx, xx + 6 * dx, xx + 7 * dx]
+      };
+      tw = this.gm.add.tween(this.text).to(mvt, 1000, "Linear", true);
+      return tw.onComplete.add(function() {
+        return this.text.destroy();
+      }, this);
+    };
+
+    return Bonus;
+
+  })();
+
+}).call(this);
+
+
 /*  written by apch on 2017-05-07 : Jeu */
 
 (function() {
@@ -1118,14 +1159,16 @@
       this.effectO = new Phacker.Game.Effects(this.game);
       this.basketsO = new Phacker.Game.Baskets(this.game);
       this.bskts = this.basketsO.bsk_bdy_grp;
-      this.diamondsO = new Phacker.Game.Diamonds(this.game, this.effectO);
+      this.bonusO = new Phacker.Game.Bonus(this.game);
+      this.diamondsO = new Phacker.Game.Diamonds(this.game, this.effectO, this.bonusO);
       this.dmds = this.diamondsO.grp0;
       this.buttonO = new Phacker.Game.Button(this.game, this.basketsO, this.diamondsO);
       this.socle_bodyO = new Phacker.Game.Socle_body(this.game);
       this.scl = this.socle_bodyO.bdy;
       this.gateO = new Phacker.Game.Gate(this.game, this.socle_bodyO);
       this.n_basket = this.game.parameters.bsks.n;
-      return this.rulesO = new Phacker.Game.Rules(this.game, this.basketsO);
+      this.rulesO = new Phacker.Game.Rules(this.game, this.basketsO);
+      return this.bonusO = new Phacker.Game.Bonus(this.game);
     };
 
     return YourGame;
@@ -1143,36 +1186,11 @@
       @lost()
   ).bind @
   
-  lostLifeBtn = @game.add.text(0, 0, "Lost Life");
-  lostLifeBtn.inputEnabled = true;
-  lostLifeBtn.y = @game.height*0.5 - lostLifeBtn.height*0.5
-  lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
-  lostLifeBtn.events.onInputDown.add ( ->
-      @lostLife()
-  ).bind @
-  
-  bonusBtn = @game.add.text(0, 0, "Bonus");
-  bonusBtn.inputEnabled = true;
-  bonusBtn.y = @game.height*0.5 - bonusBtn.height*0.5 + 50
-  bonusBtn.x = @game.width - bonusBtn.width
-  bonusBtn.events.onInputDown.add ( ->
-      @winBonus()
-  ).bind @
-  
   #Placement specific for mobile
   
   if @game.gameOptions.fullscreen
       lostBtn.x = @game.width*0.5 - lostBtn.width*0.5
       lostBtn.y = @game.height*0.25
-  
-      winBtn.x = @game.width*0.5 - winBtn.width*0.5
-      winBtn.y = @game.height*0.5
-  
-      lostLifeBtn.x = @game.width*0.5 - lostLifeBtn.width*0.5
-      lostLifeBtn.y = @game.height*0.75
-  
-      bonusBtn.x = @game.width*0.5 - winBtn.width*0.5
-      bonusBtn.y = @game.height*0.5 + 50
    */
 
 }).call(this);
