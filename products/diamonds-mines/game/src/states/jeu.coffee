@@ -19,6 +19,7 @@ class @YourGame extends Phacker.GameState
 
         msg = @diamondsO.collide_baskets @bskts
         if msg is 'win_bsk' then  @win() #;console.log @_fle_,': ',@game.ge.score
+        else if msg is 'bonus' then  @winBonus()
 
         @diamondsO.collide_socle(@scl)
         @diamondsO.collide_itself()

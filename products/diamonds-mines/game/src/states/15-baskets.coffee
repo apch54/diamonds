@@ -52,7 +52,6 @@ class Phacker.Game.Baskets
             b.bsk.real_body.lft.y = b.bsk.y + 5
             b.bsk.real_body.lft.branch = b.bsk.branch
 
-
             b.bsk.real_body.rgt.x = b.bsk.x + b.bsk.body.width/2 - 7
             b.bsk.real_body.rgt.y = b.bsk.y + 5
             b.bsk.real_body.rgt.branch = b.bsk.branch
@@ -68,7 +67,11 @@ class Phacker.Game.Baskets
                     @pm.bsk_remaining--
 
                 #console.log @_fle_,': ',b.bsk.real_body.btm.full
-            else if b.bsk.branch is 'E' then b.bsk.real_body.btm.full = false # emty the basket
+            else if b.bsk.branch is 'E'
+                b.bsk.real_body.btm.full = false # emty the basket
+                #console.log @_fle_,': ',b.bsk.real_body.btm.in.n
+                b.bsk.real_body.btm.in.n = 0
+
 
         return @pm.bsk_remaining
 

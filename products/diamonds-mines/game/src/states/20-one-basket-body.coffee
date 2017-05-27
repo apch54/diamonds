@@ -23,12 +23,15 @@ class Phacker.Game.One_basket_body
         @btm.typ = 'btm'
         @btm.full = false # basket not empty
         @btm.out = false # still in game
+        @btm.in={n:0}  # nb of diamonds in the basket
 
         @lft = @mk_rect bdy_grp,  x - bkO.pm.w/2  + 2, y+5, 5 , h
         @lft.typ = 'lft'
+        @lft.in = @btm.in # nb of diamonds in the basket
 
         @rgt = @mk_rect bdy_grp,  x + bkO.pm.w/2 - 3, y+5, 5, h
         @rgt.typ = 'rgt'
+        @rgt.in = @btm.in# nb of diamonds in the basket
 
         return {lft: @lft,rgt: @rgt, btm: @btm}
 

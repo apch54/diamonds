@@ -117,8 +117,12 @@ class Phacker.Game.Diamonds
     when_collide_bsk:(dmd, bsk) ->
 
         if not dmd.has_scored
-             @pm.msg_bsks.push 'win_bsk'
-             @effO.play dmd , 3    # play effect
+             bsk.in.n++     # increase dmd in basket for bonus
+             if bsk.in.n is 3
+                 @pm.msg_bsks.push 'bonus' # score a bonus
+             else @pm.msg_bsks.push 'win_bsk'
+             #console.log @_fle_,': ',@pm.msg_bsks
+             @effO.play dmd , 3    # play effect for bonus
         #else @pm.msg_bsks.push 'no'
         dmd.has_scored = true
 

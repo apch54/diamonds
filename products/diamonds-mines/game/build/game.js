@@ -270,6 +270,7 @@
           }
         } else if (b.bsk.branch === 'E') {
           b.bsk.real_body.btm.full = false;
+          b.bsk.real_body.btm["in"].n = 0;
         }
       }
       return this.pm.bsk_remaining;
@@ -320,10 +321,15 @@
       this.btm.typ = 'btm';
       this.btm.full = false;
       this.btm.out = false;
+      this.btm["in"] = {
+        n: 0
+      };
       this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 2, y + 5, 5, h);
       this.lft.typ = 'lft';
+      this.lft["in"] = this.btm["in"];
       this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 3, y + 5, 5, h);
       this.rgt.typ = 'rgt';
+      this.rgt["in"] = this.btm["in"];
       return {
         lft: this.lft,
         rgt: this.rgt,
@@ -475,7 +481,12 @@
     Diamonds.prototype.when_collide_bsk = function(dmd, bsk) {
       var ref, ref1;
       if (!dmd.has_scored) {
-        this.pm.msg_bsks.push('win_bsk');
+        bsk["in"].n++;
+        if (bsk["in"].n === 3) {
+          this.pm.msg_bsks.push('bonus');
+        } else {
+          this.pm.msg_bsks.push('win_bsk');
+        }
         this.effO.play(dmd, 3);
       }
       dmd.has_scored = true;
@@ -1085,6 +1096,8 @@
       msg = this.diamondsO.collide_baskets(this.bskts);
       if (msg === 'win_bsk') {
         this.win();
+      } else if (msg === 'bonus') {
+        this.winBonus();
       }
       this.diamondsO.collide_socle(this.scl);
       this.diamondsO.collide_itself();
