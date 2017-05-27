@@ -21,6 +21,7 @@ class Phacker.Game.Rules
     check: ->
         #console.log @_fle_,': ',@bsksO.bska.length
         if @bsksO.bska.length < 6 then return
+
         switch @pm.lvl
             when 0
                 if @gm.ge.score < 60 then return

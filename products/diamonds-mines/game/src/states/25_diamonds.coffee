@@ -30,6 +30,8 @@ class Phacker.Game.Diamonds
             dt: 250 # ms
             used:0
             dead:0
+            n_diamonds_for_bonus: @gm.gameOptions.n_diamonds_for_bonus
+        console.log @_fle_,': ',@pm.n_diamonds_for_bonus
 
 
         @grp0 = @gm.add.physicsGroup()       # basket body group; real bodies
@@ -118,7 +120,8 @@ class Phacker.Game.Diamonds
 
         if not dmd.has_scored
              bsk.in.n++     # increase dmd in basket for bonus
-             if bsk.in.n is 3
+             console.log @_fle_,': ', bsk.in.n, @pm.n_diamonds_for_bonus,@gm.ge.score
+             if bsk.in.n is @pm.n_diamonds_for_bonus and @gm.ge.score > 30
                  @pm.msg_bsks.push 'bonus' # score a bonus
              else @pm.msg_bsks.push 'win_bsk'
              #console.log @_fle_,': ',@pm.msg_bsks

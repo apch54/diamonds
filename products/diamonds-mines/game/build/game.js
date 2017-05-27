@@ -393,8 +393,10 @@
         last_transfert_date: 0,
         dt: 250,
         used: 0,
-        dead: 0
+        dead: 0,
+        n_diamonds_for_bonus: this.gm.gameOptions.n_diamonds_for_bonus
       };
+      console.log(this._fle_, ': ', this.pm.n_diamonds_for_bonus);
       this.grp0 = this.gm.add.physicsGroup();
       this.grp0.enableBody = true;
       this.grp1 = this.gm.add.physicsGroup();
@@ -482,7 +484,8 @@
       var ref, ref1;
       if (!dmd.has_scored) {
         bsk["in"].n++;
-        if (bsk["in"].n === 3) {
+        console.log(this._fle_, ': ', bsk["in"].n, this.pm.n_diamonds_for_bonus, this.gm.ge.score);
+        if (bsk["in"].n === this.pm.n_diamonds_for_bonus && this.gm.ge.score > 30) {
           this.pm.msg_bsks.push('bonus');
         } else {
           this.pm.msg_bsks.push('win_bsk');
