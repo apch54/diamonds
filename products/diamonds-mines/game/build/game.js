@@ -530,6 +530,9 @@
 
     Diamonds.prototype.when_collide_itself = function(d1, d2) {
       this.grp0.setAll('body.immovable', false);
+      if (d1.y < d2.y) {
+        return true;
+      }
       if (d1.x < d2.x) {
         if (!d1.body.touching.up) {
           d1.body.velocity.x -= this.pm.vx1;

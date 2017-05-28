@@ -30,7 +30,7 @@ class Phacker.Game.Diamonds
             dt: 250 # ms
             used:0
             dead:0
-            n_diamonds_for_bonus: @gm.gameOptions.n_diamonds_for_bonus
+            n_diamonds_for_bonus: @gm.gameOptions.n_diamonds_for_bonus  
 
         @grp0 = @gm.add.physicsGroup()       # basket body group; real bodies
         @grp0.enableBody = true
@@ -164,6 +164,8 @@ class Phacker.Game.Diamonds
     #.----------.----------
     when_collide_itself:(d1, d2) ->
         @grp0.setAll('body.immovable', false)
+        if d1.y < d2.y then return true
+
         if d1.x < d2.x
             d1.body.velocity.x -= @pm.vx1 if not d1.body.touching.up
             d2.body.velocity.x += @pm.vx1 if not d2.body.touching.up
@@ -171,9 +173,6 @@ class Phacker.Game.Diamonds
             #d2.body.velocity.y  =  0 if d2.y in [@Pm.sclb.y2-20..@Pm.sclb.y2+20]
         else
             d1.body.velocity.x -= @pm.vx1 if not d1.body.touching.up
-            #d2.body.velocity.x -= @pm.vx1 if not d2.body.touching.up
-            #d1.body.velocity.y  = d2.body.velocity.y = 0
-        #if d1.y > d2.y then d1.body.velocity.y = 0
         return true  # return it has collided
 
     #.----------.----------

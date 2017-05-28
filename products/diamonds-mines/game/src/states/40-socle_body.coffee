@@ -47,7 +47,7 @@ class Phacker.Game.Socle_body
 
     #.----------.----------
     mk_right:() ->
-        @mk_rect @bdy, @pm.x3-6 , @last1.y, @pm.w, 6, 'hight-right2'
+        @mk_rect @bdy, @pm.x3-6, @last1.y, @pm.w, 6, 'hight-right2'
         @mk_rect @bdy, @pm.x3-6 , @last.y, @pm.w, @pm.h+25,'middle-right'
         dx= 6
         yy0= @pm.y3 - @pm.h
