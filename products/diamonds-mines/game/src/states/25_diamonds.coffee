@@ -31,8 +31,6 @@ class Phacker.Game.Diamonds
             used:0
             dead:0
             n_diamonds_for_bonus: @gm.gameOptions.n_diamonds_for_bonus
-        console.log @_fle_,': ',@pm.n_diamonds_for_bonus
-
 
         @grp0 = @gm.add.physicsGroup()       # basket body group; real bodies
         @grp0.enableBody = true
@@ -122,7 +120,7 @@ class Phacker.Game.Diamonds
 
             if bsk.in.n is @pm.n_diamonds_for_bonus and @gm.ge.score > 30
                 @pm.msg_bsks.push 'bonus'       # score a bonus
-                @bonusO.draw_bonus bsk          # draw bonus animation on basket
+                @bonusO.draw_bonus bsk.bkO.bsk          # draw bonus animation on basket
 
             else
                 @pm.msg_bsks.push 'win_bsk'     # score normal
@@ -169,7 +167,6 @@ class Phacker.Game.Diamonds
         if d1.x < d2.x
             d1.body.velocity.x -= @pm.vx1 if not d1.body.touching.up
             d2.body.velocity.x += @pm.vx1 if not d2.body.touching.up
-            #console.log @_fle_,': ', d1.y , @Pm.sclb.y2
             d1.body.velocity.y  /=  1.5 #if d1.y in [@Pm.sclb.y2-20..@Pm.sclb.y2+20]
             #d2.body.velocity.y  =  0 if d2.y in [@Pm.sclb.y2-20..@Pm.sclb.y2+20]
         else
@@ -207,7 +204,6 @@ class Phacker.Game.Diamonds
     # transfert diamonds from grp1 to grp0 (live group)
     #.----------.----------
     check_diamonds:()->
-    #console.log @_fle_,': ',@grp1.length
         if @grp1.length < 1 then return @pm.dead
         if @grp0.length <= @pm.dmd_in_game-1
             switch @pm.used

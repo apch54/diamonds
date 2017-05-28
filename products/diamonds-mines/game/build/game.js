@@ -324,12 +324,15 @@
       this.btm["in"] = {
         n: 0
       };
+      this.btm.bkO = bkO;
       this.lft = this.mk_rect(bdy_grp, x - bkO.pm.w / 2 + 2, y + 5, 5, h);
       this.lft.typ = 'lft';
       this.lft["in"] = this.btm["in"];
+      this.lft.bkO = bkO;
       this.rgt = this.mk_rect(bdy_grp, x + bkO.pm.w / 2 - 3, y + 5, 5, h);
       this.rgt.typ = 'rgt';
       this.rgt["in"] = this.btm["in"];
+      this.rgt.bkO = bkO;
       return {
         lft: this.lft,
         rgt: this.rgt,
@@ -397,7 +400,6 @@
         dead: 0,
         n_diamonds_for_bonus: this.gm.gameOptions.n_diamonds_for_bonus
       };
-      console.log(this._fle_, ': ', this.pm.n_diamonds_for_bonus);
       this.grp0 = this.gm.add.physicsGroup();
       this.grp0.enableBody = true;
       this.grp1 = this.gm.add.physicsGroup();
@@ -487,7 +489,7 @@
         bsk["in"].n++;
         if (bsk["in"].n === this.pm.n_diamonds_for_bonus && this.gm.ge.score > 30) {
           this.pm.msg_bsks.push('bonus');
-          this.bonusO.draw_bonus(bsk);
+          this.bonusO.draw_bonus(bsk.bkO.bsk);
         } else {
           this.pm.msg_bsks.push('win_bsk');
           this.effO.play(dmd, 3);
@@ -1074,7 +1076,7 @@
 
     Bonus.prototype.draw_bonus = function(obj) {
       var dx, mvt, style, tw, xx;
-      xx = obj.x - 8;
+      xx = obj.x - 21;
       style = {
         font: "15px Arial",
         fill: "#ffff00",
@@ -1086,7 +1088,7 @@
       dx = -this.Pm.bsks.v / 7;
       mvt = {
         alpha: [0, 1, 0, 1, 0, 1, 0],
-        angle: [0, 0, 0, -20, 20, -20, 360],
+        angle: [0, 0, 20, -20, 20, 180, 360],
         x: [xx + dx, xx + 2 * dx, xx + 3 * dx, xx + 4 * dx, xx + 5 * dx, xx + 6 * dx, xx + 7 * dx]
       };
       tw = this.gm.add.tween(this.text).to(mvt, 1000, "Linear", true);
